@@ -1,12 +1,12 @@
 import { TouchableOpacity, Text, View, Button } from "react-native";
 import styled from "styled-components/native";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
-import { deleteAction } from "../../utils/ActionsHandler";
+import { deleteAreaOfImportance } from "../../utils/AreasOfImportanceHandler";
 import { alertAtom } from "../../recoil/alertAtom";
 import { useSetRecoilState } from "recoil";
-import { actionsAtom } from "../../recoil/actionsAtom";
+import { areasOfImportanceAtom } from "../../recoil/areasOfImportanceAtom";
 
-const StyledActionsListItem = styled.View`
+const StyledAreasOfImportanceItem = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -16,9 +16,9 @@ const StyledActionsListItem = styled.View`
   margin: 2px 30px;
 `;
 
-const ActionsListItem = ({ item, drag, isActive }) => {
+const AreasOfImportanceItem = ({ item, drag, isActive }) => {
   const setAlert = useSetRecoilState(alertAtom);
-  const setData = useSetRecoilState(actionsAtom);
+  const setData = useSetRecoilState(areasOfImportanceAtom);
 
   return (
     <ScaleDecorator key={item.key}>
@@ -27,18 +27,19 @@ const ActionsListItem = ({ item, drag, isActive }) => {
         disabled={isActive}
         style={{ backgroundColor: isActive ? "red" : item.backgroundColor }}
       >
-        <StyledActionsListItem>
+        <StyledAreasOfImportanceItem>
           <View>
-            <Text>Actions: {item.action}</Text>
-            <Text>AOL: {item.areaOfImportance}</Text>
-            <Text>Date Added: {item.dateAdded}</Text>
+            <Text>AOL: {item.AOI}</Text>
           </View>
 
-          <Button title="Delete" onPress={() => deleteAction(setAlert, setData, item.key)} />
-        </StyledActionsListItem>
+          <Button
+            title="Delete"
+            onPress={() => deleteAreaOfImportance(setAlert, setData, item.key)}
+          />
+        </StyledAreasOfImportanceItem>
       </TouchableOpacity>
     </ScaleDecorator>
   );
 };
 
-export default ActionsListItem;
+export default AreasOfImportanceItem;

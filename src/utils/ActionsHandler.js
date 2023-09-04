@@ -39,7 +39,6 @@ export const getActions = (setAlert, setData, setLoading) => {
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
       .then((actions) => {
-        console.log(actions);
         if (actions !== null) setData(actions);
         setLoading(false);
       });
@@ -57,12 +56,15 @@ export const addAction = (setAlert, setData, action, timeEstimate, areaOfImporta
     isCompleted: false,
     timeEstimate: timeEstimate,
     areaOfImportance: areaOfImportance,
-    dateAdded: new Date(),
+    dateAdded: new Date().toISOString().split("T")[0],
   };
   try {
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
       .then((actions) => {
+        if (actions === null) {
+          actions = [];
+        }
         if (actions.length > 99) {
           setAlert("You cannot have more than 99 actions");
           return;
