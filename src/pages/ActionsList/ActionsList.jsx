@@ -1,18 +1,14 @@
 import "react-native-get-random-values";
 
 import React, { useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  Button,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  ActivityIndicator,
-} from "react-native";
+import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
 import styled from "styled-components/native";
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
-import { storeData, getData } from "../../utils/Storage";
+import { getActions } from "../../utils/ActionsHandler";
 import ActionsListAdd from "./ActionsListAdd";
+import { alertAtom } from "../../recoil/alertAtom";
+import { actionsAtom } from "../../recoil/actionsAtom";
+import { useSetRecoilState, useRecoilState } from "recoil";
 
 const StyledActionsList = styled.SafeAreaView`
   background-color: white;
@@ -21,35 +17,24 @@ const StyledActionsList = styled.SafeAreaView`
 `;
 
 const ActionsList = () => {
-  const [text, setText] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useRecoilState(actionsAtom);
   const [loading, setLoading] = useState(true);
+  const setAlert = useSetRecoilState(alertAtom);
 
   useEffect(() => {
-    getData("actions-list").then((d) => {
-      if (d !== null) {
-        setData(JSON.parse(d));
-        console.log("Retrieved data:", JSON.parse(d));
-      } else {
-        console.log("no data");
-      }
-      setLoading(false);
-    });
+    getActions(setAlert, setData, setLoading);
   }, []);
 
-  const generateKey = () => {
-    return data.length.toString();
-  };
-
   const renderItem = ({ item, drag, isActive }) => {
+    console.log(item);
     return (
-      <ScaleDecorator>
+      <ScaleDecorator key={item.key}>
         <TouchableOpacity
           onLongPress={drag}
           disabled={isActive}
           style={{ backgroundColor: isActive ? "red" : item.backgroundColor }}
         >
-          <Text>{item.todo}</Text>
+          <Text>{item.action}</Text>
         </TouchableOpacity>
       </ScaleDecorator>
     );
@@ -59,13 +44,17 @@ const ActionsList = () => {
     <StyledActionsList>
       <ActionsListAdd />
 
-      {/* <DraggableFlatList
-        data={data}
-        onDragEnd={({ data }) => setData(data)}
-        keyExtractor={(item) => item.key}
-        renderItem={renderItem}
-      /> */}
-      {loading && <ActivityIndicator size="large" color="#00ff00" />}
+      {data.length > 0 ? (
+        <DraggableFlatList
+          data={data}
+          onDragEnd={({ data }) => setData(data)}
+          keyExtractor={(item) => item.key}
+          renderItem={renderItem}
+        />
+      ) : (
+        <Text>No Actions in your list</Text>
+      )}
+      {loading && <ActivityIndicator size="large" color="#000000" />}
     </StyledActionsList>
   );
 };

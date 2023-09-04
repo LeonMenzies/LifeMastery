@@ -2,7 +2,11 @@ import { View, Text, SafeAreaView, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import HomeHeader from "./HomeHeader";
-import { storeData, getData } from "../../utils/Storage";
+import { storeData, getData } from "../../utils/ActionsHandler";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { actionsAtom } from "../../recoil/actionsAtom";
+import { alertAtom } from "../../recoil/alertAtom";
+import { getActions } from "../../utils/ActionsHandler";
 
 const StyledHome = styled.SafeAreaView`
   background-color: red;
@@ -10,26 +14,25 @@ const StyledHome = styled.SafeAreaView`
 `;
 
 const Home = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useRecoilState(actionsAtom);
+  const setAlert = useSetRecoilState(alertAtom);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getData("actions-list").then((d) => {
-      if (d !== null) {
-        setData(JSON.parse(d));
-        console.log("Retrieved data:", JSON.parse(d));
-      } else {
-        console.log("no data");
-      }
-      setLoading(false);
-    });
+    getActions(setAlert, setData, setLoading);
   }, []);
 
   return (
     <StyledHome>
       <HomeHeader />
-      {loading && <ActivityIndicator size="large" color="#00ff00" />}
-      <View>{/* <Text>{data}</Text> */}</View>
+      {data.length > 0 ? (
+        data.map((v) => {
+          return <Text>{v.action}</Text>;
+        })
+      ) : (
+        <Text>No Actions in your list</Text>
+      )}
+      {loading && <ActivityIndicator size="large" color="#000000" />}
     </StyledHome>
   );
 };

@@ -3,66 +3,70 @@ import "react-native-get-random-values";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView, Button, TouchableOpacity, Text } from "react-native";
 import styled from "styled-components/native";
-import { storeData, getData } from "../../utils/Storage";
-import TextInput from "../../components/TextInput";
+import { addAction } from "../../utils/ActionsHandler";
+import TextInputComponent from "../../components/TextInputComponent";
+import { alertAtom } from "../../recoil/alertAtom";
+import { actionsAtom } from "../../recoil/actionsAtom";
+import { useSetRecoilState } from "recoil";
 
 const StyledActionsListAdd = styled.SafeAreaView`
   background-color: white;
 `;
 
 const ActionsListAdd = ({}) => {
-  const [text, setText] = useState("");
-  const [data, setData] = useState([]);
+  const [text, setText] = useState("test action");
+  const [timeEstimate, setTimeEstimate] = useState("20");
+  const [areaOfImportance, setAreaOfImportance] = useState("none");
 
-  useEffect(() => {
-    getData("actions-list").then((d) => {
-      if (d !== null) {
-        setData(JSON.parse(d));
-        console.log("Retrieved data:", JSON.parse(d));
-      } else {
-        console.log("no data");
-      }
-    });
-  }, [data]);
+  const setAlert = useSetRecoilState(alertAtom);
+  const setActions = useSetRecoilState(actionsAtom);
 
   const handleAddTodo = () => {
-    if (!text) return;
+    if (!text) {
+      setAlert("Action is required");
+      return;
+    }
+    if (!timeEstimate) {
+      setAlert("Time Estimate is required");
+      return;
+    }
+    if (!areaOfImportance) {
+      setAlert("Area of Importance is required");
+      return;
+    }
 
-    const key = generateKey();
-
-    const newItem = {
-      key: key,
-      todo: text,
-      isCompleted: false,
-    };
-
-    storeData(JSON.stringify([newItem, ...data]), "actions-list");
-    setData([newItem, ...data]);
+    addAction(setAlert, setActions, text, timeEstimate, areaOfImportance);
     setText("");
-  };
-
-  const generateKey = () => {
-    return data.length.toString();
+    setTimeEstimate("");
+    setAreaOfImportance("");
   };
 
   return (
     <StyledActionsListAdd>
-      {/* <TextInput
+      <TextInputComponent
         title={"Action"}
         onChangeText={setText}
         value={text}
-        placeholder="New Action..."
+        placeholder="Add value..."
         keyboardType="default"
         maxLength={30}
       />
-      <TextInput
+      <TextInputComponent
         title={"Time estimate"}
-        onChangeText={setText}
-        value={text}
-        placeholder="New Action..."
+        onChangeText={setTimeEstimate}
+        value={timeEstimate}
+        placeholder="Add value..."
         keyboardType="default"
         maxLength={30}
-      /> */}
+      />
+      <TextInputComponent
+        title={"Area of Importance"}
+        onChangeText={setAreaOfImportance}
+        value={areaOfImportance}
+        placeholder="Add value..."
+        keyboardType="default"
+        maxLength={30}
+      />
       <Button title="Add" onPress={handleAddTodo} />
     </StyledActionsListAdd>
   );
