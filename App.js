@@ -1,10 +1,13 @@
 import { RecoilRoot } from "recoil";
 import Navigator from "./src/utils/Navigator";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 const App = () => {
   return (
     <RecoilRoot>
-      <Navigator />
+      <RootSiblingParent>
+        <Navigator />
+      </RootSiblingParent>
     </RecoilRoot>
   );
 };

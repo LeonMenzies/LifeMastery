@@ -1,7 +1,6 @@
 import { atom } from "recoil";
 
-export const authAtom = atom({
-  key: "auth",
+export const alertAtom = atom({
+  key: "alert",
   default: "",
 });
-

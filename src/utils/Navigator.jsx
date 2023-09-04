@@ -1,23 +1,37 @@
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { useEffect } from "react";
-import { authAtom } from "../recoil/authAtom";
 import { themeAtom } from "../recoil/themeAtom";
-import { useSetRecoilState, useRecoilValue } from "recoil";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { colors } from "../styles/GlobalStyles";
 import { ThemeProvider, Button, createTheme } from "@rneui/themed";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { alertAtom } from "../recoil/alertAtom";
+import Toast from "react-native-root-toast";
 
 import Home from "../pages/Home/Home";
 import ActionsList from "../pages/ActionsList/ActionsList";
 import Quantities from "../pages/Quantities";
 import Settings from "../pages/Settings";
-import { Text } from "react-native";
+import { useEffect } from "react";
 
 const App = () => {
   const Drawer = createDrawerNavigator();
   const theme = useRecoilValue(themeAtom);
+  const [alert, setAlert] = useRecoilState(alertAtom);
+
+  useEffect(() => {
+    if (alert !== "") {
+      let toast = Toast.show(alert, {
+        duration: Toast.durations.LONG,
+      });
+
+      setTimeout(function hideToast() {
+        Toast.hide(toast);
+        setAlert("");
+      }, 2000);
+    }
+  }, [alert]);
 
   const date = new Date().toISOString().split("T")[0];
 
