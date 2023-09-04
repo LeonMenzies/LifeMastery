@@ -1,7 +1,7 @@
 import { TextInput, Text, SafeAreaView } from "react-native";
 import styled from "styled-components/native";
 
-const StyledTextInputComponent = styled.SafeAreaView`
+const StyledTextInput = styled.SafeAreaView`
   background-color: white;
   margin: 10px;
 `;
@@ -13,20 +13,20 @@ const TextInputInnerContainer = styled.View`
   border-radius: 5px;
 `;
 
-const TextInputComponent = ({ title, text, onChangeText, placeholder, maxLength }) => {
+const TextInputComponent = ({ title, value, onChangeText, placeholder, maxLength }) => {
   return (
-    <StyledTextInputComponent>
+    <StyledTextInput>
       <TextInputInnerContainer>
         <Text>{title}</Text>
         <TextInput
           onChangeText={onChangeText}
-          value={text}
+          value={value}
           placeholder={placeholder}
           keyboardType="default"
           maxLength={maxLength}
         />
       </TextInputInnerContainer>
-    </StyledTextInputComponent>
+    </StyledTextInput>
   );
 };
 

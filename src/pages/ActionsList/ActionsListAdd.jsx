@@ -1,16 +1,22 @@
 import "react-native-get-random-values";
 
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, Button, TouchableOpacity, Text } from "react-native";
+import { SafeAreaView, Button, TouchableOpacity, Text, View } from "react-native";
 import styled from "styled-components/native";
 import { addAction } from "../../utils/ActionsHandler";
-import TextInputComponent from "../../components/TextInputComponent";
+import TextInputComponent from "../../components/TextInput";
 import { alertAtom } from "../../recoil/alertAtom";
 import { actionsAtom } from "../../recoil/actionsAtom";
 import { useSetRecoilState } from "recoil";
 
 const StyledActionsListAdd = styled.SafeAreaView`
   background-color: white;
+`;
+
+const AddActionButtonContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 const ActionsListAdd = ({}) => {
@@ -36,9 +42,9 @@ const ActionsListAdd = ({}) => {
     }
 
     addAction(setAlert, setActions, text, timeEstimate, areaOfImportance);
-    setText("");
-    setTimeEstimate("");
-    setAreaOfImportance("");
+    // setText("");
+    // setTimeEstimate("");
+    // setAreaOfImportance("");
   };
 
   return (
@@ -67,7 +73,17 @@ const ActionsListAdd = ({}) => {
         keyboardType="default"
         maxLength={30}
       />
-      <Button title="Add" onPress={handleAddTodo} />
+      <AddActionButtonContainer>
+        <Button title="Add" onPress={handleAddTodo} />
+        <Button
+          title="Clear"
+          onPress={() => {
+            setText("");
+            setTimeEstimate("");
+            setAreaOfImportance("");
+          }}
+        />
+      </AddActionButtonContainer>
     </StyledActionsListAdd>
   );
 };

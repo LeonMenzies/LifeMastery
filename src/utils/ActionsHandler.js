@@ -11,22 +11,6 @@ const ACTION_KEY = "action-list";
 //   dateAdded: Date;
 // }
 
-// export const storeData = async (value, key) => {
-//   try {
-//     await AsyncStorage.setItem(key, value);
-//   } catch (e) {
-//     // saving error
-//   }
-// };
-
-// export const getData = async (key) => {
-//   try {
-//     return await AsyncStorage.getItem(key);
-//   } catch (e) {
-//     // error reading value
-//   }
-// };
-
 export const getAction = async (setAlert, setData, setLoading, key) => {
   try {
     return await AsyncStorage.getItem(ACTION_KEY)
@@ -79,6 +63,10 @@ export const addAction = (setAlert, setData, action, timeEstimate, areaOfImporta
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
       .then((actions) => {
+        if (actions.length > 99) {
+          setAlert("You cannot have more than 99 actions");
+          return;
+        }
         const actionsList = JSON.stringify([newAction, ...actions]);
         AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => {
           setAlert("Successfully added action");
@@ -87,6 +75,28 @@ export const addAction = (setAlert, setData, action, timeEstimate, areaOfImporta
       });
   } catch (e) {
     setAlert("Failed to add action");
+  }
+};
+
+export const deleteAction = (setAlert, setData, key) => {
+  try {
+    AsyncStorage.getItem(ACTION_KEY)
+      .then((actionsRaw) => JSON.parse(actionsRaw))
+      .then((actions) => {
+        const filteredActions = actions.filter((v) => v.key !== key);
+
+        if (filteredActions >= actions) {
+          setAlert("Failed to delete action");
+          return;
+        }
+        const actionsList = JSON.stringify(filteredActions);
+        AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => {
+          setAlert("Successfully deleted action");
+          setData(filteredActions);
+        });
+      });
+  } catch (e) {
+    setAlert("Failed to clear actions");
   }
 };
 

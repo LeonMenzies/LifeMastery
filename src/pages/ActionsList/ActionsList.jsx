@@ -9,11 +9,14 @@ import ActionsListAdd from "./ActionsListAdd";
 import { alertAtom } from "../../recoil/alertAtom";
 import { actionsAtom } from "../../recoil/actionsAtom";
 import { useSetRecoilState, useRecoilState } from "recoil";
+import ActionsListItem from "./ActionsListItem";
 
-const StyledActionsList = styled.SafeAreaView`
-  background-color: white;
+const StyledActionsList = styled.SafeAreaView``;
+
+const ActionsListItems = styled.View`
   display: flex;
   flex-direction: column;
+  height: 70%;
 `;
 
 const ActionsList = () => {
@@ -25,35 +28,22 @@ const ActionsList = () => {
     getActions(setAlert, setData, setLoading);
   }, []);
 
-  const renderItem = ({ item, drag, isActive }) => {
-    console.log(item);
-    return (
-      <ScaleDecorator key={item.key}>
-        <TouchableOpacity
-          onLongPress={drag}
-          disabled={isActive}
-          style={{ backgroundColor: isActive ? "red" : item.backgroundColor }}
-        >
-          <Text>{item.action}</Text>
-        </TouchableOpacity>
-      </ScaleDecorator>
-    );
-  };
-
   return (
     <StyledActionsList>
       <ActionsListAdd />
 
-      {data.length > 0 ? (
-        <DraggableFlatList
-          data={data}
-          onDragEnd={({ data }) => setData(data)}
-          keyExtractor={(item) => item.key}
-          renderItem={renderItem}
-        />
-      ) : (
-        <Text>No Actions in your list</Text>
-      )}
+      <ActionsListItems>
+        {data.length > 0 ? (
+          <DraggableFlatList
+            data={data}
+            onDragEnd={({ data }) => setData(data)}
+            keyExtractor={(item) => item.key}
+            renderItem={ActionsListItem}
+          />
+        ) : (
+          <Text>No Actions in your list</Text>
+        )}
+      </ActionsListItems>
       {loading && <ActivityIndicator size="large" color="#000000" />}
     </StyledActionsList>
   );

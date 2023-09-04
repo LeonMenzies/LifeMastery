@@ -27,7 +27,7 @@ const Home = () => {
       <HomeHeader />
       {data.length > 0 ? (
         data.map((v) => {
-          return <Text>{v.action}</Text>;
+          return <Text key={v.key}>{v.action}</Text>;
         })
       ) : (
         <Text>No Actions in your list</Text>

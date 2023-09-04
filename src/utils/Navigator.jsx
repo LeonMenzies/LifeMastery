@@ -11,7 +11,7 @@ import Toast from "react-native-root-toast";
 
 import Home from "../pages/Home/Home";
 import ActionsList from "../pages/ActionsList/ActionsList";
-import Quantities from "../pages/Quantities";
+import Quantities from "../pages/AreaOfImportance.jsx/Quantities";
 import Settings from "../pages/Settings";
 import { useEffect } from "react";
 
