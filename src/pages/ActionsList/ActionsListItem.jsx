@@ -1,6 +1,6 @@
 import { TouchableOpacity, Text, View, Button } from "react-native";
 import styled from "styled-components/native";
-import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
+import { ScaleDecorator } from "react-native-draggable-flatlist";
 import { deleteAction } from "../../utils/ActionsHandler";
 import { alertAtom } from "../../recoil/alertAtom";
 import { useSetRecoilState } from "recoil";
@@ -11,7 +11,6 @@ const StyledActionsListItem = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
   border-bottom: 1px;
   margin: 2px 30px;
 `;

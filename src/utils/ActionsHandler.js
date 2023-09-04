@@ -7,6 +7,7 @@ const ACTION_KEY = "action-list";
 //   action: String;
 //   isCompleted: Boolean;
 //   timeEstimate: String;
+//   priority: number;
 //   areaOfImportance: String;
 //   dateAdded: Date;
 // }
@@ -48,13 +49,14 @@ export const getActions = (setAlert, setData, setLoading) => {
   }
 };
 
-export const addAction = (setAlert, setData, action, timeEstimate, areaOfImportance) => {
+export const addAction = (setAlert, setData, action, timeEstimate, priority, areaOfImportance) => {
   const key = uuidv4();
   const newAction = {
     key: key,
     action: action,
     isCompleted: false,
     timeEstimate: timeEstimate,
+    priority: priority,
     areaOfImportance: areaOfImportance,
     dateAdded: new Date().toISOString().split("T")[0],
   };
