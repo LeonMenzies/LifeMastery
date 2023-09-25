@@ -4,10 +4,12 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { themeAtom } from "../recoil/themeAtom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { colors } from "../styles/GlobalStyles";
-import { ThemeProvider, Button, createTheme } from "@rneui/themed";
+import { ThemeProvider, createTheme } from "@rneui/themed";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { alertAtom } from "../recoil/alertAtom";
+import { actionsShowAddEditAtom } from "../recoil/actionsShowAddEditAtom";
 import Toast from "react-native-root-toast";
+import { Button } from "react-native";
 
 import Home from "../pages/Home/Home";
 import ActionsList from "../pages/ActionsList/ActionsList";
@@ -19,6 +21,7 @@ const App = () => {
   const Drawer = createDrawerNavigator();
   const theme = useRecoilValue(themeAtom);
   const [alert, setAlert] = useRecoilState(alertAtom);
+  const [actionsShowAddEdit, setActionsShowAddEdit] = useRecoilState(actionsShowAddEditAtom);
 
   useEffect(() => {
     if (alert !== "") {
@@ -52,13 +55,19 @@ const App = () => {
           }}
         >
           <Drawer.Screen
-            name={`Daily Planner. Date: ${date}`}
-            options={{ drawerLabel: "Home" }}
+            name={"Home"}
+            options={{
+              drawerLabel: "Home",
+              title: `Daily Planner. Date: ${date}`,
+            }}
             component={Home}
           />
           <Drawer.Screen
-            name="ActionsList"
-            options={{ drawerLabel: "Actions List" }}
+            name="Actions List"
+            options={{
+              drawerLabel: "Actions List",
+              headerRight: () => <Button title="Add" onPress={() => setActionsShowAddEdit(true)} />,
+            }}
             component={ActionsList}
           />
           <Drawer.Screen

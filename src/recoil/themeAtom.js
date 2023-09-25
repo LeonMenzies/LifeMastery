@@ -5,7 +5,7 @@ export const themeAtom = atom({
   default: {
     background: "#FFFFFF",
     primary: "#E1E1E1",
-    secondary: "#BB86FC",
+    secondary: "#000000",
     primaryText: "#E1E1E1",
     secondaryText: "#2E2E2E",
   },

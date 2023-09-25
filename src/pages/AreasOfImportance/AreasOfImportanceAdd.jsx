@@ -11,6 +11,7 @@ import { useSetRecoilState } from "recoil";
 
 const StyledAreasOfImportanceAdd = styled.SafeAreaView`
   background-color: white;
+  margin: 10px;
 `;
 
 const AddAreasOfImportanceButtonContainer = styled.View`

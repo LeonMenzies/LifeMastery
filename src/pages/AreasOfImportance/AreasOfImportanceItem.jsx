@@ -29,7 +29,7 @@ const AreasOfImportanceItem = ({ item, drag, isActive }) => {
       >
         <StyledAreasOfImportanceItem>
           <View>
-            <Text>AOL: {item.AOI}</Text>
+            <Text>AOI: {item.AOI}</Text>
           </View>
 
           <Button

@@ -1,16 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
+import { actionItemT } from "../types/Types";
 
 const ACTION_KEY = "action-list";
-// interface actionItem {
-//   key: String;
-//   action: String;
-//   isCompleted: Boolean;
-//   timeEstimate: String;
-//   priority: number;
-//   areaOfImportance: String;
-//   dateAdded: Date;
-// }
 
 export const getAction = async (setAlert, setData, setLoading, key) => {
   try {
@@ -18,7 +10,7 @@ export const getAction = async (setAlert, setData, setLoading, key) => {
       .then((actionsRaw) => JSON.parse(actionsRaw))
       .then((actions) => {
         if (actions !== null) {
-          actions.array.forEach((element) => {
+          actions.array.forEach((element: actionItemT) => {
             if (element.key === key) {
               setData(element);
               setLoading(false);
@@ -32,6 +24,35 @@ export const getAction = async (setAlert, setData, setLoading, key) => {
   } catch (e) {
     setLoading(false);
     setAlert("Failed to get action");
+  }
+};
+
+export const completeAction = async (setAlert, setData, setLoading, key) => {
+  try {
+    return await AsyncStorage.getItem(ACTION_KEY)
+      .then((actionsRaw) => JSON.parse(actionsRaw))
+      .then((actions) => {
+        if (actions !== null) {
+          const tmp = [...actions];
+          tmp.forEach((element) => {
+            if (element.key === key) {
+              element.isCompleted = !element.isCompleted;
+            }
+          });
+          const actionsList = JSON.stringify(tmp);
+          AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => {
+            setAlert("Successfully completed action");
+            setData(tmp);
+          });
+        }
+        setAlert("Failed to get action");
+        setLoading(false);
+      });
+  } catch (e) {
+    console.log(e);
+
+    setLoading(false);
+    setAlert("Failed to complete action");
   }
 };
 

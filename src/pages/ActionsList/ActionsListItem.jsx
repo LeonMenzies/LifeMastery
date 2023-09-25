@@ -5,6 +5,7 @@ import { deleteAction } from "../../utils/ActionsHandler";
 import { alertAtom } from "../../recoil/alertAtom";
 import { useSetRecoilState } from "recoil";
 import { actionsAtom } from "../../recoil/actionsAtom";
+import { AntDesign } from "@expo/vector-icons";
 
 const StyledActionsListItem = styled.View`
   display: flex;
@@ -31,6 +32,15 @@ const ActionsListItem = ({ item, drag, isActive }) => {
             <Text>Actions: {item.action}</Text>
             <Text>AOL: {item.areaOfImportance}</Text>
             <Text>Date Added: {item.dateAdded}</Text>
+
+            <Text>
+              Complete:
+              {item.isCompleted ? (
+                <AntDesign name="check" size={20} color="black" />
+              ) : (
+                <AntDesign name="close" size={20} color="black" />
+              )}
+            </Text>
           </View>
 
           <Button title="Delete" onPress={() => deleteAction(setAlert, setData, item.key)} />
