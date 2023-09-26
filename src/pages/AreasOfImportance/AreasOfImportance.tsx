@@ -1,17 +1,14 @@
 import "react-native-get-random-values";
-
-import React, { useEffect, useState } from "react";
-import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
+import React, { useEffect } from "react";
+import { Text, SafeAreaView } from "react-native";
 import styled from "styled-components/native";
-import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
+import DraggableFlatList from "react-native-draggable-flatlist";
 import { getAreasOfImportance } from "../../utils/AreasOfImportanceHandler";
 import AreasOfImportanceAdd from "./AreasOfImportanceAdd";
 import { alertAtom } from "../../recoil/alertAtom";
 import { areasOfImportanceAtom } from "../../recoil/areasOfImportanceAtom";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import AreasOfImportanceItem from "./AreasOfImportanceItem";
-
-const StyledAreasOfImportanceList = styled.SafeAreaView``;
 
 const AOIListItems = styled.View`
   display: flex;
@@ -28,7 +25,7 @@ const AreasOfImportance = () => {
   }, []);
 
   return (
-    <StyledAreasOfImportanceList>
+    <SafeAreaView>
       <AreasOfImportanceAdd />
 
       <AOIListItems>
@@ -43,8 +40,7 @@ const AreasOfImportance = () => {
           <Text>No AOL's in your list</Text>
         )}
       </AOIListItems>
-      {loading && <ActivityIndicator size="large" color="#000000" />}
-    </StyledAreasOfImportanceList>
+    </SafeAreaView>
   );
 };
 

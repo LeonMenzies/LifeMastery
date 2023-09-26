@@ -1,20 +1,6 @@
 import DropDownPicker from "react-native-dropdown-picker";
-import styled from "styled-components/native";
 import { StyleSheet, Text, View } from "react-native";
-import { useEffect, useState } from "react";
-
-const StyledSelect = styled.SafeAreaView`
-  background-color: white;
-  margin: 10px;
-  z-index: 5;
-`;
-
-const SelectInnerContainer = styled.View`
-  padding: 5px;
-  border: solid 1px black;
-  width: 100%;
-  border-radius: 5px;
-`;
+import { useState } from "react";
 
 const Select = ({ title, options, value, setValue }) => {
   const [open, setOpen] = useState(false);

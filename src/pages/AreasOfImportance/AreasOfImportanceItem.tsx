@@ -1,6 +1,6 @@
 import { TouchableOpacity, Text, View, Button } from "react-native";
 import styled from "styled-components/native";
-import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
+import { ScaleDecorator } from "react-native-draggable-flatlist";
 import { deleteAreaOfImportance } from "../../utils/AreasOfImportanceHandler";
 import { alertAtom } from "../../recoil/alertAtom";
 import { useSetRecoilState } from "recoil";
