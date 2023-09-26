@@ -17,7 +17,7 @@ const styling = (color: string, completed: boolean) =>
     button: {
       borderRadius: 100,
       backgroundColor: completed ? color : "White",
-      borderColor: "black",
+      borderColor: "grey",
       borderWidth: 1,
       width: 20,
       height: 20,

@@ -14,13 +14,12 @@ import { AreaOfImportanceItemT } from "../../types/Types";
 const Home = () => {
   const [data, setData] = useRecoilState(actionsAtom);
   const setAlert = useSetRecoilState(alertAtom);
-  const [loading, setLoading] = useState(true);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
 
   useEffect(() => {
-    getActions(setAlert, setData, setLoading);
-    getAreasOfImportance(setAlert, setAreasOfImportance, setLoading);
-  }, [data]);
+    getActions(setAlert, setData);
+    getAreasOfImportance(setAlert, setAreasOfImportance);
+  }, []);
 
   return (
     <SafeAreaView>
@@ -29,8 +28,6 @@ const Home = () => {
       {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
         return <HomeActionSection key={aoi.key} aoi={aoi} data={data} />;
       })}
-
-      {loading && <ActivityIndicator size="large" color="#000000" />}
     </SafeAreaView>
   );
 };

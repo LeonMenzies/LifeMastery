@@ -20,18 +20,16 @@ const ActionsListItems = styled.View`
 
 const ActionsList = () => {
   const [data, setData] = useRecoilState(actionsAtom);
-  const [loading, setLoading] = useState(true);
   const setAlert = useSetRecoilState(alertAtom);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [actionsShowAddEdit, setActionsShowAddEdit] = useRecoilState(actionsShowAddEditAtom);
+  const [modalVisible, setModalVisible] = useRecoilState(actionsShowAddEditAtom);
 
   useEffect(() => {
-    getActions(setAlert, setData, setLoading);
+    getActions(setAlert, setData);
   }, []);
 
   return (
     <SafeAreaView>
-      <ActionAddEdit modalVisible={actionsShowAddEdit} setModalVisible={setActionsShowAddEdit} />
+      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
 
       <ActionsListItems>
         {data.length > 0 ? (
@@ -45,7 +43,6 @@ const ActionsList = () => {
           <Text>No Actions in your list</Text>
         )}
       </ActionsListItems>
-      {loading && <ActivityIndicator size="large" color="#000000" />}
     </SafeAreaView>
   );
 };

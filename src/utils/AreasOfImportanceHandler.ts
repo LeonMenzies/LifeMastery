@@ -5,16 +5,14 @@ import { AreaOfImportanceItemT } from "../types/Types";
 
 const AOI_KEY = "aol-list";
 
-export const getAreasOfImportance = (setAlert, setData, setLoading) => {
+export const getAreasOfImportance = (setAlert, setData) => {
   try {
     AsyncStorage.getItem(AOI_KEY)
       .then((areaOfImportanceRaw) => JSON.parse(areaOfImportanceRaw))
       .then((areaOfImportance) => {
         if (areaOfImportance !== null) setData(areaOfImportance);
-        setLoading(false);
       });
   } catch (e) {
-    setLoading(false);
     setAlert("Failed to get AOI");
   }
 };

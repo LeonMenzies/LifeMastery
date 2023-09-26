@@ -21,11 +21,10 @@ const AOIListItems = styled.View`
 
 const AreasOfImportance = () => {
   const [data, setData] = useRecoilState(areasOfImportanceAtom);
-  const [loading, setLoading] = useState(true);
   const setAlert = useSetRecoilState(alertAtom);
 
   useEffect(() => {
-    getAreasOfImportance(setAlert, setData, setLoading);
+    getAreasOfImportance(setAlert, setData);
   }, []);
 
   return (

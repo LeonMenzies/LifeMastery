@@ -25,23 +25,17 @@ const TextInputComponent = ({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "powderblue",
+    width: 300,
+    padding: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 15,
   },
   input: {
-    margin: 10,
-    padding: 5,
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 6,
-    fontSize: 22,
-    textAlign: "center",
+    paddingTop: 5,
+    paddingBottom: 5,
+    borderBottomColor: "black",
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
 

@@ -17,15 +17,13 @@ type HomeActionItemT = {
 };
 
 const HomeActionItem = ({ action, color }: HomeActionItemT) => {
-  const [sortedData, setSortedData] = useState([]);
   const setAlert = useSetRecoilState(alertAtom);
-  const [loading, setLoading] = useState(true);
   const setData = useSetRecoilState(actionsAtom);
 
   return (
     <SafeAreaView style={styles.container}>
       <CheckBoxInput
-        onPress={() => completeAction(setAlert, setData, setLoading, action.key)}
+        onPress={() => completeAction(setAlert, setData, action.key)}
         completed={action.isCompleted}
         color={color}
       />

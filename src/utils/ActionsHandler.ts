@@ -4,7 +4,7 @@ import { actionItemT } from "../types/Types";
 
 const ACTION_KEY = "action-list";
 
-export const getAction = async (setAlert, setData, setLoading, key) => {
+export const getAction = async (setAlert, setData, AOL_KEY, key) => {
   try {
     return await AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
@@ -13,21 +13,21 @@ export const getAction = async (setAlert, setData, setLoading, key) => {
           actions.array.forEach((element: actionItemT) => {
             if (element.key === key) {
               setData(element);
-              setLoading(false);
+              AOL_KEY(false);
               return;
             }
           });
         }
         setAlert("Failed to get action");
-        setLoading(false);
+        AOL_KEY(false);
       });
   } catch (e) {
-    setLoading(false);
+    AOL_KEY(false);
     setAlert("Failed to get action");
   }
 };
 
-export const completeAction = async (setAlert, setData, setLoading, key) => {
+export const completeAction = async (setAlert, setData, key) => {
   try {
     return await AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
@@ -46,26 +46,20 @@ export const completeAction = async (setAlert, setData, setLoading, key) => {
           });
         }
         setAlert("Failed to get action");
-        setLoading(false);
       });
   } catch (e) {
-    console.log(e);
-
-    setLoading(false);
     setAlert("Failed to complete action");
   }
 };
 
-export const getActions = (setAlert, setData, setLoading) => {
+export const getActions = (setAlert, setData) => {
   try {
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
       .then((actions) => {
         if (actions !== null) setData(actions);
-        setLoading(false);
       });
   } catch (e) {
-    setLoading(false);
     setAlert("Failed to get actions");
   }
 };

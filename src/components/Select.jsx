@@ -1,6 +1,6 @@
 import DropDownPicker from "react-native-dropdown-picker";
 import styled from "styled-components/native";
-import { TextInput, Text, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useEffect, useState } from "react";
 
 const StyledSelect = styled.SafeAreaView`
@@ -21,19 +21,36 @@ const Select = ({ title, options, value, setValue }) => {
   const items = options.map((v) => ({ label: v, value: v }));
 
   return (
-    <StyledSelect>
-      <SelectInnerContainer>
-        <Text>{title}</Text>
-        <DropDownPicker
-          open={open}
-          value={value}
-          items={items}
-          setOpen={setOpen}
-          setValue={setValue}
-          zIndex={999990000}
-        />
-      </SelectInnerContainer>
-    </StyledSelect>
+    <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
+      <DropDownPicker
+        style={styles.input}
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: 300,
+    padding: 10,
+  },
+  title: {
+    fontSize: 15,
+  },
+  input: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    borderRadius: 0,
+    borderWidth: 0,
+    borderBottomColor: "black",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+});
+
 export default Select;

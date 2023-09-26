@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  Modal,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Button,
-  TouchableOpacity,
-} from "react-native";
+import { Modal, StyleSheet, View, Button } from "react-native";
 import "react-native-get-random-values";
-
 import { addAction } from "../utils/ActionsHandler";
 import TextInputComponent from "../components/TextInput";
 import { alertAtom } from "../recoil/alertAtom";
@@ -35,10 +25,9 @@ const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
   const setActions = useSetRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
 
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getAreasOfImportance(setAlert, setAreasOfImportance, setLoading);
+    getAreasOfImportance(setAlert, setAreasOfImportance);
   }, []);
 
   const handleAddTodo = () => {
@@ -78,7 +67,7 @@ const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
 
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}
@@ -105,7 +94,7 @@ const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
           <TextInputComponent
             title={"Time estimate"}
             onChangeText={setTimeEstimate}
-            value={timeEstimate}
+            value={timeEstimate.toString()}
             placeholder="Add value..."
             keyboardType="numeric"
             maxLength={30}
@@ -113,7 +102,7 @@ const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
           <TextInputComponent
             title={"Priority"}
             onChangeText={setPriority}
-            value={priority}
+            value={priority.toString()}
             placeholder="Add value..."
             keyboardType="numeric"
             maxLength={30}
@@ -141,6 +130,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
     margin: 20,
@@ -154,26 +144,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
   },
 });
 
