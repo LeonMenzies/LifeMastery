@@ -1,4 +1,4 @@
-export const GenerateRandomColor = () => {
+export const generateRandomColor = () => {
   return (
     "#" +
     Math.floor(Math.random() * 16777215)
@@ -6,4 +6,9 @@ export const GenerateRandomColor = () => {
       .padStart(6, "0")
       .toUpperCase()
   );
+};
+
+export const getDay = (date: Date) => {
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  return days[date.getDay()];
 };

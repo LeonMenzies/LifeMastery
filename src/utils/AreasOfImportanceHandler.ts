@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
-import { GenerateRandomColor } from "./Helpers";
+import { generateRandomColor } from "./Helpers";
 import { AreaOfImportanceItemT } from "../types/Types";
 
 const AOI_KEY = "aol-list";
@@ -23,7 +23,7 @@ export const addAreaOfImportance = (setAlert, setData, AOI) => {
   const newAreaOfImportance = {
     key: key,
     AOI: AOI,
-    Color: GenerateRandomColor(),
+    Color: generateRandomColor(),
   };
   try {
     AsyncStorage.getItem(AOI_KEY)

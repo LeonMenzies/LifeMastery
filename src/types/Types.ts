@@ -13,3 +13,10 @@ export type AreaOfImportanceItemT = {
   AOI: string;
   Color: string;
 };
+
+export type PlanT = {
+  key: string;
+  date: Date;
+  focus: string;
+  actionItems: actionItemT[];
+};

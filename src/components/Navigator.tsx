@@ -13,6 +13,7 @@ import Home from "../pages/Home/Home";
 import ActionsList from "../pages/ActionsList/ActionsList";
 import Quantities from "../pages/AreasOfImportance/AreasOfImportance";
 import Settings from "../pages/Settings/Settings";
+import Plan from "../pages/Plan/Plan";
 
 const App = () => {
   const Drawer = createDrawerNavigator();
@@ -57,6 +58,13 @@ const App = () => {
             title: `Daily Planner. Date: ${date}`,
           }}
           component={Home}
+        />
+        <Drawer.Screen
+          name={"Plan"}
+          options={{
+            drawerLabel: "Plan",
+          }}
+          component={Plan}
         />
         <Drawer.Screen
           name="Actions List"

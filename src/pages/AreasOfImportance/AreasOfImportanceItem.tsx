@@ -5,6 +5,7 @@ import { deleteAreaOfImportance } from "../../utils/AreasOfImportanceHandler";
 import { alertAtom } from "../../recoil/alertAtom";
 import { useSetRecoilState } from "recoil";
 import { areasOfImportanceAtom } from "../../recoil/areasOfImportanceAtom";
+import { AreaOfImportanceItemT } from "../../types/Types";
 
 const StyledAreasOfImportanceItem = styled.View`
   display: flex;
@@ -16,7 +17,13 @@ const StyledAreasOfImportanceItem = styled.View`
   margin: 2px 30px;
 `;
 
-const AreasOfImportanceItem = ({ item, drag, isActive }) => {
+type AreasOfImportanceItemT = {
+  item: AreaOfImportanceItemT;
+  drag: any;
+  isActive: boolean;
+};
+
+const AreasOfImportanceItem = ({ item, drag, isActive }: AreasOfImportanceItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setData = useSetRecoilState(areasOfImportanceAtom);
 
@@ -25,7 +32,7 @@ const AreasOfImportanceItem = ({ item, drag, isActive }) => {
       <TouchableOpacity
         onLongPress={drag}
         disabled={isActive}
-        style={{ backgroundColor: isActive ? "red" : item.backgroundColor }}
+        style={{ backgroundColor: isActive ? item.Color : "white" }}
       >
         <StyledAreasOfImportanceItem>
           <View>
