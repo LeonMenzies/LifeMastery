@@ -27,7 +27,7 @@ export const getAction = async (setAlert, setData, AOL_KEY, key) => {
   }
 };
 
-export const completeAction = async (setAlert, setData, key) => {
+export const completeAction = async (setAlert: Function, setData: Function, key: string) => {
   try {
     return await AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
@@ -41,11 +41,9 @@ export const completeAction = async (setAlert, setData, key) => {
           });
           const actionsList = JSON.stringify(tmp);
           AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => {
-            setAlert("Successfully completed action");
             setData(tmp);
           });
         }
-        setAlert("Failed to get action");
       });
   } catch (e) {
     setAlert("Failed to complete action");

@@ -16,7 +16,7 @@ const styling = (color: string, completed: boolean) =>
   StyleSheet.create({
     button: {
       borderRadius: 100,
-      backgroundColor: completed ? color : "White",
+      backgroundColor: completed ? color : "white",
       borderColor: "grey",
       borderWidth: 1,
       width: 20,

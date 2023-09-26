@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { actionItemT } from "../../types/Types";
 import HomeActionItem from "./HomeActionItem";
 import { AreaOfImportanceItemT } from "../../types/Types";
@@ -13,9 +13,7 @@ const HomeActionSection = ({ aoi, data }: HomeActionSectionT) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{aoi.AOI}</Text>
-      </View>
+      <Text style={styles.title}>{aoi.AOI}</Text>
 
       {[...data]
         .sort((a: actionItemT, b: actionItemT) => a.priority - b.priority)
@@ -35,7 +33,6 @@ const styling = (color: string) =>
     container: {
       margin: 5,
     },
-    header: {},
     title: {
       fontSize: 20,
       fontWeight: "600",
