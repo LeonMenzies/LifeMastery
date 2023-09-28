@@ -1,6 +1,17 @@
-import { TextInput, Text, StyleSheet, View } from "react-native";
+import { FC } from "react";
+import { Text, StyleSheet, View } from "react-native";
+import { TextInput as Input } from "react-native";
 
-const TextInputComponent = ({
+type TextInputT = {
+  title: string;
+  value: string;
+  onChangeText: any;
+  placeholder: string;
+  maxLength: number;
+  keyboardType: any;
+};
+
+const TextInput: FC<TextInputT> = ({
   title,
   value,
   onChangeText,
@@ -11,7 +22,7 @@ const TextInputComponent = ({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      <TextInput
+      <Input
         style={styles.input}
         onChangeText={onChangeText}
         value={value}
@@ -32,6 +43,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   input: {
+    height: 30,
     paddingTop: 5,
     paddingBottom: 5,
     borderBottomColor: "black",
@@ -39,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TextInputComponent;
+export default TextInput;

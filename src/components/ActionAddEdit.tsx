@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, StyleSheet, View, Button } from "react-native";
 import "react-native-get-random-values";
 import { addAction } from "../utils/ActionsHandler";
-import TextInputComponent from "../components/TextInput";
+import TextInput from "./TextInput";
 import { alertAtom } from "../recoil/alertAtom";
 import { actionsAtom } from "../recoil/actionsAtom";
 import { areasOfImportanceAtom } from "../recoil/areasOfImportanceAtom";
@@ -19,12 +19,11 @@ const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
   const [text, setText] = useState("test action");
   const [timeEstimate, setTimeEstimate] = useState(20);
   const [priority, setPriority] = useState(1);
-  const [areaOfImportance, setAreaOfImportance] = useState("none");
+  const [areaOfImportance, setAreaOfImportance] = useState("");
 
   const setAlert = useSetRecoilState(alertAtom);
   const setActions = useSetRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
-
 
   useEffect(() => {
     getAreasOfImportance(setAlert, setAreasOfImportance);
@@ -57,11 +56,19 @@ const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
 
   const createOptions = () => {
     if (!areasOfImportance || areasOfImportance.length === 0) {
-      return ["No AOI found, please add from the AOI tab"];
+      return [
+        {
+          label: "No AOI found, please add from the AOI tab",
+          value: "",
+        },
+      ];
     }
 
     return areasOfImportance.map((item) => {
-      return item.AOI;
+      return {
+        label: item.AOI,
+        value: item.AOI,
+      };
     });
   };
 
@@ -81,9 +88,9 @@ const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
             title={"Area of Importance"}
             options={createOptions()}
             value={areaOfImportance}
-            setValue={setAreaOfImportance}
+            onChange={setAreaOfImportance}
           />
-          <TextInputComponent
+          <TextInput
             title={"Action"}
             onChangeText={setText}
             value={text}
@@ -91,7 +98,7 @@ const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
             keyboardType="default"
             maxLength={30}
           />
-          <TextInputComponent
+          <TextInput
             title={"Time estimate"}
             onChangeText={setTimeEstimate}
             value={timeEstimate.toString()}
@@ -99,7 +106,7 @@ const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
             keyboardType="numeric"
             maxLength={30}
           />
-          <TextInputComponent
+          <TextInput
             title={"Priority"}
             onChangeText={setPriority}
             value={priority.toString()}

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { SafeAreaView, Button } from "react-native";
 import styled from "styled-components/native";
 import { addAreaOfImportance } from "../../utils/AreasOfImportanceHandler";
-import TextInputComponent from "../../components/TextInput";
+import TextInput from "../../components/TextInput";
 import { alertAtom } from "../../recoil/alertAtom";
 import { areasOfImportanceAtom } from "../../recoil/areasOfImportanceAtom";
 import { useSetRecoilState } from "recoil";
@@ -32,7 +32,7 @@ const AreasOfImportanceAdd = ({}) => {
 
   return (
     <SafeAreaView>
-      <TextInputComponent
+      <TextInput
         title={"Area of Importance"}
         onChangeText={setAreaOfImportance}
         value={areaOfImportance}
