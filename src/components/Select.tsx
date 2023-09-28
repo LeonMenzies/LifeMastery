@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     padding: 10,
     zIndex: 999,
   },
-  dropDown: {
+  dropDown: { 
     zIndex: 2,
   },
 });
