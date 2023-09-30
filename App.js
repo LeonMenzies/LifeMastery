@@ -1,6 +1,7 @@
 import { RecoilRoot } from "recoil";
-import Navigator from "./src/components/Navigator";
 import { RootSiblingParent } from "react-native-root-siblings";
+
+import Navigator from "~components/Navigator";
 
 const App = () => {
   return (

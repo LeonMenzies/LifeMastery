@@ -1,6 +1,6 @@
+import Icon from "react-native-vector-icons/AntDesign";
 import { FC, useState, ReactElement } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, FlatList } from "react-native";
-import Icon from "react-native-vector-icons/AntDesign";
 
 type PlanT = {
   title: string;
@@ -12,7 +12,7 @@ type PlanT = {
   }[];
 };
 
-const Dropdown: FC<PlanT> = ({ title, value, onChange, options }) => {
+export const Select: FC<PlanT> = ({ title, value, onChange, options }) => {
   const [visible, setVisible] = useState(false);
 
   const toggleDropdown = () => {
@@ -81,9 +81,7 @@ const styles = StyleSheet.create({
     padding: 10,
     zIndex: 999,
   },
-  dropDown: { 
+  dropDown: {
     zIndex: 2,
   },
 });
-
-export default Dropdown;

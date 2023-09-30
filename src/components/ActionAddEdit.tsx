@@ -1,21 +1,22 @@
+import "react-native-get-random-values";
 import React, { useEffect, useState } from "react";
 import { Modal, StyleSheet, View, Button } from "react-native";
-import "react-native-get-random-values";
-import { addAction } from "../utils/ActionsHandler";
-import TextInput from "./TextInput";
-import { alertAtom } from "../recoil/alertAtom";
-import { actionsAtom } from "../recoil/actionsAtom";
-import { areasOfImportanceAtom } from "../recoil/areasOfImportanceAtom";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import Select from "../components/Select";
-import { getAreasOfImportance } from "../utils/AreasOfImportanceHandler";
+
+import { Select } from "~components/Select";
+import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
+import { addAction } from "~utils/ActionsHandler";
+import { TextInput } from "~components/TextInput";
+import { alertAtom } from "~recoil/alertAtom";
+import { actionsAtom } from "~recoil/actionsAtom";
+import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 
 type ActionAddEditT = {
   modalVisible: any;
   setModalVisible: any;
 };
 
-const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
+export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
   const [text, setText] = useState("test action");
   const [timeEstimate, setTimeEstimate] = useState(20);
   const [priority, setPriority] = useState(1);

@@ -11,7 +11,7 @@ type TextInputT = {
   keyboardType: any;
 };
 
-const TextInput: FC<TextInputT> = ({
+export const TextInput: FC<TextInputT> = ({
   title,
   value,
   onChangeText,
@@ -50,5 +50,3 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
-
-export default TextInput;

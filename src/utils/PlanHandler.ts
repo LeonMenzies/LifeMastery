@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { v4 as uuidv4 } from "uuid";
-import { generateRandomColor } from "./Helpers";
-import { PlanT } from "../types/Types";
+
+import { PlanT } from "~types/Types";
 
 const TODAY_PLAN = "today-plan";
 const TOMORROW_PLAN = "tomorrow-plan";

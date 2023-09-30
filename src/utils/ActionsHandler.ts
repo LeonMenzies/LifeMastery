@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
-import { actionItemT } from "../types/Types";
+
+import { actionItemT } from "~types/Types";
 
 const ACTION_KEY = "action-list";
 

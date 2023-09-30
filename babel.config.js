@@ -5,18 +5,21 @@ module.exports = function (api) {
     plugins: [
       "react-native-reanimated/plugin",
       "module:react-native-dotenv",
-      "module-resolver",
-      {
-        alias: {
-          assets: "./src/assets",
-          components: "./src/components",
-          pages: "./src/pages",
-          recoil: "./src/recoil",
-          styles: "./src/styles",
-          types: "./src/types",
-          utils: "./src/utils",
+      [
+        "module-resolver",
+        {
+          root: ["./src"],
+          alias: {
+            "~assets": "./src/assets",
+            "~components": "./src/components",
+            "~pages": "./src/pages",
+            "~recoil": "./src/recoil",
+            "~styles": "./src/styles",
+            "~types": "./src/types",
+            "~utils": "./src/utils",
+          },
         },
-      },
+      ],
     ],
   };
 };

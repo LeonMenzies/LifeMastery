@@ -1,22 +1,18 @@
-import { View, Text, StyleSheet, Button, SafeAreaView } from "react-native";
-import styled from "styled-components/native";
-import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
-import { deleteAreaOfImportance } from "../../utils/AreasOfImportanceHandler";
-import { alertAtom } from "../../recoil/alertAtom";
+import { Text, StyleSheet, SafeAreaView } from "react-native";
 import { useSetRecoilState } from "recoil";
-import { areasOfImportanceAtom } from "../../recoil/areasOfImportanceAtom";
-import { useState, useEffect } from "react";
-import { completeAction } from "../../utils/ActionsHandler";
-import { actionsAtom } from "../../recoil/actionsAtom";
-import CheckBoxInput from "../../components/CheckBoxInput";
-import { actionItemT } from "../../types/Types";
+
+import { alertAtom } from "~recoil/alertAtom";
+import { completeAction } from "~utils/ActionsHandler";
+import { actionsAtom } from "~recoil/actionsAtom";
+import { CheckBoxInput } from "~components/CheckBoxInput";
+import { actionItemT } from "~types/Types";
 
 type HomeActionItemT = {
   action: actionItemT;
   color: string;
 };
 
-const HomeActionItem = ({ action, color }: HomeActionItemT) => {
+export const HomeActionItem = ({ action, color }: HomeActionItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setData = useSetRecoilState(actionsAtom);
 
@@ -41,5 +37,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-export default HomeActionItem;

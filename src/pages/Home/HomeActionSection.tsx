@@ -1,14 +1,15 @@
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
-import { actionItemT } from "../../types/Types";
-import HomeActionItem from "./HomeActionItem";
-import { AreaOfImportanceItemT } from "../../types/Types";
+
+import { actionItemT } from "~types/Types";
+import { HomeActionItem } from "~pages/Home/HomeActionItem";
+import { AreaOfImportanceItemT } from "~types/Types";
 
 type HomeActionSectionT = {
   aoi: AreaOfImportanceItemT;
   data: actionItemT[];
 };
 
-const HomeActionSection = ({ aoi, data }: HomeActionSectionT) => {
+export const HomeActionSection = ({ aoi, data }: HomeActionSectionT) => {
   const styles = styling(aoi.Color);
 
   return (
@@ -44,5 +45,3 @@ const styling = (color: string) =>
       marginTop: 10,
     },
   });
-
-export default HomeActionSection;

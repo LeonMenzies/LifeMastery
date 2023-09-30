@@ -1,5 +1,6 @@
 import { atom } from "recoil";
-import { actionItemT } from "../types/Types";
+
+import { actionItemT } from "~types/Types";
 
 export const actionsAtom = atom({
   key: "actions",

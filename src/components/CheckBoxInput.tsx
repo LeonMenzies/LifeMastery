@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, StyleSheet, View, GestureResponderEvent } from "react-native";
+import { TouchableOpacity, StyleSheet, GestureResponderEvent } from "react-native";
 
 type CheckBoxInputT = {
   onPress: (event: GestureResponderEvent) => void;
@@ -6,7 +6,7 @@ type CheckBoxInputT = {
   color: string;
 };
 
-const CheckBoxInput = ({ onPress, color, completed }: CheckBoxInputT) => {
+export const CheckBoxInput = ({ onPress, color, completed }: CheckBoxInputT) => {
   const styles = styling(color, completed);
 
   return <TouchableOpacity style={styles.button} onPress={onPress} />;
@@ -24,5 +24,3 @@ const styling = (color: string, completed: boolean) =>
       margin: 5,
     },
   });
-
-export default CheckBoxInput;

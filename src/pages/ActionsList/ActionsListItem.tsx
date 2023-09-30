@@ -1,11 +1,12 @@
-import { TouchableOpacity, Text, View, Button } from "react-native";
 import styled from "styled-components/native";
+import { TouchableOpacity, Text, View, Button } from "react-native";
 import { ScaleDecorator } from "react-native-draggable-flatlist";
-import { deleteAction } from "../../utils/ActionsHandler";
-import { alertAtom } from "../../recoil/alertAtom";
-import { useSetRecoilState } from "recoil";
-import { actionsAtom } from "../../recoil/actionsAtom";
 import { AntDesign } from "@expo/vector-icons";
+import { useSetRecoilState } from "recoil";
+
+import { deleteAction } from "~utils/ActionsHandler";
+import { alertAtom } from "~recoil/alertAtom";
+import { actionsAtom } from "~recoil/actionsAtom";
 
 const StyledActionsListItem = styled.View`
   display: flex;
@@ -16,7 +17,7 @@ const StyledActionsListItem = styled.View`
   margin: 2px 30px;
 `;
 
-const ActionsListItem = ({ item, drag, isActive }) => {
+export const ActionsListItem = ({ item, drag, isActive }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setData = useSetRecoilState(actionsAtom);
 

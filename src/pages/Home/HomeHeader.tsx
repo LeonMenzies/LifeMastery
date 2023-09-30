@@ -1,5 +1,3 @@
-import { View, Text, SafeAreaView } from "react-native";
-import { useEffect, useState } from "react";
 import styled from "styled-components/native";
 
 const StyledHomeHeader = styled.SafeAreaView`
@@ -22,7 +20,7 @@ const FocusText = styled.Text`
   padding: 5px;
 `;
 
-const HomeHeader = ({ focus }) => {
+export const HomeHeader = ({ focus }) => {
   return (
     <StyledHomeHeader>
       <Focus className={"focus"}>
@@ -31,5 +29,3 @@ const HomeHeader = ({ focus }) => {
     </StyledHomeHeader>
   );
 };
-
-export default HomeHeader;

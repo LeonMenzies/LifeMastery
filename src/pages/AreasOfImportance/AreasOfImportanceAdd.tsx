@@ -1,11 +1,12 @@
 import "react-native-get-random-values";
+import styled from "styled-components/native";
 import React, { useState } from "react";
 import { SafeAreaView, Button } from "react-native";
-import styled from "styled-components/native";
-import { addAreaOfImportance } from "../../utils/AreasOfImportanceHandler";
-import TextInput from "../../components/TextInput";
-import { alertAtom } from "../../recoil/alertAtom";
-import { areasOfImportanceAtom } from "../../recoil/areasOfImportanceAtom";
+
+import { addAreaOfImportance } from "~utils/AreasOfImportanceHandler";
+import { TextInput } from "~components/TextInput";
+import { alertAtom } from "~recoil/alertAtom";
+import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { useSetRecoilState } from "recoil";
 
 const AddAreasOfImportanceButtonContainer = styled.View`
@@ -14,7 +15,7 @@ const AddAreasOfImportanceButtonContainer = styled.View`
   justify-content: center;
 `;
 
-const AreasOfImportanceAdd = ({}) => {
+export const AreasOfImportanceAdd = ({}) => {
   const [areaOfImportance, setAreaOfImportance] = useState("");
 
   const setAlert = useSetRecoilState(alertAtom);
@@ -52,5 +53,3 @@ const AreasOfImportanceAdd = ({}) => {
     </SafeAreaView>
   );
 };
-
-export default AreasOfImportanceAdd;

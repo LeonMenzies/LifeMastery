@@ -1,11 +1,12 @@
-import { TouchableOpacity, Text, View, Button } from "react-native";
 import styled from "styled-components/native";
+import { TouchableOpacity, Text, View, Button } from "react-native";
 import { ScaleDecorator } from "react-native-draggable-flatlist";
-import { deleteAreaOfImportance } from "../../utils/AreasOfImportanceHandler";
-import { alertAtom } from "../../recoil/alertAtom";
 import { useSetRecoilState } from "recoil";
-import { areasOfImportanceAtom } from "../../recoil/areasOfImportanceAtom";
-import { AreaOfImportanceItemT } from "../../types/Types";
+
+import { deleteAreaOfImportance } from "~utils/AreasOfImportanceHandler";
+import { alertAtom } from "~recoil/alertAtom";
+import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
+import { AreaOfImportanceItemT } from "~types/Types";
 
 const StyledAreasOfImportanceItem = styled.View`
   display: flex;
@@ -23,7 +24,7 @@ type AreasOfImportanceItemT = {
   isActive: boolean;
 };
 
-const AreasOfImportanceItem = ({ item, drag, isActive }: AreasOfImportanceItemT) => {
+export const AreasOfImportanceItem = ({ item, drag, isActive }: AreasOfImportanceItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setData = useSetRecoilState(areasOfImportanceAtom);
 
@@ -48,5 +49,3 @@ const AreasOfImportanceItem = ({ item, drag, isActive }: AreasOfImportanceItemT)
     </ScaleDecorator>
   );
 };
-
-export default AreasOfImportanceItem;

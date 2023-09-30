@@ -1,21 +1,21 @@
 import "react-native-gesture-handler";
+import Toast from "react-native-root-toast";
+import { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { themeAtom } from "../recoil/themeAtom";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
-import { alertAtom } from "../recoil/alertAtom";
-import { actionsShowAddEditAtom } from "../recoil/actionsShowAddEditAtom";
-import Toast from "react-native-root-toast";
 import { Button } from "react-native";
-import { useEffect } from "react";
 
-import Home from "../pages/Home/Home";
-import ActionsList from "../pages/ActionsList/ActionsList";
-import Quantities from "../pages/AreasOfImportance/AreasOfImportance";
-import Settings from "../pages/Settings/Settings";
-import Plan from "../pages/Plan/Plan";
+import { themeAtom } from "~recoil/themeAtom";
+import { alertAtom } from "~recoil/alertAtom";
+import { actionsShowAddEditAtom } from "~recoil/actionsShowAddEditAtom";
+import { Home } from "~pages/Home/Home";
+import { ActionsList } from "~pages/ActionsList/ActionsList";
+import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
+import { Settings } from "~pages/Settings/Settings";
+import { Plan } from "~pages/Plan/Plan";
 
-const App = () => {
+export const App = () => {
   const Drawer = createDrawerNavigator();
   const theme = useRecoilValue(themeAtom);
   const [alert, setAlert] = useRecoilState(alertAtom);
@@ -77,12 +77,10 @@ const App = () => {
         <Drawer.Screen
           name="Areas Of Importance"
           options={{ drawerLabel: "AOI" }}
-          component={Quantities}
+          component={AreasOfImportance}
         />
         <Drawer.Screen name="Settings" options={{ drawerLabel: "Settings" }} component={Settings} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
 };
-
-export default App;

@@ -1,16 +1,14 @@
-import { SafeAreaView, Text } from "react-native";
-import { useEffect, useState } from "react";
+import { SafeAreaView } from "react-native";
+import { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { actionsAtom } from "../../recoil/actionsAtom";
-import { alertAtom } from "../../recoil/alertAtom";
-import { getActions } from "../../utils/ActionsHandler";
-import { getAreasOfImportance } from "../../utils/AreasOfImportanceHandler";
-import { areasOfImportanceAtom } from "../../recoil/areasOfImportanceAtom";
-import { AreaOfImportanceItemT } from "../../types/Types";
-import TextInput from "../../components/TextInput";
-import Select from "../../components/Select";
 
-const Plan = () => {
+import { actionsAtom } from "~recoil/actionsAtom";
+import { alertAtom } from "~recoil/alertAtom";
+import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
+import { TextInput } from "~components/TextInput";
+import { Select } from "~components/Select";
+
+export const Plan = () => {
   const [data, setData] = useRecoilState(actionsAtom);
   const setAlert = useSetRecoilState(alertAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
@@ -46,5 +44,3 @@ const Plan = () => {
     </SafeAreaView>
   );
 };
-
-export default Plan;

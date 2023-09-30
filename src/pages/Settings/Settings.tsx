@@ -1,10 +1,11 @@
 import { SafeAreaView, Button } from "react-native";
 import { useSetRecoilState } from "recoil";
-import { themeAtom, lightTheme, darkTheme } from "../../recoil/themeAtom";
-import { clearActions } from "../../utils/ActionsHandler";
-import { alertAtom } from "../../recoil/alertAtom";
 
-const Settings = () => {
+import { themeAtom, lightTheme, darkTheme } from "~recoil/themeAtom";
+import { clearActions } from "~utils/ActionsHandler";
+import { alertAtom } from "~recoil/alertAtom";
+
+export const Settings = () => {
   const setTheme = useSetRecoilState(themeAtom);
   const setAlert = useSetRecoilState(alertAtom);
 
@@ -16,5 +17,3 @@ const Settings = () => {
     </SafeAreaView>
   );
 };
-
-export default Settings;

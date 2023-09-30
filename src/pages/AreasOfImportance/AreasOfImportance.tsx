@@ -1,14 +1,15 @@
 import "react-native-get-random-values";
-import React, { useEffect } from "react";
-import { Text, SafeAreaView } from "react-native";
 import styled from "styled-components/native";
 import DraggableFlatList from "react-native-draggable-flatlist";
-import { getAreasOfImportance } from "../../utils/AreasOfImportanceHandler";
-import AreasOfImportanceAdd from "./AreasOfImportanceAdd";
-import { alertAtom } from "../../recoil/alertAtom";
-import { areasOfImportanceAtom } from "../../recoil/areasOfImportanceAtom";
+import React, { useEffect } from "react";
+import { Text, SafeAreaView } from "react-native";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import AreasOfImportanceItem from "./AreasOfImportanceItem";
+
+import { AreasOfImportanceItem } from "~pages/AreasOfImportance/AreasOfImportanceItem";
+import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
+import { AreasOfImportanceAdd } from "~pages/AreasOfImportance/AreasOfImportanceAdd";
+import { alertAtom } from "~recoil/alertAtom";
+import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 
 const AOIListItems = styled.View`
   display: flex;
@@ -16,7 +17,7 @@ const AOIListItems = styled.View`
   height: 70%;
 `;
 
-const AreasOfImportance = () => {
+export const AreasOfImportance = () => {
   const [data, setData] = useRecoilState(areasOfImportanceAtom);
   const setAlert = useSetRecoilState(alertAtom);
 
@@ -43,5 +44,3 @@ const AreasOfImportance = () => {
     </SafeAreaView>
   );
 };
-
-export default AreasOfImportance;
