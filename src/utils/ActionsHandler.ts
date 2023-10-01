@@ -63,14 +63,14 @@ export const getActions = (setAlert, setData) => {
   }
 };
 
-export const addAction = (setAlert, setData, action, timeEstimate, priority, areaOfImportance) => {
+export const addAction = (setAlert, setData, action, timeEstimate, areaOfImportance) => {
   const key = uuidv4();
   const newAction = {
     key: key,
     action: action,
     isCompleted: false,
     timeEstimate: timeEstimate,
-    priority: priority,
+    priority: 0,
     areaOfImportance: areaOfImportance,
     dateAdded: new Date().toISOString().split("T")[0],
   };

@@ -18,5 +18,6 @@ export type PlanT = {
   key: string;
   date: Date;
   focus: string;
+  finalized: boolean;
   actionItems: actionItemT[];
 };

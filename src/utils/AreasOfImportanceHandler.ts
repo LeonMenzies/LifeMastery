@@ -34,17 +34,16 @@ export const addAreaOfImportance = (setAlert, setData, AOI) => {
         }
 
         if (areaOfImportance.length > 9) {
-          setAlert("You cannot have more than 9 AOI's");
+          setAlert("You cannot have more than 9 Areas Of Importance");
           return;
         }
         const areaOfImportanceList = JSON.stringify([newAreaOfImportance, ...areaOfImportance]);
         AsyncStorage.setItem(AOI_KEY, areaOfImportanceList).then(() => {
-          setAlert("Successfully added AreaOfImportance");
           setData([newAreaOfImportance, ...areaOfImportance]);
         });
       });
   } catch (e) {
-    setAlert("Failed to add AreaOfImportance");
+    setAlert("Failed to add Area Of Importance");
   }
 };
 
@@ -61,7 +60,6 @@ export const deleteAreaOfImportance = (setAlert, setData, key) => {
         }
         const AreaOfImportanceList = JSON.stringify(filteredAreaOfImportance);
         AsyncStorage.setItem(AOI_KEY, AreaOfImportanceList).then(() => {
-          setAlert("Successfully deleted AOI");
           setData(filteredAreaOfImportance);
         });
       });

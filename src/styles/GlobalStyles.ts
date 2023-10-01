@@ -7,7 +7,7 @@ export const colors = {
   red: "#c90606",
 
   lightGrey: "#dcdedc",
-  mediumGrey: "#aeb0af",
+  mediumGrey: "#d1d1d1",
   darkGrey: "#7c7d7c",
 
   superSellColor: "#00596b",

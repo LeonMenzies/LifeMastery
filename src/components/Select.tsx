@@ -1,15 +1,19 @@
 import Icon from "react-native-vector-icons/AntDesign";
-import { FC, useState, ReactElement } from "react";
+import { FC, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, FlatList } from "react-native";
+
+import { colors } from "~styles/GlobalStyles";
+
+type optionT = {
+  label: string;
+  value: string;
+};
 
 type PlanT = {
   title: string;
   value: string;
   onChange: Function;
-  options: {
-    label: string;
-    value: string;
-  }[];
+  options: optionT[];
 };
 
 export const Select: FC<PlanT> = ({ title, value, onChange, options }) => {
@@ -24,27 +28,29 @@ export const Select: FC<PlanT> = ({ title, value, onChange, options }) => {
     setVisible(false);
   };
 
-  const renderItem = ({ item }): ReactElement<any, any> => (
-    <TouchableOpacity onPress={() => onItemPress(item.value)}>
-      <Text>{item.label}</Text>
-    </TouchableOpacity>
-  );
+  const renderItem = (item: optionT) => {
+    return (
+      <TouchableOpacity
+        key={item.value}
+        style={styles.itemButton}
+        onPress={() => onItemPress(item.value)}
+      >
+        <Text style={styles.itemButtonText}>{item.label}</Text>
+        <View style={styles.divider} />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <TouchableOpacity style={styles.select} onPress={toggleDropdown}>
-        <Text>{value}</Text>
+        <Text style={styles.selectedText}>{value}</Text>
         {visible ? <Icon name="caretdown" /> : <Icon name="caretleft" />}
       </TouchableOpacity>
       {visible && (
         <View style={styles.dropDownContainer}>
-          <FlatList
-            style={styles.dropDown}
-            data={options}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-          />
+          {options.map((option: optionT) => renderItem(option))}
         </View>
       )}
     </View>
@@ -54,34 +60,50 @@ export const Select: FC<PlanT> = ({ title, value, onChange, options }) => {
 const styles = StyleSheet.create({
   container: {
     width: 300,
-    padding: 10,
+    padding: 7,
+    zIndex: 3,
   },
   title: {
     fontSize: 15,
+    color: colors.darkGrey,
+  },
+  selectedText: {
+    fontSize: 17,
   },
   select: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     zIndex: 1,
-    height: 30,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingRight: 10,
+    padding: 5,
     borderBottomColor: "black",
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   buttonText: {
-    flex: 1,
     textAlign: "center",
   },
   dropDownContainer: {
-    position: "absolute",
-    backgroundColor: "#fff",
+    margin: 7,
     top: 50,
-    padding: 10,
-    zIndex: 999,
+
+    position: "absolute",
+    backgroundColor: colors.white,
+    width: "100%",
+    zIndex: 4,
   },
   dropDown: {
     zIndex: 2,
+  },
+  itemButton: {
+    width: "100%",
+  },
+  itemButtonText: {
+    padding: 4,
+  },
+
+  divider: {
+    borderBottomColor: "black",
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    padding: 1,
   },
 });

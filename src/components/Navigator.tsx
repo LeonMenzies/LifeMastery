@@ -15,7 +15,7 @@ import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
 import { Settings } from "~pages/Settings/Settings";
 import { Plan } from "~pages/Plan/Plan";
 
-export const App = () => {
+export const Navigator = () => {
   const Drawer = createDrawerNavigator();
   const theme = useRecoilValue(themeAtom);
   const [alert, setAlert] = useRecoilState(alertAtom);

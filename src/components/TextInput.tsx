@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { TextInput as Input } from "react-native";
+import { colors } from "~styles/GlobalStyles";
 
 type TextInputT = {
   title: string;
@@ -9,6 +10,7 @@ type TextInputT = {
   placeholder: string;
   maxLength: number;
   keyboardType: any;
+  disabled?: boolean;
 };
 
 export const TextInput: FC<TextInputT> = ({
@@ -18,6 +20,7 @@ export const TextInput: FC<TextInputT> = ({
   placeholder,
   maxLength,
   keyboardType,
+  disabled,
 }) => {
   return (
     <View style={styles.container}>
@@ -29,6 +32,8 @@ export const TextInput: FC<TextInputT> = ({
         placeholder={placeholder}
         keyboardType={keyboardType}
         maxLength={maxLength}
+        editable={disabled}
+        selectTextOnFocus={disabled}
       />
     </View>
   );
@@ -37,15 +42,16 @@ export const TextInput: FC<TextInputT> = ({
 const styles = StyleSheet.create({
   container: {
     width: 300,
-    padding: 10,
+    padding: 7,
+    zIndex: 2,
   },
   title: {
     fontSize: 15,
+    color: colors.darkGrey,
   },
   input: {
-    height: 30,
-    paddingTop: 5,
-    paddingBottom: 5,
+    fontSize: 17,
+    padding: 5,
     borderBottomColor: "black",
     borderBottomWidth: StyleSheet.hairlineWidth,
   },

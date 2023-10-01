@@ -1,5 +1,7 @@
 import { TouchableOpacity, StyleSheet, GestureResponderEvent } from "react-native";
 
+import { colors } from "~styles/GlobalStyles";
+
 type CheckBoxInputT = {
   onPress: (event: GestureResponderEvent) => void;
   completed: boolean;
@@ -16,7 +18,7 @@ const styling = (color: string, completed: boolean) =>
   StyleSheet.create({
     button: {
       borderRadius: 100,
-      backgroundColor: completed ? color : "white",
+      backgroundColor: completed ? color : colors.white,
       borderColor: "grey",
       borderWidth: 1,
       width: 20,

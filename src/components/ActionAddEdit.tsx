@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
 import React, { useEffect, useState } from "react";
-import { Modal, StyleSheet, View, Button } from "react-native";
+import { Modal, StyleSheet, View } from "react-native";
 import { useSetRecoilState, useRecoilState } from "recoil";
 
 import { Select } from "~components/Select";
@@ -10,6 +10,8 @@ import { TextInput } from "~components/TextInput";
 import { alertAtom } from "~recoil/alertAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
+import { Button } from "~components/Button";
+import { colors } from "~styles/GlobalStyles";
 
 type ActionAddEditT = {
   modalVisible: any;
@@ -17,11 +19,9 @@ type ActionAddEditT = {
 };
 
 export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
-  const [text, setText] = useState("test action");
-  const [timeEstimate, setTimeEstimate] = useState(20);
-  const [priority, setPriority] = useState(1);
+  const [text, setText] = useState("");
+  const [timeEstimate, setTimeEstimate] = useState(0);
   const [areaOfImportance, setAreaOfImportance] = useState("");
-
   const setAlert = useSetRecoilState(alertAtom);
   const setActions = useSetRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
@@ -39,19 +39,15 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
       setAlert("Time Estimate is required");
       return;
     }
-    if (priority === 0) {
-      setAlert("Priority is required");
-      return;
-    }
+
     if (!areaOfImportance || areaOfImportance === "No AOI found, please add from the AOI tab") {
       setAlert("Area of Importance is required");
       return;
     }
 
-    addAction(setAlert, setActions, text, timeEstimate, priority, areaOfImportance);
+    addAction(setAlert, setActions, text, timeEstimate, areaOfImportance);
     setText("");
     setTimeEstimate(0);
-    setPriority(0);
     setAreaOfImportance("");
   };
 
@@ -82,9 +78,6 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View>
-            <Button title="Close" onPress={() => setModalVisible(false)} />
-          </View>
           <Select
             title={"Area of Importance"}
             options={createOptions()}
@@ -107,22 +100,14 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
             keyboardType="numeric"
             maxLength={30}
           />
-          <TextInput
-            title={"Priority"}
-            onChangeText={setPriority}
-            value={priority.toString()}
-            placeholder="Add value..."
-            keyboardType="numeric"
-            maxLength={30}
-          />
-          <View>
+          <View style={styles.buttonContainer}>
             <Button title="Add" onPress={handleAddTodo} />
             <Button
-              title="Clear"
+              title="Close"
               onPress={() => {
+                setModalVisible(false);
                 setText("");
                 setTimeEstimate(0);
-                setPriority(0);
                 setAreaOfImportance("");
               }}
             />
@@ -142,7 +127,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     padding: 35,
     alignItems: "center",
     shadowColor: "#000",
@@ -152,6 +137,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     elevation: 5,
+  },
+  buttonContainer: {
+    padding: 10,
+    flexDirection: "row",
   },
 });
 
