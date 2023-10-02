@@ -3,30 +3,35 @@ import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { actionItemT } from "~types/Types";
 import { HomeActionItem } from "~pages/Home/HomeActionItem";
 import { AreaOfImportanceItemT } from "~types/Types";
+import { useEffect } from "react";
 
 type HomeActionSectionT = {
   aoi: AreaOfImportanceItemT;
   data: actionItemT[];
+  setActions: any;
 };
 
-export const HomeActionSection = ({ aoi, data }: HomeActionSectionT) => {
+export const HomeActionSection = ({ aoi, data, setActions }: HomeActionSectionT) => {
   const styles = styling(aoi.Color);
+  const filteredData: actionItemT[] = data.filter((action: actionItemT) => {
+    return action.areaOfImportance === aoi.AOI;
+  });
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>{aoi.AOI}</Text>
-
-      {[...data]
-        .sort((a: actionItemT, b: actionItemT) => a.priority - b.priority)
-        .map((action: actionItemT) => {
-          if (action.areaOfImportance == aoi.AOI) {
-            return <HomeActionItem key={action.key} action={action} color={aoi.Color} />;
-          }
-        })}
-
-      <View style={styles.divider} />
-    </SafeAreaView>
-  );
+  if (filteredData.length > 0)
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>{aoi.AOI}</Text>
+        {filteredData.map((action: actionItemT) => (
+          <HomeActionItem
+            key={action.key}
+            action={action}
+            color={aoi.Color}
+            setActions={setActions}
+          />
+        ))}
+        <View style={styles.divider} />
+      </SafeAreaView>
+    );
 };
 
 const styling = (color: string) =>

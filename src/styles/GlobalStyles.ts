@@ -9,6 +9,8 @@ export const colors = {
   lightGrey: "#dcdedc",
   mediumGrey: "#d1d1d1",
   darkGrey: "#7c7d7c",
+  green: "#117000",
+
 
   superSellColor: "#00596b",
 };

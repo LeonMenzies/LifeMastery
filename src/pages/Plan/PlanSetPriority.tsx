@@ -16,18 +16,24 @@ import { NumberInput } from "~components/NumberInput";
 
 type PlanSetPriorityT = {
   actionTitle: string;
-  setPriority: (v: number) => void;
+  handleSetPriority: (v: number) => void;
   modalVisible: boolean;
   setModalVisible: any;
+  handleCancel: any;
 };
 
 export const PlanSetPriority = ({
   actionTitle,
-  setPriority,
+  handleSetPriority,
   modalVisible,
   setModalVisible,
+  handleCancel,
 }: PlanSetPriorityT) => {
   const [priorityValue, setPriorityValue] = useState(0);
+
+  useEffect(() => {
+    setPriorityValue(0);
+  }, []);
 
   return (
     <Modal
@@ -42,21 +48,8 @@ export const PlanSetPriority = ({
           <NumberInput onChange={setPriorityValue} value={priorityValue} maxValue={5} />
 
           <View style={styles.buttonContainer}>
-            <Button
-              title="Set"
-              onPress={() => {
-                setPriority(priorityValue);
-                setModalVisible(false);
-                setPriorityValue(0);
-              }}
-            />
-            <Button
-              title="Cancel"
-              onPress={() => {
-                setModalVisible(false);
-                setPriorityValue(0);
-              }}
-            />
+            <Button title="Set" onPress={() => handleSetPriority(priorityValue)} />
+            <Button title="Cancel" onPress={handleCancel} />
           </View>
         </View>
       </View>

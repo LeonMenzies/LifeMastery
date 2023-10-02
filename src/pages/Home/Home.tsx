@@ -32,7 +32,7 @@ export const Home = () => {
       <HomeHeader focus={"Test"} />
 
       {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
-        return <HomeActionSection key={aoi.key} aoi={aoi} data={actions} />;
+        return <HomeActionSection key={aoi.key} aoi={aoi} data={actions} setActions={setActions}/>;
       })}
     </SafeAreaView>
   );

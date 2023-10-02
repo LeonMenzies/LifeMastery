@@ -2,24 +2,25 @@ import { Text, StyleSheet, SafeAreaView } from "react-native";
 import { useSetRecoilState } from "recoil";
 
 import { alertAtom } from "~recoil/alertAtom";
-import { completeAction } from "~utils/ActionsHandler";
-import { actionsAtom } from "~recoil/actionsAtom";
+import { updateAction } from "~utils/ActionsHandler";
 import { CheckBoxInput } from "~components/CheckBoxInput";
 import { actionItemT } from "~types/Types";
 
 type HomeActionItemT = {
   action: actionItemT;
   color: string;
+  setActions: any;
 };
 
-export const HomeActionItem = ({ action, color }: HomeActionItemT) => {
+export const HomeActionItem = ({ action, color, setActions }: HomeActionItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
-  const setData = useSetRecoilState(actionsAtom);
 
   return (
     <SafeAreaView style={styles.container}>
       <CheckBoxInput
-        onPress={() => completeAction(setAlert, setData, action.key)}
+        onPress={() =>
+          updateAction(setAlert, setActions, { ...action, isCompleted: !action.isCompleted })
+        }
         completed={action.isCompleted}
         color={color}
       />

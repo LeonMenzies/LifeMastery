@@ -28,29 +28,6 @@ export const getAction = async (setAlert, setData, AOL_KEY, key) => {
   }
 };
 
-export const completeAction = async (setAlert: Function, setData: Function, key: string) => {
-  try {
-    return await AsyncStorage.getItem(ACTION_KEY)
-      .then((actionsRaw) => JSON.parse(actionsRaw))
-      .then((actions) => {
-        if (actions !== null) {
-          const tmp = [...actions];
-          tmp.forEach((element) => {
-            if (element.key === key) {
-              element.isCompleted = !element.isCompleted;
-            }
-          });
-          const actionsList = JSON.stringify(tmp);
-          AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => {
-            setData(tmp);
-          });
-        }
-      });
-  } catch (e) {
-    setAlert("Failed to complete action");
-  }
-};
-
 export const updateAction = async (setAlert: Function, setData: Function, action: actionItemT) => {
   try {
     return await AsyncStorage.getItem(ACTION_KEY)

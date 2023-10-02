@@ -17,14 +17,31 @@ type PlanActionsListItemT = {
   drag: any;
   isActive: boolean;
   setActions: any;
+  setPlanActions: any;
+  isInPlan: boolean;
 };
 
-export const PlanActionsListItem = ({ item, drag, isActive, setActions }: PlanActionsListItemT) => {
+export const PlanActionsListItem = ({
+  item,
+  drag,
+  isActive,
+  setActions,
+  setPlanActions,
+  isInPlan,
+}: PlanActionsListItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleSetPriority = (val: number) => {
     updateAction(setAlert, setActions, { ...item, priority: val });
+    setPlanActions((actions) => [...actions, item]);
+    setModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    updateAction(setAlert, setActions, { ...item, priority: 0 });
+    setModalVisible(false);
+    setPlanActions((actions) => actions.filter((action: actionItemT) => action.key !== item.key));
   };
 
   return (
@@ -33,11 +50,20 @@ export const PlanActionsListItem = ({ item, drag, isActive, setActions }: PlanAc
         onLongPress={drag}
         disabled={isActive}
         style={{ backgroundColor: isActive ? colors.lightGrey : colors.white }}
-        onPress={() => setModalVisible(true)}
+        onPress={() => {
+          if (isInPlan) {
+            handleCancel();
+          } else {
+            setModalVisible(true);
+          }
+        }}
       >
         <View style={styles.container}>
           <View style={styles.actionHeading}>
-            <Text style={styles.actionTitle}>{item.action}</Text>
+            <View style={styles.actionTitleContainer}>
+              {isInPlan && <View style={styles.inPlain} />}
+              <Text style={styles.actionTitle}>{item.action}</Text>
+            </View>
             <Text style={styles.actionTitle}>{item.priority}</Text>
           </View>
           <View>
@@ -48,7 +74,8 @@ export const PlanActionsListItem = ({ item, drag, isActive, setActions }: PlanAc
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           actionTitle={item.action}
-          setPriority={handleSetPriority}
+          handleSetPriority={handleSetPriority}
+          handleCancel={handleCancel}
         />
       </TouchableOpacity>
     </ScaleDecorator>
@@ -67,8 +94,16 @@ const styles = StyleSheet.create({
   actionTitle: {
     fontSize: 17,
   },
+  actionTitleContainer: {
+    flexDirection: "row",
+    gap: 4,
+  },
   actionDate: {
-    fontSize: 15,
+    fontSize: 13,
     color: colors.darkGrey,
+  },
+  inPlain: {
+    width: 3,
+    backgroundColor: colors.green,
   },
 });

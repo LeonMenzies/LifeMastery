@@ -7,7 +7,7 @@ import { alertAtom } from "~recoil/alertAtom";
 import { TextInput } from "~components/TextInput";
 import { colors } from "~styles/GlobalStyles";
 import { getTodaysPlan, getTomorrowsPlan } from "~utils/PlanHandler";
-import { PlanT } from "~types/Types";
+import { PlanT, actionItemT } from "~types/Types";
 import { getActions } from "~utils/ActionsHandler";
 import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
 
@@ -22,7 +22,8 @@ export const Plan = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [text, setText] = useState("test action");
   const [today, setToday] = useState(true);
-  const [actions, setActions] = useState([]);
+  const [actions, setActions] = useState<actionItemT[]>([]);
+  const [planActions, setPlanActions] = useState<actionItemT[]>([]);
 
   const styles = styling(today);
 
@@ -43,8 +44,17 @@ export const Plan = () => {
   }, [data]);
 
   const renderItem = ({ item, drag, isActive }) => {
+    const isInPlan = planActions.some((action: actionItemT) => action.key === item.key);
+    
     return (
-      <PlanActionsListItem item={item} drag={drag} isActive={isActive} setActions={setActions} />
+      <PlanActionsListItem
+        item={item}
+        drag={drag}
+        isActive={isActive}
+        setActions={setActions}
+        setPlanActions={setPlanActions}
+        isInPlan={isInPlan}
+      />
     );
   };
 
