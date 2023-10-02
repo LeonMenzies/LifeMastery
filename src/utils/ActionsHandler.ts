@@ -51,12 +51,48 @@ export const completeAction = async (setAlert: Function, setData: Function, key:
   }
 };
 
-export const getActions = (setAlert, setData) => {
+export const updateAction = async (setAlert: Function, setData: Function, action: actionItemT) => {
+  try {
+    return await AsyncStorage.getItem(ACTION_KEY)
+      .then((actionsRaw) => JSON.parse(actionsRaw))
+      .then((actions) => {
+        if (actions !== null) {
+          const tmp = [...actions];
+          tmp.forEach((element) => {
+            if (element.key === action.key) {
+              element.action = action.action;
+              element.isCompleted = action.isCompleted;
+              element.timeEstimate = action.timeEstimate;
+              element.priority = action.priority;
+              element.areaOfImportance = action.areaOfImportance;
+            }
+          });
+          const actionsList = JSON.stringify(tmp);
+          AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => {
+            setData(tmp);
+          });
+        }
+      });
+  } catch (e) {
+    setAlert("Failed to update action");
+  }
+};
+
+export const getActions = (setAlert: any, setData: any, incompleteActions = false) => {
   try {
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
-      .then((actions) => {
-        if (actions !== null) setData(actions);
+      .then((actions: actionItemT[]) => {
+        const filteredActions = actions.filter((action: actionItemT) => {
+          let add = true;
+          if (incompleteActions) {
+            if (action.isCompleted) {
+              add = false;
+            }
+          }
+          return true;
+        });
+        setData(filteredActions);
       });
   } catch (e) {
     setAlert("Failed to get actions");

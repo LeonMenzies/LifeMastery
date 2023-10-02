@@ -12,16 +12,20 @@ import { actionsAtom } from "~recoil/actionsAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { Button } from "~components/Button";
 import { colors } from "~styles/GlobalStyles";
+import { actionItemT } from "~types/Types";
 
 type ActionAddEditT = {
-  modalVisible: any;
+  modalVisible: {
+    show: boolean;
+    action: actionItemT;
+  };
   setModalVisible: any;
 };
 
 export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
-  const [text, setText] = useState("");
-  const [timeEstimate, setTimeEstimate] = useState(0);
-  const [areaOfImportance, setAreaOfImportance] = useState("");
+  const [text, setText] = useState(modalVisible.action.action);
+  const [timeEstimate, setTimeEstimate] = useState(modalVisible.action.timeEstimate);
+  const [areaOfImportance, setAreaOfImportance] = useState(modalVisible.action.areaOfImportance);
   const setAlert = useSetRecoilState(alertAtom);
   const setActions = useSetRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
@@ -73,7 +77,7 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
     <Modal
       animationType="fade"
       transparent={true}
-      visible={modalVisible}
+      visible={modalVisible.show}
       onRequestClose={() => setModalVisible(false)}
     >
       <View style={styles.centeredView}>
@@ -105,10 +109,18 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
             <Button
               title="Close"
               onPress={() => {
-                setModalVisible(false);
-                setText("");
-                setTimeEstimate(0);
-                setAreaOfImportance("");
+                setModalVisible({
+                  show: false as boolean,
+                  action: {
+                    key: "",
+                    action: "",
+                    isCompleted: false,
+                    timeEstimate: 0,
+                    priority: 0,
+                    areaOfImportance: "None",
+                    dateAdded: new Date().toISOString().split("T")[0],
+                  } as actionItemT,
+                });
               }}
             />
           </View>
@@ -143,5 +155,3 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 });
-
-export default ActionAddEdit;

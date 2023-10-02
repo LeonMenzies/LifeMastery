@@ -1,13 +1,15 @@
 import { SafeAreaView, StyleSheet, View, TouchableHighlight, Text } from "react-native";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import DraggableFlatList from "react-native-draggable-flatlist";
 
 import { alertAtom } from "~recoil/alertAtom";
 import { TextInput } from "~components/TextInput";
 import { colors } from "~styles/GlobalStyles";
 import { getTodaysPlan, getTomorrowsPlan } from "~utils/PlanHandler";
 import { PlanT } from "~types/Types";
-import { PlanSetPriority } from "~pages/Plan/PlanSetPriority";
+import { getActions } from "~utils/ActionsHandler";
+import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
 
 export const Plan = () => {
   const [data, setData] = useState<PlanT>({
@@ -20,9 +22,13 @@ export const Plan = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [text, setText] = useState("test action");
   const [today, setToday] = useState(true);
-  const [modalVisible, setModalVisible] = useState(true);
+  const [actions, setActions] = useState([]);
 
   const styles = styling(today);
+
+  useEffect(() => {
+    getActions(setAlert, setActions, true);
+  }, []);
 
   useEffect(() => {
     if (today) {
@@ -35,6 +41,12 @@ export const Plan = () => {
   useEffect(() => {
     setText(data.focus);
   }, [data]);
+
+  const renderItem = ({ item, drag, isActive }) => {
+    return (
+      <PlanActionsListItem item={item} drag={drag} isActive={isActive} setActions={setActions} />
+    );
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,13 +75,17 @@ export const Plan = () => {
           keyboardType="default"
           maxLength={30}
         />
+        {actions.length > 0 ? (
+          <DraggableFlatList
+            data={actions}
+            onDragEnd={({ data }) => setActions(data)}
+            keyExtractor={(item) => item.key}
+            renderItem={renderItem}
+          />
+        ) : (
+          <Text>No Actions in your list</Text>
+        )}
       </View>
-      <PlanSetPriority
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        actionTitle={"test"}
-        setPriority={() => {}}
-      />
     </SafeAreaView>
   );
 };

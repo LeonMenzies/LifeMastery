@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
 import { Button } from "react-native";
+import { v4 as uuidv4 } from "uuid";
 
 import { themeAtom } from "~recoil/themeAtom";
 import { alertAtom } from "~recoil/alertAtom";
@@ -14,6 +15,7 @@ import { ActionsList } from "~pages/ActionsList/ActionsList";
 import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
 import { Settings } from "~pages/Settings/Settings";
 import { Plan } from "~pages/Plan/Plan";
+import { actionItemT } from "~types/Types";
 
 export const Navigator = () => {
   const Drawer = createDrawerNavigator();
@@ -25,6 +27,10 @@ export const Navigator = () => {
     if (alert !== "") {
       let toast = Toast.show(alert, {
         duration: Toast.durations.LONG,
+        position: Toast.positions.BOTTOM,
+        hideOnPress: true,
+        shadow: true,
+        animation: true,
       });
 
       setTimeout(function hideToast() {
@@ -35,6 +41,7 @@ export const Navigator = () => {
   }, [alert]);
 
   const date = new Date().toISOString().split("T")[0];
+  const key = uuidv4();
 
   return (
     <NavigationContainer>
@@ -52,6 +59,13 @@ export const Navigator = () => {
         }}
       >
         <Drawer.Screen
+          name={"Plan"}
+          options={{
+            drawerLabel: "Plan",
+          }}
+          component={Plan}
+        />
+        <Drawer.Screen
           name={"Home"}
           options={{
             drawerLabel: "Home",
@@ -60,17 +74,28 @@ export const Navigator = () => {
           component={Home}
         />
         <Drawer.Screen
-          name={"Plan"}
-          options={{
-            drawerLabel: "Plan",
-          }}
-          component={Plan}
-        />
-        <Drawer.Screen
           name="Actions List"
           options={{
             drawerLabel: "Actions List",
-            headerRight: () => <Button title="Add" onPress={() => setActionsShowAddEdit(true)} />,
+            headerRight: () => (
+              <Button
+                title="Add"
+                onPress={() =>
+                  setActionsShowAddEdit({
+                    show: true as boolean,
+                    action: {
+                      key: key,
+                      action: "",
+                      isCompleted: false,
+                      timeEstimate: 0,
+                      priority: 0,
+                      areaOfImportance: "None",
+                      dateAdded: new Date().toISOString().split("T")[0],
+                    } as actionItemT,
+                  })
+                }
+              />
+            ),
           }}
           component={ActionsList}
         />

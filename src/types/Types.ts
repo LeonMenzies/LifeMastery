@@ -2,10 +2,10 @@ export type actionItemT = {
   key: string;
   action: string;
   isCompleted: boolean;
-  timeEstimate: string;
+  timeEstimate: number;
   priority: number;
   areaOfImportance: string;
-  dateAdded: Date;
+  dateAdded: string;
 };
 
 export type AreaOfImportanceItemT = {

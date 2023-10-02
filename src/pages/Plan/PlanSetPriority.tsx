@@ -16,7 +16,7 @@ import { NumberInput } from "~components/NumberInput";
 
 type PlanSetPriorityT = {
   actionTitle: string;
-  setPriority: any;
+  setPriority: (v: number) => void;
   modalVisible: boolean;
   setModalVisible: any;
 };
@@ -28,18 +28,6 @@ export const PlanSetPriority = ({
   setModalVisible,
 }: PlanSetPriorityT) => {
   const [priorityValue, setPriorityValue] = useState(0);
-  const setAlert = useSetRecoilState(alertAtom);
-  const setActions = useSetRecoilState(actionsAtom);
-  const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
-
-  useEffect(() => {
-    getAreasOfImportance(setAlert, setAreasOfImportance);
-  }, []);
-
-  const handleAddTodo = () => {
-    setPriority(0);
-  };
-
 
   return (
     <Modal
@@ -50,16 +38,23 @@ export const PlanSetPriority = ({
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text>{actionTitle}</Text>
+          <Text style={styles.modalTitle}>{actionTitle}</Text>
           <NumberInput onChange={setPriorityValue} value={priorityValue} maxValue={5} />
 
           <View style={styles.buttonContainer}>
-            <Button title="Set" onPress={handleAddTodo} />
+            <Button
+              title="Set"
+              onPress={() => {
+                setPriority(priorityValue);
+                setModalVisible(false);
+                setPriorityValue(0);
+              }}
+            />
             <Button
               title="Cancel"
               onPress={() => {
                 setModalVisible(false);
-                setPriority(0);
+                setPriorityValue(0);
               }}
             />
           </View>
@@ -92,6 +87,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     padding: 10,
     flexDirection: "row",
+  },
+  modalTitle: {
+    fontSize: 17,
   },
 });
 

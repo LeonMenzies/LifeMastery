@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 import { HomeHeader } from "~pages/Home/HomeHeader";
@@ -12,21 +12,27 @@ import { HomeActionSection } from "~pages/Home/HomeActionSection";
 import { AreaOfImportanceItemT } from "~types/Types";
 
 export const Home = () => {
-  const [data, setData] = useRecoilState(actionsAtom);
   const setAlert = useSetRecoilState(alertAtom);
-  const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
+  // const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
+  // const [actions, setActions] = useRecoilState(actionsAtom);
+
+  const [actions, setActions] = useState([]);
+  const [areasOfImportance, setAreasOfImportance] = useState([]);
 
   useEffect(() => {
-    getActions(setAlert, setData);
-    getAreasOfImportance(setAlert, setAreasOfImportance);
+    getActions(setAlert, setActions);
   }, []);
+
+  useEffect(() => {
+    getAreasOfImportance(setAlert, setAreasOfImportance);
+  }, [actions]);
 
   return (
     <SafeAreaView>
       <HomeHeader focus={"Test"} />
 
       {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
-        return <HomeActionSection key={aoi.key} aoi={aoi} data={data} />;
+        return <HomeActionSection key={aoi.key} aoi={aoi} data={actions} />;
       })}
     </SafeAreaView>
   );
