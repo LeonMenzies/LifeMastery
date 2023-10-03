@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, Text } from "react-native";
+import { SafeAreaView, Text, StyleSheet } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 
 import { getActions } from "~utils/ActionsHandler";
@@ -10,11 +10,11 @@ import { useSetRecoilState, useRecoilState } from "recoil";
 import { ActionsListItem } from "~pages/ActionsList/ActionsListItem";
 import { ActionAddEdit } from "~components/ActionAddEdit";
 import { actionsShowAddEditAtom } from "~recoil/actionsShowAddEditAtom";
+import { colors } from "~styles/GlobalStyles";
 
 export const ActionsList = () => {
   // const [data, setData] = useRecoilState(actionsAtom);
   const setAlert = useSetRecoilState(alertAtom);
-  const [modalVisible, setModalVisible] = useRecoilState(actionsShowAddEditAtom);
   const [actions, setActions] = useState([]);
 
   useEffect(() => {
@@ -26,9 +26,7 @@ export const ActionsList = () => {
   };
 
   return (
-    <SafeAreaView>
-      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
-
+    <SafeAreaView style={styles.container}>
       {actions.length > 0 ? (
         <DraggableFlatList
           data={actions}
@@ -42,3 +40,11 @@ export const ActionsList = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.white,
+    height: "100%",
+    alignItems: "center",
+  },
+});

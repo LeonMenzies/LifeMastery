@@ -1,8 +1,7 @@
 import "react-native-get-random-values";
-import styled from "styled-components/native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import React, { useEffect } from "react";
-import { Text, SafeAreaView } from "react-native";
+import { Text, SafeAreaView, StyleSheet, View } from "react-native";
 import { useSetRecoilState, useRecoilState } from "recoil";
 
 import { AreasOfImportanceItem } from "~pages/AreasOfImportance/AreasOfImportanceItem";
@@ -10,12 +9,7 @@ import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
 import { AreasOfImportanceAdd } from "~pages/AreasOfImportance/AreasOfImportanceAdd";
 import { alertAtom } from "~recoil/alertAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
-
-const AOIListItems = styled.View`
-  display: flex;
-  flex-direction: column;
-  height: 70%;
-`;
+import { colors } from "~styles/GlobalStyles";
 
 export const AreasOfImportance = () => {
   const [data, setData] = useRecoilState(areasOfImportanceAtom);
@@ -26,10 +20,10 @@ export const AreasOfImportance = () => {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <AreasOfImportanceAdd />
 
-      <AOIListItems>
+      <View>
         {data.length > 0 ? (
           <DraggableFlatList
             data={data}
@@ -40,7 +34,14 @@ export const AreasOfImportance = () => {
         ) : (
           <Text>No AOL's in your list</Text>
         )}
-      </AOIListItems>
+      </View>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.white,
+    height: "100%",
+  },
+});

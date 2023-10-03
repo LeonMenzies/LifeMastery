@@ -6,12 +6,16 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 import { alertAtom } from "~recoil/alertAtom";
 import { TextInput } from "~components/TextInput";
 import { colors } from "~styles/GlobalStyles";
-import { getTodaysPlan, getTomorrowsPlan } from "~utils/PlanHandler";
 import { PlanT, actionItemT } from "~types/Types";
 import { getActions } from "~utils/ActionsHandler";
 import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
+import { Button } from "~components/Button";
+import { PlanCard } from "./PlanCard";
 
 export const Plan = () => {
+  const TODAY_PLAN = "today-plan";
+  const TOMORROW_PLAN = "tomorrow-plan";
+
   const [data, setData] = useState<PlanT>({
     key: "",
     date: new Date(),
@@ -31,33 +35,6 @@ export const Plan = () => {
     getActions(setAlert, setActions, true);
   }, []);
 
-  useEffect(() => {
-    if (today) {
-      getTodaysPlan(setAlert, setData);
-    } else {
-      getTomorrowsPlan(setAlert, setData);
-    }
-  }, [today]);
-
-  useEffect(() => {
-    setText(data.focus);
-  }, [data]);
-
-  const renderItem = ({ item, drag, isActive }) => {
-    const isInPlan = planActions.some((action: actionItemT) => action.key === item.key);
-    
-    return (
-      <PlanActionsListItem
-        item={item}
-        drag={drag}
-        isActive={isActive}
-        setActions={setActions}
-        setPlanActions={setPlanActions}
-        isInPlan={isInPlan}
-      />
-    );
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonContainer}>
@@ -76,26 +53,11 @@ export const Plan = () => {
           <Text style={styles.buttonText}>{"Tomorrow"}</Text>
         </TouchableHighlight>
       </View>
-      <View style={styles.planContainer}>
-        <TextInput
-          title={"Focus"}
-          onChangeText={setText}
-          value={text}
-          placeholder="Add value..."
-          keyboardType="default"
-          maxLength={30}
-        />
-        {actions.length > 0 ? (
-          <DraggableFlatList
-            data={actions}
-            onDragEnd={({ data }) => setActions(data)}
-            keyExtractor={(item) => item.key}
-            renderItem={renderItem}
-          />
-        ) : (
-          <Text>No Actions in your list</Text>
-        )}
-      </View>
+      {today ? (
+        <PlanCard day={TODAY_PLAN} actions={actions} setActions={setActions} />
+      ) : (
+        <PlanCard day={TOMORROW_PLAN} actions={actions} setActions={setActions} />
+      )}
     </SafeAreaView>
   );
 };
@@ -127,8 +89,5 @@ const styling = (today: boolean) =>
     },
     buttonText: {
       fontSize: 15,
-    },
-    planContainer: {
-      padding: 20,
     },
   });

@@ -1,31 +1,29 @@
-import styled from "styled-components/native";
+import { StyleSheet, SafeAreaView, View, Text } from "react-native";
 
-const StyledHomeHeader = styled.SafeAreaView`
-  background-color: white
-  height: 70px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-`;
-
-const Focus = styled.View`
-  border: solid 1px black;
-  border-radius: 5px;
-  width: 80%;
-  height: 80%;
-`;
-
-const FocusText = styled.Text`
-  padding: 5px;
-`;
+import { colors } from "~styles/GlobalStyles";
 
 export const HomeHeader = ({ focus }) => {
   return (
-    <StyledHomeHeader>
-      <Focus className={"focus"}>
-        <FocusText>My one key role/focus today: {focus}</FocusText>
-      </Focus>
-    </StyledHomeHeader>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.focusContainer}>
+        <Text style={styles.focusText}>Todays Focus: {focus}</Text>
+      </View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 10,
+    backgroundColor: colors.lightGrey,
+    borderColor: colors.darkGrey,
+    borderWidth: 1,
+    borderRadius: 10,
+  },
+  focusContainer: {
+    padding: 10,
+  },
+  focusText: {
+    fontSize: 17,
+  },
+});

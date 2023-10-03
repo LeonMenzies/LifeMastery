@@ -3,7 +3,7 @@ import Toast from "react-native-root-toast";
 import { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { Button } from "react-native";
 import { v4 as uuidv4 } from "uuid";
 
@@ -16,12 +16,13 @@ import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
 import { Settings } from "~pages/Settings/Settings";
 import { Plan } from "~pages/Plan/Plan";
 import { actionItemT } from "~types/Types";
+import { ActionAddEdit } from "~components/ActionAddEdit";
 
 export const Navigator = () => {
   const Drawer = createDrawerNavigator();
   const theme = useRecoilValue(themeAtom);
   const [alert, setAlert] = useRecoilState(alertAtom);
-  const setActionsShowAddEdit = useSetRecoilState(actionsShowAddEditAtom);
+  const [modalVisible, setModalVisible] = useRecoilState(actionsShowAddEditAtom);
 
   useEffect(() => {
     if (alert !== "") {
@@ -62,6 +63,25 @@ export const Navigator = () => {
           name={"Plan"}
           options={{
             drawerLabel: "Plan",
+            headerRight: () => (
+              <Button
+                title="Add"
+                onPress={() =>
+                  setModalVisible({
+                    show: true as boolean,
+                    action: {
+                      key: key,
+                      action: "",
+                      isCompleted: false,
+                      timeEstimate: 0,
+                      priority: 0,
+                      areaOfImportance: "None",
+                      dateAdded: date,
+                    } as actionItemT,
+                  })
+                }
+              />
+            ),
           }}
           component={Plan}
         />
@@ -69,7 +89,7 @@ export const Navigator = () => {
           name={"Home"}
           options={{
             drawerLabel: "Home",
-            title: `Daily Planner. Date: ${date}`,
+            title: `${date}`,
           }}
           component={Home}
         />
@@ -81,7 +101,7 @@ export const Navigator = () => {
               <Button
                 title="Add"
                 onPress={() =>
-                  setActionsShowAddEdit({
+                  setModalVisible({
                     show: true as boolean,
                     action: {
                       key: key,
@@ -90,7 +110,7 @@ export const Navigator = () => {
                       timeEstimate: 0,
                       priority: 0,
                       areaOfImportance: "None",
-                      dateAdded: new Date().toISOString().split("T")[0],
+                      dateAdded: date,
                     } as actionItemT,
                   })
                 }
@@ -106,6 +126,7 @@ export const Navigator = () => {
         />
         <Drawer.Screen name="Settings" options={{ drawerLabel: "Settings" }} component={Settings} />
       </Drawer.Navigator>
+      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </NavigationContainer>
   );
 };

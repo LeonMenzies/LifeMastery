@@ -1,8 +1,8 @@
-import styled from "styled-components/native";
-import { TouchableOpacity, Text, View, Button } from "react-native";
+import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { ScaleDecorator } from "react-native-draggable-flatlist";
 import { AntDesign } from "@expo/vector-icons";
 import { useSetRecoilState } from "recoil";
+import SwipeableItem, { useSwipeableItemParams } from "react-native-swipeable-item";
 
 import { deleteAction } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
@@ -11,14 +11,6 @@ import { colors } from "~styles/GlobalStyles";
 import { actionsShowAddEditAtom } from "~recoil/actionsShowAddEditAtom";
 import { actionItemT } from "~types/Types";
 
-const StyledActionsListItem = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px;
-  margin: 2px 30px;
-`;
 type ActionsListItemT = {
   item: actionItemT;
   drag: any;
@@ -26,16 +18,31 @@ type ActionsListItemT = {
   setActions: any;
 };
 
-export const ActionsListItem = ({ item, drag, isActive, setActions }) => {
+export const ActionsListItem = ({ item, drag, isActive, setActions }: ActionsListItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setActionsShowAddEdit = useSetRecoilState(actionsShowAddEditAtom);
 
+  const UnderlayRight = () => {
+    return (
+      <View style={styles.underlayRight}>
+        <TouchableOpacity onPress={() => deleteAction(setAlert, setActions, item.key)}>
+          <Text style={styles.underlayText}>X</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
-    <ScaleDecorator key={item.key}>
+    <SwipeableItem
+      key={item.key}
+      item={item}
+      renderUnderlayLeft={UnderlayRight}
+      snapPointsLeft={[50]}
+    >
       <TouchableOpacity
         onLongPress={drag}
         disabled={isActive}
-        style={{ backgroundColor: isActive ? colors.lightGrey : item.backgroundColor }}
+        style={{ backgroundColor: isActive ? colors.lightGrey : colors.white }}
         onPress={() =>
           setActionsShowAddEdit({
             show: true,
@@ -43,25 +50,54 @@ export const ActionsListItem = ({ item, drag, isActive, setActions }) => {
           })
         }
       >
-        <StyledActionsListItem>
-          <View>
-            <Text>Actions: {item.action}</Text>
-            <Text>AOL: {item.areaOfImportance}</Text>
-            <Text>Date Added: {item.dateAdded}</Text>
-
-            <Text>
-              Complete:
-              {item.isCompleted ? (
-                <AntDesign name="check" size={20} color="black" />
-              ) : (
-                <AntDesign name="close" size={20} color="black" />
-              )}
-            </Text>
+        <View style={styles.container}>
+          <View style={styles.actionHeading}>
+            <View style={styles.actionTitleContainer}>
+              <Text style={styles.actionTitle}>{item.action}</Text>
+            </View>
+            <Text style={styles.actionTitle}>{item.dateAdded}</Text>
           </View>
-
-          <Button title="Delete" onPress={() => deleteAction(setAlert, setActions, item.key)} />
-        </StyledActionsListItem>
+          <View>
+            <Text style={styles.actionDate}>{item.areaOfImportance}</Text>
+          </View>
+        </View>
       </TouchableOpacity>
-    </ScaleDecorator>
+    </SwipeableItem>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: 5,
+    paddingBottom: 5,
+    width: 300,
+  },
+  actionHeading: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  actionTitle: {
+    fontSize: 17,
+  },
+  actionTitleContainer: {
+    flexDirection: "row",
+    gap: 4,
+  },
+  actionDate: {
+    fontSize: 13,
+    color: colors.darkGrey,
+  },
+  underlayText: {
+    color: colors.white,
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+  underlayRight: {
+    flex: 1,
+    width: 50,
+    backgroundColor: "tomato",
+    alignSelf: "flex-end",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

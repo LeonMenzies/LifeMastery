@@ -16,7 +16,7 @@ export type AreaOfImportanceItemT = {
 
 export type PlanT = {
   key: string;
-  date: Date;
+  date: string;
   focus: string;
   finalized: boolean;
   actionItems: actionItemT[];

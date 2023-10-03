@@ -1,8 +1,6 @@
-import styled from "styled-components/native";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { ScaleDecorator } from "react-native-draggable-flatlist";
-import { AntDesign } from "@expo/vector-icons";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 import { updateAction } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
@@ -61,7 +59,7 @@ export const PlanActionsListItem = ({
         <View style={styles.container}>
           <View style={styles.actionHeading}>
             <View style={styles.actionTitleContainer}>
-              {isInPlan && <View style={styles.inPlain} />}
+              {isInPlan && <View style={styles.inPlan} />}
               <Text style={styles.actionTitle}>{item.action}</Text>
             </View>
             <Text style={styles.actionTitle}>{item.priority}</Text>
@@ -102,7 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: colors.darkGrey,
   },
-  inPlain: {
+  inPlan: {
     width: 3,
     backgroundColor: colors.green,
   },
