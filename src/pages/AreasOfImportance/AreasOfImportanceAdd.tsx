@@ -31,7 +31,7 @@ export const AreasOfImportanceAdd = ({}) => {
         title={"Area of Importance"}
         onChangeText={setAreaOfImportance}
         value={areaOfImportance}
-        placeholder="Add value..."
+        placeholder="Add area of importance..."
         keyboardType="default"
         maxLength={30}
       />

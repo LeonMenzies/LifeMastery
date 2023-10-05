@@ -11,29 +11,33 @@ import { getActions } from "~utils/ActionsHandler";
 import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
 import { Button } from "~components/Button";
 import { PlanCard } from "./PlanCard";
+import { getPlan } from "~utils/PlanHandler";
+import { planAtom } from "~recoil/planAtom";
 
-export const Plan = () => {
+export const Plan = ({ navigation }) => {
   const TODAY_PLAN = "today-plan";
   const TOMORROW_PLAN = "tomorrow-plan";
 
-  const [data, setData] = useState<PlanT>({
-    key: "",
-    date: new Date(),
-    focus: "",
-    finalized: false,
-    actionItems: [],
-  });
   const setAlert = useSetRecoilState(alertAtom);
-  const [text, setText] = useState("test action");
   const [today, setToday] = useState(true);
   const [actions, setActions] = useState<actionItemT[]>([]);
-  const [planActions, setPlanActions] = useState<actionItemT[]>([]);
+  const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
 
   const styles = styling(today);
 
   useEffect(() => {
     getActions(setAlert, setActions, true);
   }, []);
+
+  useEffect(() => {
+    getPlan(setAlert, setPlan, TODAY_PLAN);
+  }, []);
+
+  useEffect(() => {
+    if (plan.finalized) {
+      navigation.navigate("Home");
+    }
+  }, [plan]);
 
   return (
     <SafeAreaView style={styles.container}>
