@@ -75,7 +75,7 @@ export const Navigator = () => {
                       isCompleted: false,
                       timeEstimate: 0,
                       priority: 0,
-                      areaOfImportance: "None",
+                      areaOfImportance: "",
                       dateAdded: date,
                     } as actionItemT,
                   })
@@ -109,7 +109,7 @@ export const Navigator = () => {
                       isCompleted: false,
                       timeEstimate: 0,
                       priority: 0,
-                      areaOfImportance: "None",
+                      areaOfImportance: "",
                       dateAdded: date,
                     } as actionItemT,
                   })

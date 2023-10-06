@@ -1,15 +1,12 @@
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
-import { ScaleDecorator } from "react-native-draggable-flatlist";
-import { AntDesign } from "@expo/vector-icons";
-import { useSetRecoilState } from "recoil";
-import SwipeableItem, { useSwipeableItemParams } from "react-native-swipeable-item";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import SwipeableItem from "react-native-swipeable-item";
 
 import { deleteAction } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
-import { actionsAtom } from "~recoil/actionsAtom";
-import { colors } from "~styles/GlobalStyles";
 import { actionsShowAddEditAtom } from "~recoil/actionsShowAddEditAtom";
-import { actionItemT } from "~types/Types";
+import { ThemeT, actionItemT } from "~types/Types";
+import { themeAtom } from "~recoil/themeAtom";
 
 type ActionsListItemT = {
   item: actionItemT;
@@ -21,6 +18,8 @@ type ActionsListItemT = {
 export const ActionsListItem = ({ item, drag, isActive, setActions }: ActionsListItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setActionsShowAddEdit = useSetRecoilState(actionsShowAddEditAtom);
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(colors);
 
   const UnderlayRight = () => {
     return (
@@ -66,38 +65,39 @@ export const ActionsListItem = ({ item, drag, isActive, setActions }: ActionsLis
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 5,
-    paddingBottom: 5,
-    width: 300,
-  },
-  actionHeading: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  actionTitle: {
-    fontSize: 17,
-  },
-  actionTitleContainer: {
-    flexDirection: "row",
-    gap: 4,
-  },
-  actionDate: {
-    fontSize: 13,
-    color: colors.darkGrey,
-  },
-  underlayText: {
-    color: colors.white,
-    fontSize: 22,
-    fontWeight: "bold",
-  },
-  underlayRight: {
-    flex: 1,
-    width: 50,
-    backgroundColor: "tomato",
-    alignSelf: "flex-end",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+const styling = (colors: ThemeT) =>
+  StyleSheet.create({
+    container: {
+      paddingTop: 5,
+      paddingBottom: 5,
+      width: 300,
+    },
+    actionHeading: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    actionTitle: {
+      fontSize: 17,
+    },
+    actionTitleContainer: {
+      flexDirection: "row",
+      gap: 4,
+    },
+    actionDate: {
+      fontSize: 13,
+      color: colors.darkGrey,
+    },
+    underlayText: {
+      color: colors.white,
+      fontSize: 22,
+      fontWeight: "bold",
+    },
+    underlayRight: {
+      flex: 1,
+      width: 50,
+      backgroundColor: "tomato",
+      alignSelf: "flex-end",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  });

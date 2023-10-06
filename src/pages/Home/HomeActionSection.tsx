@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { actionItemT } from "~types/Types";
 import { HomeActionItem } from "~pages/Home/HomeActionItem";
 import { AreaOfImportanceItemT } from "~types/Types";
-import { useEffect } from "react";
 
 type HomeActionSectionT = {
   aoi: AreaOfImportanceItemT;

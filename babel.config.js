@@ -14,7 +14,6 @@ module.exports = function (api) {
             "~components": "./src/components",
             "~pages": "./src/pages",
             "~recoil": "./src/recoil",
-            "~styles": "./src/styles",
             "~types": "./src/types",
             "~utils": "./src/utils",
           },

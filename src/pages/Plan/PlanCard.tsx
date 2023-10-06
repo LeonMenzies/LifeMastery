@@ -1,16 +1,15 @@
 import { SafeAreaView, StyleSheet, View, TouchableHighlight, Text } from "react-native";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import DraggableFlatList from "react-native-draggable-flatlist";
 
 import { alertAtom } from "~recoil/alertAtom";
 import { TextInput } from "~components/TextInput";
-import { colors } from "~styles/GlobalStyles";
 import { getPlan, savePlan, finalizePlan } from "~utils/PlanHandler";
-import { PlanT, actionItemT } from "~types/Types";
-import { getActions } from "~utils/ActionsHandler";
+import { PlanT, ThemeT, actionItemT } from "~types/Types";
 import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
 import { Button } from "~components/Button";
+import { themeAtom } from "~recoil/themeAtom";
 
 type PlanCardT = {
   day: string;
@@ -29,6 +28,8 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
   });
   const setAlert = useSetRecoilState(alertAtom);
   const [text, setText] = useState("");
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(colors);
 
   useEffect(() => {
     getPlan(setAlert, setData, day);
@@ -131,25 +132,26 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.white,
-    alignContent: "space-between",
-    height: "75%",
-  },
-  focusContainer: {
-    padding: 10,
-    margin: 10,
-    backgroundColor: colors.lightGrey,
-    borderColor: colors.darkGrey,
-    borderWidth: 1,
-    borderRadius: 10,
-  },
-  actionsList: {
-    height: "85%",
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-});
+const styling = (colors: ThemeT) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: colors.white,
+      alignContent: "space-between",
+      height: "75%",
+    },
+    focusContainer: {
+      padding: 10,
+      margin: 10,
+      backgroundColor: colors.lightGrey,
+      borderColor: colors.darkGrey,
+      borderWidth: 1,
+      borderRadius: 10,
+    },
+    actionsList: {
+      height: "85%",
+    },
+    buttonContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+    },
+  });

@@ -1,13 +1,12 @@
-import { TouchableOpacity, Text, View, Button, StyleSheet } from "react-native";
-import { ScaleDecorator } from "react-native-draggable-flatlist";
-import { useSetRecoilState } from "recoil";
-import SwipeableItem, { useSwipeableItemParams } from "react-native-swipeable-item";
+import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import SwipeableItem from "react-native-swipeable-item";
 
 import { deleteAreaOfImportance } from "~utils/AreasOfImportanceHandler";
 import { alertAtom } from "~recoil/alertAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
-import { AreaOfImportanceItemT } from "~types/Types";
-import { colors } from "~styles/GlobalStyles";
+import { AreaOfImportanceItemT, ThemeT } from "~types/Types";
+import { themeAtom } from "~recoil/themeAtom";
 
 type AreasOfImportanceItemT = {
   item: AreaOfImportanceItemT;
@@ -18,7 +17,8 @@ type AreasOfImportanceItemT = {
 export const AreasOfImportanceItem = ({ item, drag, isActive }: AreasOfImportanceItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setData = useSetRecoilState(areasOfImportanceAtom);
-  const styles = styling(item.Color);
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(item.Color, colors);
 
   const UnderlayRight = () => {
     return (
@@ -51,7 +51,7 @@ export const AreasOfImportanceItem = ({ item, drag, isActive }: AreasOfImportanc
   );
 };
 
-const styling = (color: string) =>
+const styling = (color: string, colors: ThemeT) =>
   StyleSheet.create({
     container: {
       padding: 7,

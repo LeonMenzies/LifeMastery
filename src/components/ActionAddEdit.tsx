@@ -1,7 +1,7 @@
 import "react-native-get-random-values";
 import React, { useEffect, useState } from "react";
 import { Modal, StyleSheet, View } from "react-native";
-import { useSetRecoilState, useRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 
 import { Select } from "~components/Select";
 import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
@@ -11,8 +11,8 @@ import { alertAtom } from "~recoil/alertAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { Button } from "~components/Button";
-import { colors } from "~styles/GlobalStyles";
-import { actionItemT } from "~types/Types";
+import { ThemeT, actionItemT } from "~types/Types";
+import { themeAtom } from "~recoil/themeAtom";
 
 type ActionAddEditT = {
   modalVisible: {
@@ -29,6 +29,8 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
   const setAlert = useSetRecoilState(alertAtom);
   const setActions = useSetRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(colors);
 
   useEffect(() => {
     getAreasOfImportance(setAlert, setAreasOfImportance);
@@ -117,7 +119,7 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
                     isCompleted: false,
                     timeEstimate: 0,
                     priority: 0,
-                    areaOfImportance: "None",
+                    areaOfImportance: "",
                     dateAdded: new Date().toISOString().split("T")[0],
                   } as actionItemT,
                 });
@@ -130,28 +132,29 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
   );
 };
 
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: colors.white,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
+const styling = (colors: ThemeT) =>
+  StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
-    shadowOpacity: 0.25,
-    elevation: 5,
-  },
-  buttonContainer: {
-    padding: 10,
-    flexDirection: "row",
-  },
-});
+    modalView: {
+      margin: 20,
+      backgroundColor: colors.white,
+      padding: 35,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      elevation: 5,
+    },
+    buttonContainer: {
+      padding: 10,
+      flexDirection: "row",
+    },
+  });

@@ -5,17 +5,16 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 
 import { getActions } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
-import { actionsAtom } from "~recoil/actionsAtom";
-import { useSetRecoilState, useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ActionsListItem } from "~pages/ActionsList/ActionsListItem";
-import { ActionAddEdit } from "~components/ActionAddEdit";
-import { actionsShowAddEditAtom } from "~recoil/actionsShowAddEditAtom";
-import { colors } from "~styles/GlobalStyles";
+import { themeAtom } from "~recoil/themeAtom";
+import { ThemeT } from "~types/Types";
 
 export const ActionsList = () => {
-  // const [data, setData] = useRecoilState(actionsAtom);
   const setAlert = useSetRecoilState(alertAtom);
   const [actions, setActions] = useState([]);
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(colors);
 
   useEffect(() => {
     getActions(setAlert, setActions);
@@ -41,10 +40,11 @@ export const ActionsList = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.white,
-    height: "100%",
-    alignItems: "center",
-  },
-});
+const styling = (colors: ThemeT) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: colors.white,
+      height: "100%",
+      alignItems: "center",
+    },
+  });

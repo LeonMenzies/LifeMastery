@@ -1,18 +1,14 @@
 import { SafeAreaView, StyleSheet, View, TouchableHighlight, Text } from "react-native";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import DraggableFlatList from "react-native-draggable-flatlist";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { alertAtom } from "~recoil/alertAtom";
-import { TextInput } from "~components/TextInput";
-import { colors } from "~styles/GlobalStyles";
-import { PlanT, actionItemT } from "~types/Types";
+import { PlanT, ThemeT, actionItemT } from "~types/Types";
 import { getActions } from "~utils/ActionsHandler";
-import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
-import { Button } from "~components/Button";
 import { PlanCard } from "~pages/Plan/PlanCard";
 import { getPlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
+import { themeAtom } from "~recoil/themeAtom";
 
 export const Plan = ({ navigation }) => {
   const TODAY_PLAN = "today-plan";
@@ -22,8 +18,8 @@ export const Plan = ({ navigation }) => {
   const [today, setToday] = useState(true);
   const [actions, setActions] = useState<actionItemT[]>([]);
   const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
-
-  const styles = styling(today);
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(today, colors);
 
   useEffect(() => {
     getActions(setAlert, setActions, true);
@@ -76,7 +72,7 @@ export const Plan = ({ navigation }) => {
   );
 };
 
-const styling = (today: boolean) =>
+const styling = (today: boolean, colors: ThemeT) =>
   StyleSheet.create({
     container: {
       backgroundColor: colors.white,

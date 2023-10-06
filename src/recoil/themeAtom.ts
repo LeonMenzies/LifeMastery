@@ -1,28 +1,31 @@
 import { atom } from "recoil";
+import { ThemeT } from "~types/Types";
 
-export const themeAtom = atom({
-  key: "theme",
-  default: {
-    background: "#FFFFFF",
-    primary: "#E1E1E1",
-    secondary: "#000000",
-    primaryText: "#E1E1E1",
-    secondaryText: "#2E2E2E",
-  },
-});
-
-export const lightTheme = {
+export const lightTheme: ThemeT = {
+  primary: "#FFC10C",
+  secondary: "#333333",
   background: "#FFFFFF",
-  primary: "#E1E1E1",
-  secondary: "#BB86FC",
-  primaryText: "#E1E1E1",
-  secondaryText: "#2E2E2E",
+  black: "#000000",
+  white: "#ffffff",
+  lightGrey: "#F5F5F5",
+  darkGrey: "#666666",
+  error: "#FF3333",
+  success: "#33FF33",
 };
 
-export const darkTheme = {
-  background: "#2E2E2E",
-  primary: "#E1E1E1",
-  secondary: "#BB86FC",
-  primaryText: "#E1E1E1",
-  secondaryText: "#2E2E2E",
+export const darkTheme: ThemeT = {
+  primary: "#FFC10C",
+  secondary: "#DDDDDD",
+  background: "#333333",
+  black: "#FFC10C",
+  white: "#FFC10C",
+  lightGrey: "#555555",
+  darkGrey: "#222222",
+  error: "#FF3333",
+  success: "#33FF33",
 };
+
+export const themeAtom = atom<ThemeT>({
+  key: "theme",
+  default: lightTheme,
+});

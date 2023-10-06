@@ -1,30 +1,42 @@
 import { FC } from "react";
 import { StyleSheet, TouchableHighlight, Text } from "react-native";
-import { colors } from "~styles/GlobalStyles";
+import { useRecoilValue } from "recoil";
+
+import { themeAtom } from "~recoil/themeAtom";
+import { ThemeT } from "~types/Types";
 
 type ButtonT = {
   title: string;
   onPress: any;
+  disabled?: boolean;
 };
 
-export const Button: FC<ButtonT> = ({ title, onPress }) => {
+export const Button: FC<ButtonT> = ({ title, onPress, disabled = false }) => {
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(disabled, colors);
+
   return (
-    <TouchableHighlight underlayColor={colors.darkGrey} style={styles.button} onPress={onPress}>
+    <TouchableHighlight
+      underlayColor={colors.darkGrey}
+      style={styles.button}
+      onPress={disabled ? undefined : onPress}
+    >
       <Text style={styles.title}>{title}</Text>
     </TouchableHighlight>
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    padding: 7,
-    margin: 7,
-    zIndex: 2,
-    backgroundColor: colors.mediumGrey,
-    minWidth: 100,
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 15,
-  },
-});
+const styling = (disabled: boolean, colors: ThemeT) =>
+  StyleSheet.create({
+    button: {
+      padding: 7,
+      margin: 7,
+      zIndex: 2,
+      backgroundColor: disabled ? colors.lightGrey : colors.primary,
+      minWidth: 100,
+      alignItems: "center",
+    },
+    title: {
+      fontSize: 15,
+    },
+  });

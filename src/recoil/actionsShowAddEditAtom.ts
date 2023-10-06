@@ -11,7 +11,7 @@ export const actionsShowAddEditAtom = atom({
       isCompleted: false,
       timeEstimate: 0,
       priority: 0,
-      areaOfImportance: "None",
+      areaOfImportance: "",
       dateAdded: new Date().toISOString().split("T")[0],
     } as actionItemT,
   },

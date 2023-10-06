@@ -21,3 +21,15 @@ export type PlanT = {
   finalized: boolean;
   actionKeys: string[];
 };
+
+export type ThemeT = {
+  primary: string;
+  secondary: string;
+  background: string;
+  black: string;
+  white: string;
+  lightGrey: string;
+  darkGrey: string;
+  error: string;
+  success: string;
+}

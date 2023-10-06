@@ -1,14 +1,13 @@
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { ScaleDecorator } from "react-native-draggable-flatlist";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import { updateAction } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
-import { actionsAtom } from "~recoil/actionsAtom";
-import { colors } from "~styles/GlobalStyles";
 import { PlanSetPriority } from "~pages/Plan/PlanSetPriority";
 import { useState } from "react";
-import { actionItemT } from "~types/Types";
+import { ThemeT, actionItemT } from "~types/Types";
+import { themeAtom } from "~recoil/themeAtom";
 
 type PlanActionsListItemT = {
   item: actionItemT;
@@ -31,6 +30,8 @@ export const PlanActionsListItem = ({
 }: PlanActionsListItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useState(false);
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(colors);
 
   const handleSetPriority = (val: number) => {
     updateAction(setAlert, setActions, { ...item, priority: val });
@@ -82,28 +83,29 @@ export const PlanActionsListItem = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 5,
-    paddingBottom: 5,
-  },
-  actionHeading: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  actionTitle: {
-    fontSize: 17,
-  },
-  actionTitleContainer: {
-    flexDirection: "row",
-    gap: 4,
-  },
-  actionDate: {
-    fontSize: 13,
-    color: colors.darkGrey,
-  },
-  inPlan: {
-    width: 3,
-    backgroundColor: colors.green,
-  },
-});
+const styling = (colors: ThemeT) =>
+  StyleSheet.create({
+    container: {
+      paddingTop: 5,
+      paddingBottom: 5,
+    },
+    actionHeading: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    actionTitle: {
+      fontSize: 17,
+    },
+    actionTitleContainer: {
+      flexDirection: "row",
+      gap: 4,
+    },
+    actionDate: {
+      fontSize: 13,
+      color: colors.darkGrey,
+    },
+    inPlan: {
+      width: 3,
+      backgroundColor: colors.success,
+    },
+  });

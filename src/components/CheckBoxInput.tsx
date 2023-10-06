@@ -1,6 +1,8 @@
 import { TouchableOpacity, StyleSheet, GestureResponderEvent } from "react-native";
+import { useRecoilValue } from "recoil";
 
-import { colors } from "~styles/GlobalStyles";
+import { themeAtom } from "~recoil/themeAtom";
+import { ThemeT } from "~types/Types";
 
 type CheckBoxInputT = {
   onPress: (event: GestureResponderEvent) => void;
@@ -9,12 +11,13 @@ type CheckBoxInputT = {
 };
 
 export const CheckBoxInput = ({ onPress, color, completed }: CheckBoxInputT) => {
-  const styles = styling(color, completed);
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(color, completed, colors);
 
   return <TouchableOpacity style={styles.button} onPress={onPress} />;
 };
 
-const styling = (color: string, completed: boolean) =>
+const styling = (color: string, completed: boolean, colors: ThemeT) =>
   StyleSheet.create({
     button: {
       borderRadius: 100,
