@@ -1,0 +1,35 @@
+export type actionItemT = {
+  key: string;
+  action: string;
+  isCompleted: boolean;
+  timeEstimate: number;
+  priority: number;
+  areaOfImportance: string;
+  dateAdded: string;
+};
+
+export type AreaOfImportanceItemT = {
+  key: string;
+  AOI: string;
+  Color: string;
+};
+
+export type PlanT = {
+  key: string;
+  date: string;
+  focus: string;
+  finalized: boolean;
+  actionKeys: string[];
+};
+
+export type ThemeT = {
+  primary: string;
+  secondary: string;
+  background: string;
+  black: string;
+  white: string;
+  lightGrey: string;
+  darkGrey: string;
+  error: string;
+  success: string;
+}
