@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 import Toast from "react-native-root-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { useRecoilValue, useRecoilState } from "recoil";
@@ -23,6 +23,18 @@ export const Navigator = () => {
   const theme = useRecoilValue(themeAtom);
   const [alert, setAlert] = useRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useRecoilState(actionsShowAddEditAtom);
+  const [date, setDate] = useState(new Date().toLocaleString());
+  const key = uuidv4();
+
+  const dateOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false, // Use 24-hour format
+  };
 
   useEffect(() => {
     if (alert !== "") {
@@ -41,8 +53,10 @@ export const Navigator = () => {
     }
   }, [alert]);
 
-  const date = new Date().toISOString().split("T")[0];
-  const key = uuidv4();
+  useEffect(() => {
+    const intervalId = setInterval(() => setDate(new Date().toLocaleString()), 1000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <NavigationContainer>

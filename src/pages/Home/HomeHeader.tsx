@@ -17,7 +17,7 @@ export const HomeHeader = ({ focus, total, complete }: HomeHeaderT) => {
   return (
     <View style={styles.container}>
       <Text style={styles.focusText}>Todays Focus: {focus}</Text>
-      <HomeProgressBar total={total} complete={complete} />
+      {complete > 0 && <HomeProgressBar total={total} complete={complete} />}
     </View>
   );
 };
