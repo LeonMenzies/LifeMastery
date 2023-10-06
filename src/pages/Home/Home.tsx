@@ -8,7 +8,7 @@ import { alertAtom } from "~recoil/alertAtom";
 import { getActions } from "~utils/ActionsHandler";
 import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
 import { HomeActionSection } from "~pages/Home/HomeActionSection";
-import { AreaOfImportanceItemT, PlanT, ThemeT } from "~types/Types";
+import { AreaOfImportanceItemT, PlanT, ThemeT, actionItemT } from "~types/Types";
 import { getPlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
@@ -37,9 +37,23 @@ export const Home = ({ navigation }) => {
     getActions(setAlert, setActions, true);
   }, []);
 
+  const calculateCompleted = () => {
+    let complete = 0;
+    actions.forEach((action: actionItemT) => {
+      if (plan.actionKeys.includes(action.key) && action.isCompleted) {
+        complete++;
+      }
+    });
+    return complete;
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader focus={plan.focus} />
+      <HomeHeader
+        focus={plan.focus}
+        total={plan.actionKeys.length}
+        complete={calculateCompleted()}
+      />
 
       {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
         return (
@@ -61,5 +75,6 @@ const styling = (colors: ThemeT) =>
     container: {
       backgroundColor: colors.white,
       height: "100%",
+      alignItems: "center",
     },
   });

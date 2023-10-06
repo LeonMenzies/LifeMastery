@@ -22,7 +22,7 @@ export const HomeActionSection = ({ aoi, data, setActions, actionKeys }: HomeAct
 
   if (filteredData.length > 0)
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <Text style={styles.title}>{aoi.AOI}</Text>
         {filteredData.map((action: actionItemT) => (
           <HomeActionItem
@@ -33,14 +33,16 @@ export const HomeActionSection = ({ aoi, data, setActions, actionKeys }: HomeAct
           />
         ))}
         <View style={styles.divider} />
-      </SafeAreaView>
+      </View>
     );
 };
 
 const styling = (color: string) =>
   StyleSheet.create({
     container: {
-      margin: 5,
+      padding: 5,
+      marginHorizontal: 20,
+      width: "80%",
     },
     title: {
       fontSize: 20,
