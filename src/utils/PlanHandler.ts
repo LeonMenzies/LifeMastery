@@ -14,11 +14,39 @@ export const getPlan = (setAlert: Function, setData: Function, day: string) => {
   }
 };
 
-export const setPlan = (setAlert: Function, plan: PlanT, day: string) => {
+export const savePlan = (setAlert: Function, plan: PlanT, day: string) => {
   try {
     const planJson = JSON.stringify(plan);
-    AsyncStorage.setItem(day, planJson);
+    AsyncStorage.setItem(day, planJson).then(() => setAlert("Successfully Saved Plan"));
   } catch (e) {
-    setAlert("Failed to set todays plan");
+    setAlert("Failed to set plan");
+  }
+};
+
+export const finalizePlan = (setAlert: Function, plan: PlanT, callBack: any, day: string) => {
+  try {
+    const planJson = JSON.stringify(plan);
+    AsyncStorage.setItem(day, planJson).then(() => {
+      setAlert("Successfully Finalized Plan");
+      callBack();
+    });
+  } catch (e) {
+    setAlert("Failed to set plan");
+  }
+};
+
+export const clearPlan = (setAlert: Function, day: string) => {
+  try {
+    const defaultPlan = JSON.stringify({
+      key: "",
+      date: "",
+      focus: "",
+      finalized: false,
+      actionKeys: [] as string[],
+    });
+
+    AsyncStorage.setItem(day, defaultPlan).then(() => setAlert("Successfully cleared plan"));
+  } catch (e) {
+    setAlert("Failed to clear plan");
   }
 };

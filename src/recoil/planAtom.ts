@@ -8,6 +8,6 @@ export const planAtom = atom({
     date: "",
     focus: "",
     finalized: false,
-    actionItems: [] as actionItemT[],
+    actionKeys: [] as string[],
   },
 });

@@ -10,7 +10,7 @@ import { PlanT, actionItemT } from "~types/Types";
 import { getActions } from "~utils/ActionsHandler";
 import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
 import { Button } from "~components/Button";
-import { PlanCard } from "./PlanCard";
+import { PlanCard } from "~pages/Plan/PlanCard";
 import { getPlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
 
@@ -58,9 +58,19 @@ export const Plan = ({ navigation }) => {
         </TouchableHighlight>
       </View>
       {today ? (
-        <PlanCard day={TODAY_PLAN} actions={actions} setActions={setActions} />
+        <PlanCard
+          day={TODAY_PLAN}
+          actions={actions}
+          setActions={setActions}
+          navigation={navigation}
+        />
       ) : (
-        <PlanCard day={TOMORROW_PLAN} actions={actions} setActions={setActions} />
+        <PlanCard
+          day={TOMORROW_PLAN}
+          actions={actions}
+          setActions={setActions}
+          navigation={navigation}
+        />
       )}
     </SafeAreaView>
   );

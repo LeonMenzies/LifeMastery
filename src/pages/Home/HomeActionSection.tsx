@@ -8,14 +8,18 @@ import { useEffect } from "react";
 type HomeActionSectionT = {
   aoi: AreaOfImportanceItemT;
   data: actionItemT[];
+  actionKeys: string[];
   setActions: any;
 };
 
-export const HomeActionSection = ({ aoi, data, setActions }: HomeActionSectionT) => {
+export const HomeActionSection = ({ aoi, data, setActions, actionKeys }: HomeActionSectionT) => {
   const styles = styling(aoi.Color);
-  const filteredData: actionItemT[] = data.filter((action: actionItemT) => {
-    return action.areaOfImportance === aoi.AOI;
-  });
+
+  const filteredData: actionItemT[] = data
+    .filter((action: actionItemT) => {
+      return action.areaOfImportance === aoi.AOI && actionKeys.includes(action.key);
+    })
+    .sort((a, b) => a.priority - b.priority);
 
   if (filteredData.length > 0)
     return (

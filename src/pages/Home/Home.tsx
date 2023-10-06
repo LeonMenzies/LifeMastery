@@ -18,10 +18,10 @@ export const Home = ({ navigation }) => {
 
   const setAlert = useSetRecoilState(alertAtom);
   const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
-  // const [actions, setActions] = useRecoilState(actionsAtom);
+  const [actions, setActions] = useRecoilState(actionsAtom);
 
   const [areasOfImportance, setAreasOfImportance] = useState([]);
-  const [actions, setActions] = useState([]);
+  // const [actions, setActions] = useState([]);
 
   useEffect(() => {
     if (!plan.finalized) {
@@ -29,12 +29,12 @@ export const Home = ({ navigation }) => {
       navigation.navigate("Plan");
     } else {
       getAreasOfImportance(setAlert, setAreasOfImportance);
-      setActions(plan.actionItems);
     }
-  }, []);
+  }, [navigation]);
 
   useEffect(() => {
     getPlan(setAlert, setPlan, TODAY_PLAN);
+    getActions(setAlert, setActions, true);
   }, []);
 
   return (
@@ -42,7 +42,15 @@ export const Home = ({ navigation }) => {
       <HomeHeader focus={plan.focus} />
 
       {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
-        return <HomeActionSection key={aoi.key} aoi={aoi} data={actions} setActions={setActions} />;
+        return (
+          <HomeActionSection
+            key={aoi.key}
+            aoi={aoi}
+            data={actions}
+            setActions={setActions}
+            actionKeys={plan.actionKeys}
+          />
+        );
       })}
     </SafeAreaView>
   );

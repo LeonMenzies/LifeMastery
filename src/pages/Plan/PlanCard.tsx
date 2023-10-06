@@ -6,7 +6,7 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 import { alertAtom } from "~recoil/alertAtom";
 import { TextInput } from "~components/TextInput";
 import { colors } from "~styles/GlobalStyles";
-import { getPlan, setPlan } from "~utils/PlanHandler";
+import { getPlan, savePlan, finalizePlan } from "~utils/PlanHandler";
 import { PlanT, actionItemT } from "~types/Types";
 import { getActions } from "~utils/ActionsHandler";
 import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
@@ -16,18 +16,18 @@ type PlanCardT = {
   day: string;
   actions: actionItemT[];
   setActions: any;
+  navigation: any;
 };
 
-export const PlanCard = ({ day, actions, setActions }: PlanCardT) => {
+export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) => {
   const [data, setData] = useState<PlanT>({
     key: "",
     date: "",
     focus: "",
     finalized: false,
-    actionItems: [],
+    actionKeys: [],
   });
   const setAlert = useSetRecoilState(alertAtom);
-  const [planActions, setPlanActions] = useState<actionItemT[]>([]);
   const [text, setText] = useState("");
 
   useEffect(() => {
@@ -38,8 +38,29 @@ export const PlanCard = ({ day, actions, setActions }: PlanCardT) => {
     setText(data.focus);
   }, [data]);
 
+  const updateFocus = (newFocus: string) => {
+    setData((prevData) => ({
+      ...prevData,
+      focus: newFocus,
+    }));
+  };
+
+  const addActionKey = (actionKey: string) => {
+    setData((prevData) => ({
+      ...prevData,
+      actionKeys: [...prevData.actionKeys, actionKey],
+    }));
+  };
+
+  const removeActionKey = (actionKey: string) => {
+    setData((prevData) => ({
+      ...prevData,
+      actionKeys: prevData.actionKeys.filter((key: string) => key !== actionKey),
+    }));
+  };
+
   const handleSave = () => {
-    setPlan(setAlert, data, day);
+    savePlan(setAlert, data, day);
   };
 
   const handleFinalize = () => {
@@ -48,20 +69,21 @@ export const PlanCard = ({ day, actions, setActions }: PlanCardT) => {
       return;
     }
 
-    if (planActions.length < 1) {
+    if (data.actionKeys.length < 1) {
       setAlert("You must add at least one action to your plan");
       return;
     }
 
-    setPlan(
+    finalizePlan(
       setAlert,
       { ...data, finalized: true, date: new Date().toISOString().split("T")[0] },
+      () => navigation.navigate("Plan"),
       day
     );
   };
 
   const renderItem = ({ item, drag, isActive }) => {
-    const isInPlan = planActions.some((action: actionItemT) => action.key === item.key);
+    const isInPlan = data.actionKeys.some((actionKey: string) => actionKey === item.key);
 
     return (
       <PlanActionsListItem
@@ -69,7 +91,8 @@ export const PlanCard = ({ day, actions, setActions }: PlanCardT) => {
         drag={drag}
         isActive={isActive}
         setActions={setActions}
-        setPlanActions={setPlanActions}
+        addAction={addActionKey}
+        removeAction={removeActionKey}
         isInPlan={isInPlan}
       />
     );
@@ -81,7 +104,7 @@ export const PlanCard = ({ day, actions, setActions }: PlanCardT) => {
         <View style={styles.focusContainer}>
           <TextInput
             title={"Focus"}
-            onChangeText={setText}
+            onChangeText={updateFocus}
             value={text}
             placeholder="Add focus..."
             keyboardType="default"

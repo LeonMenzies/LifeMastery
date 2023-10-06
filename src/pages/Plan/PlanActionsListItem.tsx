@@ -15,7 +15,8 @@ type PlanActionsListItemT = {
   drag: any;
   isActive: boolean;
   setActions: any;
-  setPlanActions: any;
+  addAction: (k: string) => void;
+  removeAction: (k: string) => void;
   isInPlan: boolean;
 };
 
@@ -24,7 +25,8 @@ export const PlanActionsListItem = ({
   drag,
   isActive,
   setActions,
-  setPlanActions,
+  addAction,
+  removeAction,
   isInPlan,
 }: PlanActionsListItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
@@ -32,14 +34,14 @@ export const PlanActionsListItem = ({
 
   const handleSetPriority = (val: number) => {
     updateAction(setAlert, setActions, { ...item, priority: val });
-    setPlanActions((actions) => [...actions, item]);
+    addAction(item.key);
     setModalVisible(false);
   };
 
   const handleCancel = () => {
     updateAction(setAlert, setActions, { ...item, priority: 0 });
     setModalVisible(false);
-    setPlanActions((actions) => actions.filter((action: actionItemT) => action.key !== item.key));
+    removeAction(item.key);
   };
 
   return (
