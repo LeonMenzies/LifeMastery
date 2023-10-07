@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -54,18 +54,19 @@ export const Home = ({ navigation }) => {
         total={plan.actionKeys.length}
         complete={calculateCompleted()}
       />
-
-      {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
-        return (
-          <HomeActionSection
-            key={aoi.key}
-            aoi={aoi}
-            data={actions}
-            setActions={setActions}
-            actionKeys={plan.actionKeys}
-          />
-        );
-      })}
+      <ScrollView style={styles.scrollContainer}>
+        {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
+          return (
+            <HomeActionSection
+              key={aoi.key}
+              aoi={aoi}
+              data={actions}
+              setActions={setActions}
+              actionKeys={plan.actionKeys}
+            />
+          );
+        })}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -76,5 +77,8 @@ const styling = (colors: ThemeT) =>
       backgroundColor: colors.white,
       height: "100%",
       alignItems: "center",
+    },
+    scrollContainer: {
+      width: "80%",
     },
   });

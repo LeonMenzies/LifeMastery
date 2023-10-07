@@ -47,7 +47,6 @@ const styling = (colors: ThemeT) =>
     container: {
       backgroundColor: colors.white,
       height: "100%",
-      width: 300,
-      alignContent: "center",
+      alignItems: "center",
     },
   });

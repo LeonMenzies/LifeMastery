@@ -54,7 +54,9 @@ export const AreasOfImportanceItem = ({ item, drag, isActive }: AreasOfImportanc
 const styling = (color: string, colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      padding: 7,
+      paddingTop: 5,
+      paddingBottom: 5,
+      width: 300,
       flexDirection: "row",
       justifyContent: "space-between",
     },

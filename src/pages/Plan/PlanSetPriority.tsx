@@ -23,12 +23,12 @@ export const PlanSetPriority = ({
   setModalVisible,
   handleCancel,
 }: PlanSetPriorityT) => {
-  const [priorityValue, setPriorityValue] = useState(0);
+  const [priorityValue, setPriorityValue] = useState(1);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
   useEffect(() => {
-    setPriorityValue(0);
+    setPriorityValue(1);
   }, []);
 
   return (

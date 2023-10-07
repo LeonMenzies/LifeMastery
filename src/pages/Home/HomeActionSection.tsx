@@ -40,9 +40,7 @@ export const HomeActionSection = ({ aoi, data, setActions, actionKeys }: HomeAct
 const styling = (color: string) =>
   StyleSheet.create({
     container: {
-      padding: 5,
-      marginHorizontal: 20,
-      width: "80%",
+      marginHorizontal: 10,
     },
     title: {
       fontSize: 20,

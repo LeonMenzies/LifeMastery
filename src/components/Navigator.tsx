@@ -2,10 +2,16 @@ import "react-native-gesture-handler";
 import Toast from "react-native-root-toast";
 import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import {
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+  createDrawerNavigator,
+} from "@react-navigation/drawer";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { Button } from "react-native";
+import { Button, StyleSheet, Text, View } from "react-native";
 import { v4 as uuidv4 } from "uuid";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import { themeAtom } from "~recoil/themeAtom";
 import { alertAtom } from "~recoil/alertAtom";
@@ -15,7 +21,7 @@ import { ActionsList } from "~pages/ActionsList/ActionsList";
 import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
 import { Settings } from "~pages/Settings/Settings";
 import { Plan } from "~pages/Plan/Plan";
-import { actionItemT } from "~types/Types";
+import { ThemeT, actionItemT } from "~types/Types";
 import { ActionAddEdit } from "~components/ActionAddEdit";
 
 export const Navigator = () => {
@@ -23,18 +29,11 @@ export const Navigator = () => {
   const theme = useRecoilValue(themeAtom);
   const [alert, setAlert] = useRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useRecoilState(actionsShowAddEditAtom);
+  const [settingsVisible, setSettingsVisible] = useState(false);
   const [date, setDate] = useState(new Date().toLocaleString());
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(colors);
   const key = uuidv4();
-
-  const dateOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false, // Use 24-hour format
-  };
 
   useEffect(() => {
     if (alert !== "") {
@@ -58,6 +57,28 @@ export const Navigator = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  const CustomDrawerContent = (props: any) => {
+    return (
+      <DrawerContentScrollView {...props} style={styles.container}>
+        <DrawerItemList {...props} />
+        <DrawerItem
+          label={() => <Icon name="gear" size={22} color={colors.black} />}
+          style={styles.settingsButton}
+          onPress={() => setSettingsVisible(true)}
+        />
+      </DrawerContentScrollView>
+    );
+  };
+
+  const CustomLabel = (label: string, icon: string) => {
+    return (
+      <View style={styles.label}>
+        <Icon name={icon} size={22} color={colors.black} />
+        <Text>{label}</Text>
+      </View>
+    );
+  };
+
   return (
     <NavigationContainer>
       <Drawer.Navigator
@@ -72,11 +93,12 @@ export const Navigator = () => {
           headerTintColor: theme.secondary,
           drawerActiveTintColor: theme.secondary,
         }}
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen
           name={"Plan"}
           options={{
-            drawerLabel: "Plan",
+            drawerLabel: () => CustomLabel("Plan", "home"),
             headerRight: () => (
               <Button
                 title="Add"
@@ -102,7 +124,7 @@ export const Navigator = () => {
         <Drawer.Screen
           name={"Home"}
           options={{
-            drawerLabel: "Home",
+            drawerLabel: () => CustomLabel("Home", "home"),
             title: `${date}`,
           }}
           component={Home}
@@ -110,7 +132,7 @@ export const Navigator = () => {
         <Drawer.Screen
           name="Actions List"
           options={{
-            drawerLabel: "Actions List",
+            drawerLabel: () => CustomLabel("Actions List", "home"),
             headerRight: () => (
               <Button
                 title="Add"
@@ -135,12 +157,28 @@ export const Navigator = () => {
         />
         <Drawer.Screen
           name="Areas Of Importance"
-          options={{ drawerLabel: "AOI" }}
+          options={{ drawerLabel: () => CustomLabel("AOI", "home") }}
           component={AreasOfImportance}
         />
-        <Drawer.Screen name="Settings" options={{ drawerLabel: "Settings" }} component={Settings} />
       </Drawer.Navigator>
       <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      <Settings modalVisible={settingsVisible} setModalVisible={setSettingsVisible} />
     </NavigationContainer>
   );
 };
+
+const styling = (colors: ThemeT) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: colors.white,
+      alignContent: "space-between",
+    },
+    settingsButton: {
+      bottom: 0,
+    },
+    label: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
+    },
+  });

@@ -84,14 +84,14 @@ const styling = (today: boolean, colors: ThemeT) =>
       width: "100%",
     },
     buttonToday: {
-      backgroundColor: today ? colors.white : colors.lightGrey,
+      backgroundColor: today ? colors.white : colors.darkGrey,
       alignItems: "center",
       justifyContent: "center",
       width: "50%",
       height: 30,
     },
     buttonTomorrow: {
-      backgroundColor: today ? colors.lightGrey : colors.white,
+      backgroundColor: today ? colors.darkGrey : colors.white,
       alignItems: "center",
       justifyContent: "center",
       width: "50%",

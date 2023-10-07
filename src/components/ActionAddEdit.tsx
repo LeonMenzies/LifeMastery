@@ -46,6 +46,11 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
       return;
     }
 
+    if (timeEstimate > 9) {
+      setAlert("Time estimate cannot be over 9 hours");
+      return;
+    }
+
     if (!areaOfImportance || areaOfImportance === "No AOI found, please add from the AOI tab") {
       setAlert("Area of Importance is required");
       return;

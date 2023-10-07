@@ -20,7 +20,7 @@ export const NumberInput: FC<NumberInputT> = ({ onChange, value, maxValue }) => 
       <TouchableHighlight
         style={styles.button}
         onPress={() => {
-          if (value > 0) {
+          if (value > 1) {
             onChange(value - 1);
           }
         }}
