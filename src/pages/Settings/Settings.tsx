@@ -9,6 +9,8 @@ import { clearPlan } from "~utils/PlanHandler";
 import { ThemeT } from "~types/Types";
 import { Button } from "~components/Button";
 import { SettingsThemeSelect } from "~pages/Settings/SettingsThemeSelect";
+import { planAtom } from "~recoil/planAtom";
+import { actionsAtom } from "~recoil/actionsAtom";
 
 type SettingsT = {
   modalVisible: boolean;
@@ -20,6 +22,8 @@ export const Settings = ({ modalVisible, setModalVisible }: SettingsT) => {
   const TOMORROW_PLAN = "tomorrow-plan";
 
   const setAlert = useSetRecoilState(alertAtom);
+  const setPlan = useSetRecoilState(planAtom);
+  const setActions = useSetRecoilState(actionsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
@@ -46,14 +50,17 @@ export const Settings = ({ modalVisible, setModalVisible }: SettingsT) => {
         <View style={styles.modalView}>
           <View>
             <SettingsThemeSelect />
-            <SettingsItem title="Clear Actions" callBack={() => clearActions(setAlert)} />
+            <SettingsItem
+              title="Clear Actions"
+              callBack={() => clearActions(setAlert, setActions)}
+            />
             <SettingsItem
               title="Clear Todays Plan"
-              callBack={() => clearPlan(setAlert, TODAY_PLAN)}
+              callBack={() => clearPlan(setAlert, setPlan, TODAY_PLAN)}
             />
             <SettingsItem
               title="Clear Tomorrows Plan"
-              callBack={() => clearPlan(setAlert, TOMORROW_PLAN)}
+              callBack={() => clearPlan(setAlert, setPlan, TOMORROW_PLAN)}
             />
           </View>
           <Button title="Close" onPress={() => setModalVisible(false)} />

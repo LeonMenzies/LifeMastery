@@ -35,17 +35,20 @@ export const finalizePlan = (setAlert: Function, plan: PlanT, navigation: any, d
   }
 };
 
-export const clearPlan = (setAlert: Function, day: string) => {
+export const clearPlan = (setAlert: Function, setData: Function, day: string) => {
   try {
-    const defaultPlan = JSON.stringify({
+    const defaultPlan = {
       key: "",
       date: "",
       focus: "",
       finalized: false,
       actionKeys: [] as string[],
-    });
+    };
 
-    AsyncStorage.setItem(day, defaultPlan).then(() => setAlert("Successfully cleared plan"));
+    AsyncStorage.setItem(day, JSON.stringify(defaultPlan)).then(() => {
+      setData(defaultPlan);
+      setAlert("Successfully cleared plan");
+    });
   } catch (e) {
     setAlert("Failed to clear plan");
   }

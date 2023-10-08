@@ -135,11 +135,12 @@ export const deleteAction = (setAlert, setData, key) => {
   }
 };
 
-export const clearActions = (setAlert) => {
+export const clearActions = (setAlert, setData) => {
   try {
-    AsyncStorage.setItem(ACTION_KEY, JSON.stringify([])).then(() =>
-      setAlert("Successfully cleared actions")
-    );
+    AsyncStorage.setItem(ACTION_KEY, JSON.stringify([])).then(() => {
+      setData([]);
+      setAlert("Successfully cleared actions");
+    });
   } catch (e) {
     setAlert("Failed to clear actions");
   }

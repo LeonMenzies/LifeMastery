@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import DraggableFlatList from "react-native-draggable-flatlist";
 
 import { alertAtom } from "~recoil/alertAtom";
@@ -10,6 +10,7 @@ import { PlanT, ThemeT, actionItemT } from "~types/Types";
 import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
 import { Button } from "~components/Button";
 import { themeAtom } from "~recoil/themeAtom";
+import { planAtom } from "~recoil/planAtom";
 
 type PlanCardT = {
   day: string;
@@ -19,21 +20,15 @@ type PlanCardT = {
 };
 
 export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) => {
-  const [data, setData] = useState<PlanT>({
-    key: "",
-    date: "",
-    focus: "",
-    finalized: false,
-    actionKeys: [],
-  });
   const setAlert = useSetRecoilState(alertAtom);
+  const [data, setData] = useRecoilState(planAtom);
   const [text, setText] = useState("");
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
   useEffect(() => {
     getPlan(setAlert, setData, day);
-  }, []);
+  }, [day]);
 
   useEffect(() => {
     setText(data.focus);
@@ -121,13 +116,13 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
               keyExtractor={(item) => item.key}
               renderItem={renderItem}
             />
-            <View style={styles.centeredView}>
-              {data.finalized && (
+            {data.finalized && (
+              <View style={styles.centeredView}>
                 <View style={styles.finalizedContainer}>
-                  <Text style={styles.finalizedText}>{"Day Already Finalized"}</Text>
+                  <Text style={styles.finalizedText}>{"Day is Finalized"}</Text>
                 </View>
-              )}
-            </View>
+              </View>
+            )}
           </View>
         ) : (
           <Text>No Actions in your list</Text>

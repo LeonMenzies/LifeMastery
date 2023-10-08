@@ -30,11 +30,11 @@ export const Home = ({ navigation }) => {
     } else {
       getAreasOfImportance(setAlert, setAreasOfImportance);
     }
-  }, [navigation]);
+  }, []);
 
   useEffect(() => {
     getPlan(setAlert, setPlan, TODAY_PLAN);
-    getActions(setAlert, setActions, true);
+    getActions(setAlert, setActions);
   }, []);
 
   const calculateCompleted = () => {

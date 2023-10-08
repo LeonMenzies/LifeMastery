@@ -1,5 +1,4 @@
 import { atom } from "recoil";
-import { actionItemT } from "~types/Types";
 
 export const planAtom = atom({
   key: "plan",

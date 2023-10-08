@@ -95,6 +95,7 @@ export const Navigator = () => {
           options={{
             drawerLabel: () => customLabel("Home", "home"),
             title: `${date}`,
+            unmountOnBlur: true,
           }}
           component={Home}
         />
@@ -102,6 +103,7 @@ export const Navigator = () => {
           name={"Plan"}
           options={{
             drawerLabel: () => customLabel("Plan", "pencil"),
+            unmountOnBlur: true,
             headerRight: () => (
               <Button
                 title="Add"
@@ -128,6 +130,7 @@ export const Navigator = () => {
           name="Actions List"
           options={{
             drawerLabel: () => customLabel("Actions List", "list"),
+            unmountOnBlur: true,
             headerRight: () => (
               <Button
                 title="Add"
@@ -152,7 +155,10 @@ export const Navigator = () => {
         />
         <Drawer.Screen
           name="Areas Of Importance"
-          options={{ drawerLabel: () => customLabel("Areas of Importance", "flag") }}
+          options={{
+            drawerLabel: () => customLabel("Areas of Importance", "flag"),
+            unmountOnBlur: true,
+          }}
           component={AreasOfImportance}
         />
       </Drawer.Navigator>

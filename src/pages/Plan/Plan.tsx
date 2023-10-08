@@ -3,11 +3,9 @@ import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { alertAtom } from "~recoil/alertAtom";
-import { PlanT, ThemeT, actionItemT } from "~types/Types";
+import { ThemeT } from "~types/Types";
 import { getActions } from "~utils/ActionsHandler";
 import { PlanCard } from "~pages/Plan/PlanCard";
-import { getPlan } from "~utils/PlanHandler";
-import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 
@@ -18,23 +16,12 @@ export const Plan = ({ navigation }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [today, setToday] = useState(true);
   const [actions, setActions] = useRecoilState(actionsAtom);
-  const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(today, colors);
 
   useEffect(() => {
     getActions(setAlert, setActions);
   }, []);
-
-  useEffect(() => {
-    getPlan(setAlert, setPlan, TODAY_PLAN);
-  }, []);
-
-  useEffect(() => {
-    if (plan.finalized) {
-      navigation.navigate("Home");
-    }
-  }, [plan]);
 
   return (
     <SafeAreaView style={styles.container}>
