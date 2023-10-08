@@ -88,7 +88,7 @@ const styling = (colors: ThemeT) =>
     },
     selectedTextPlaceholder: {
       fontSize: 17,
-      color: colors.lightGrey,
+      color: colors.darkGrey,
     },
     select: {
       flexDirection: "row",

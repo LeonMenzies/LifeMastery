@@ -9,6 +9,7 @@ import { PlanCard } from "~pages/Plan/PlanCard";
 import { getPlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
+import { actionsAtom } from "~recoil/actionsAtom";
 
 export const Plan = ({ navigation }) => {
   const TODAY_PLAN = "today-plan";
@@ -16,7 +17,7 @@ export const Plan = ({ navigation }) => {
 
   const setAlert = useSetRecoilState(alertAtom);
   const [today, setToday] = useState(true);
-  const [actions, setActions] = useState<actionItemT[]>([]);
+  const [actions, setActions] = useRecoilState(actionsAtom);
   const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(today, colors);

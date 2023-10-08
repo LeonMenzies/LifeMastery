@@ -26,7 +26,6 @@ import { ActionAddEdit } from "~components/ActionAddEdit";
 
 export const Navigator = () => {
   const Drawer = createDrawerNavigator();
-  const theme = useRecoilValue(themeAtom);
   const [alert, setAlert] = useRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useRecoilState(actionsShowAddEditAtom);
   const [settingsVisible, setSettingsVisible] = useState(false);
@@ -39,7 +38,7 @@ export const Navigator = () => {
     if (alert !== "") {
       let toast = Toast.show(alert, {
         duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM,
+        position: Toast.positions.TOP,
         hideOnPress: true,
         shadow: true,
         animation: true,
@@ -59,21 +58,22 @@ export const Navigator = () => {
 
   const CustomDrawerContent = (props: any) => {
     return (
-      <DrawerContentScrollView {...props} style={styles.container}>
-        <DrawerItemList {...props} />
+      <View style={styles.container}>
+        <View>
+          <DrawerItemList {...props} />
+        </View>
         <DrawerItem
-          label={() => <Icon name="gear" size={22} color={colors.black} />}
-          style={styles.settingsButton}
+          label={() => customLabel("Settings", "gear")}
           onPress={() => setSettingsVisible(true)}
         />
-      </DrawerContentScrollView>
+      </View>
     );
   };
 
-  const CustomLabel = (label: string, icon: string) => {
+  const customLabel = (label: string, icon: string) => {
     return (
       <View style={styles.label}>
-        <Icon name={icon} size={22} color={colors.black} />
+        <Icon name={icon} size={17} color={colors.primary} />
         <Text>{label}</Text>
       </View>
     );
@@ -84,21 +84,29 @@ export const Navigator = () => {
       <Drawer.Navigator
         screenOptions={{
           drawerStyle: {
-            backgroundColor: theme.background,
+            backgroundColor: colors.background,
             width: 200,
           },
           headerStyle: {
-            backgroundColor: theme.background,
+            backgroundColor: colors.background,
           },
-          headerTintColor: theme.secondary,
-          drawerActiveTintColor: theme.secondary,
+          headerTintColor: colors.secondary,
+          drawerActiveTintColor: colors.secondary,
         }}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
         <Drawer.Screen
+          name={"Home"}
+          options={{
+            drawerLabel: () => customLabel("Home", "home"),
+            title: `${date}`,
+          }}
+          component={Home}
+        />
+        <Drawer.Screen
           name={"Plan"}
           options={{
-            drawerLabel: () => CustomLabel("Plan", "home"),
+            drawerLabel: () => customLabel("Plan", "pencil"),
             headerRight: () => (
               <Button
                 title="Add"
@@ -122,17 +130,9 @@ export const Navigator = () => {
           component={Plan}
         />
         <Drawer.Screen
-          name={"Home"}
-          options={{
-            drawerLabel: () => CustomLabel("Home", "home"),
-            title: `${date}`,
-          }}
-          component={Home}
-        />
-        <Drawer.Screen
           name="Actions List"
           options={{
-            drawerLabel: () => CustomLabel("Actions List", "home"),
+            drawerLabel: () => customLabel("Actions List", "list"),
             headerRight: () => (
               <Button
                 title="Add"
@@ -157,7 +157,7 @@ export const Navigator = () => {
         />
         <Drawer.Screen
           name="Areas Of Importance"
-          options={{ drawerLabel: () => CustomLabel("AOI", "home") }}
+          options={{ drawerLabel: () => customLabel("Areas of Importance", "flag") }}
           component={AreasOfImportance}
         />
       </Drawer.Navigator>
@@ -170,11 +170,10 @@ export const Navigator = () => {
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.white,
-      alignContent: "space-between",
-    },
-    settingsButton: {
-      bottom: 0,
+      marginBottom: 30,
+      marginTop: 60,
+      flex: 1,
+      justifyContent: "space-between",
     },
     label: {
       flexDirection: "row",
