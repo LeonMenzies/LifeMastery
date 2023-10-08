@@ -13,13 +13,13 @@ export const SettingsThemeSelect = () => {
 
   const onChange = (b: boolean) => {
     setLight(b);
-    light ? setTheme(lightTheme) : setTheme(darkTheme);
+    light ? setTheme(darkTheme) : setTheme(lightTheme);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <Text style={styles.title}>{light ? "Dark Mode" : "Light Mode"}</Text>
+        <Text style={styles.title}>{light ? "Light Mode" : "Dark Mode"}</Text>
 
         <View style={styles.switch}>
           <Switch
