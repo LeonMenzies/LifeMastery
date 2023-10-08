@@ -40,14 +40,14 @@ export const Plan = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonContainer}>
         <TouchableHighlight
-          underlayColor={colors.darkGrey}
+          underlayColor={colors.grey}
           style={styles.buttonToday}
           onPress={() => setToday(true)}
         >
           <Text style={styles.buttonText}>{"Today"}</Text>
         </TouchableHighlight>
         <TouchableHighlight
-          underlayColor={colors.darkGrey}
+          underlayColor={colors.grey}
           style={styles.buttonTomorrow}
           onPress={() => setToday(false)}
         >
@@ -85,14 +85,14 @@ const styling = (today: boolean, colors: ThemeT) =>
       width: "100%",
     },
     buttonToday: {
-      backgroundColor: today ? colors.white : colors.darkGrey,
+      backgroundColor: today ? colors.white : colors.grey,
       alignItems: "center",
       justifyContent: "center",
       width: "50%",
       height: 30,
     },
     buttonTomorrow: {
-      backgroundColor: today ? colors.darkGrey : colors.white,
+      backgroundColor: today ? colors.grey : colors.white,
       alignItems: "center",
       justifyContent: "center",
       width: "50%",

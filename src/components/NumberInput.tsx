@@ -51,7 +51,7 @@ const styling = (colors: ThemeT) =>
     },
     value: {
       fontSize: 15,
-      color: colors.darkGrey,
+      color: colors.grey,
       padding: 10,
     },
     button: {

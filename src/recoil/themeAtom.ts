@@ -8,7 +8,7 @@ export const lightTheme: ThemeT = {
   black: "#000000",
   white: "#ffffff",
   lightGrey: "#F5F5F5",
-  darkGrey: "#666666",
+  grey: "#828282",
   error: "#900000",
   success: "#009000",
 };
@@ -20,7 +20,7 @@ export const darkTheme: ThemeT = {
   black: "#FFC10C",
   white: "#FFC10C",
   lightGrey: "#555555",
-  darkGrey: "#222222",
+  grey: "#222222",
   error: "#900000",
   success: "#009000",
 };

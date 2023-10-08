@@ -102,7 +102,7 @@ const styling = (colors: ThemeT) =>
     },
     actionDate: {
       fontSize: 13,
-      color: colors.darkGrey,
+      color: colors.grey,
     },
     inPlan: {
       width: 3,

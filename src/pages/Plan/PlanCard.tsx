@@ -143,7 +143,7 @@ const styling = (colors: ThemeT) =>
       padding: 10,
       margin: 10,
       backgroundColor: colors.lightGrey,
-      borderColor: colors.darkGrey,
+      borderColor: colors.grey,
       borderWidth: 1,
       borderRadius: 10,
     },

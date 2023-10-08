@@ -17,7 +17,7 @@ export const Button: FC<ButtonT> = ({ title, onPress, disabled = false }) => {
 
   return (
     <TouchableHighlight
-      underlayColor={colors.darkGrey}
+      underlayColor={colors.grey}
       style={styles.button}
       onPress={disabled ? undefined : onPress}
     >

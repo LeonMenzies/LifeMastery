@@ -54,7 +54,7 @@ const styling = (colors: ThemeT) =>
     },
     title: {
       fontSize: 15,
-      color: colors.darkGrey,
+      color: colors.grey,
     },
     input: {
       fontSize: 17,

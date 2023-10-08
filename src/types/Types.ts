@@ -29,7 +29,7 @@ export type ThemeT = {
   black: string;
   white: string;
   lightGrey: string;
-  darkGrey: string;
+  grey: string;
   error: string;
   success: string;
-}
+};

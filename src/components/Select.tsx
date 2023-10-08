@@ -81,14 +81,14 @@ const styling = (colors: ThemeT) =>
     },
     title: {
       fontSize: 15,
-      color: colors.darkGrey,
+      color: colors.grey,
     },
     selectedText: {
       fontSize: 17,
     },
     selectedTextPlaceholder: {
       fontSize: 17,
-      color: colors.darkGrey,
+      color: colors.grey,
     },
     select: {
       flexDirection: "row",
