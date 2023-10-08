@@ -1,4 +1,4 @@
-import { View, Modal, StyleSheet } from "react-native";
+import { View, Modal, StyleSheet, Text } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -23,6 +23,18 @@ export const Settings = ({ modalVisible, setModalVisible }: SettingsT) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
+  const SettingsItem = ({ title, callBack, buttonTitle = "Clear" }) => {
+    return (
+      <View style={styles.itemContainer}>
+        <View style={styles.itemInnerContainer}>
+          <Text style={styles.itemText}>{title}</Text>
+          <Button title={buttonTitle} onPress={callBack} />
+        </View>
+        <View style={styles.divider} />
+      </View>
+    );
+  };
+
   return (
     <Modal
       animationType="fade"
@@ -32,11 +44,18 @@ export const Settings = ({ modalVisible, setModalVisible }: SettingsT) => {
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <SettingsThemeSelect />
-          <Button title="Clear Actions" onPress={() => clearActions(setAlert)} />
-          <Button title="Clear Todays Plan" onPress={() => clearPlan(setAlert, TODAY_PLAN)} />
-          <Button title="Clear Tomorrows Plan" onPress={() => clearPlan(setAlert, TOMORROW_PLAN)} />
-          <Button title="Clear Everything" onPress={() => AsyncStorage.clear()} />
+          <View>
+            <SettingsThemeSelect />
+            <SettingsItem title="Clear Actions" callBack={() => clearActions(setAlert)} />
+            <SettingsItem
+              title="Clear Todays Plan"
+              callBack={() => clearPlan(setAlert, TODAY_PLAN)}
+            />
+            <SettingsItem
+              title="Clear Tomorrows Plan"
+              callBack={() => clearPlan(setAlert, TOMORROW_PLAN)}
+            />
+          </View>
           <Button title="Close" onPress={() => setModalVisible(false)} />
         </View>
       </View>
@@ -57,7 +76,7 @@ const styling = (colors: ThemeT) =>
       backgroundColor: colors.white,
       padding: 35,
       height: "50%",
-      width: "70%",
+      width: "80%",
       alignItems: "center",
       shadowColor: "#000",
       shadowOffset: {
@@ -66,5 +85,22 @@ const styling = (colors: ThemeT) =>
       },
       shadowOpacity: 0.25,
       elevation: 5,
+      justifyContent: "space-between",
+    },
+    itemContainer: {
+      width: 300,
+    },
+    itemInnerContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: 3,
+    },
+    itemText: {
+      fontSize: 17,
+    },
+    divider: {
+      borderBottomColor: "black",
+      borderBottomWidth: StyleSheet.hairlineWidth,
     },
   });

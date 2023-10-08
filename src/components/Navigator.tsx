@@ -2,12 +2,7 @@ import "react-native-gesture-handler";
 import Toast from "react-native-root-toast";
 import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  DrawerContentScrollView,
-  DrawerItem,
-  DrawerItemList,
-  createDrawerNavigator,
-} from "@react-navigation/drawer";
+import { DrawerItem, DrawerItemList, createDrawerNavigator } from "@react-navigation/drawer";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { Button, StyleSheet, Text, View } from "react-native";
 import { v4 as uuidv4 } from "uuid";
@@ -74,7 +69,7 @@ export const Navigator = () => {
     return (
       <View style={styles.label}>
         <Icon name={icon} size={17} color={colors.primary} />
-        <Text>{label}</Text>
+        <Text style={styles.labelText}>{label}</Text>
       </View>
     );
   };
@@ -85,7 +80,7 @@ export const Navigator = () => {
         screenOptions={{
           drawerStyle: {
             backgroundColor: colors.background,
-            width: 200,
+            width: 220,
           },
           headerStyle: {
             backgroundColor: colors.background,
@@ -179,5 +174,8 @@ const styling = (colors: ThemeT) =>
       flexDirection: "row",
       alignItems: "center",
       gap: 10,
+    },
+    labelText: {
+      fontSize: 15,
     },
   });

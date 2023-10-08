@@ -15,12 +15,12 @@ export const lightTheme: ThemeT = {
 
 export const darkTheme: ThemeT = {
   primary: "#FFC10C",
-  secondary: "#DDDDDD",
+  secondary: "#565656",
   background: "#333333",
-  black: "#FFC10C",
-  white: "#FFC10C",
-  lightGrey: "#555555",
-  grey: "#222222",
+  black: "#000000",
+  white: "#ffffff",
+  lightGrey: "#595959",
+  grey: "#464646",
   error: "#900000",
   success: "#009000",
 };

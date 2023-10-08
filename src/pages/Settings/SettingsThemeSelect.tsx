@@ -11,21 +11,27 @@ export const SettingsThemeSelect = () => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
-  useEffect(() => {
+  const onChange = (b: boolean) => {
+    setLight(b);
     light ? setTheme(lightTheme) : setTheme(darkTheme);
-  }, [light]);
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{light ? "Light Mode" : "Dark Mode"}</Text>
+      <View style={styles.innerContainer}>
+        <Text style={styles.title}>{light ? "Dark Mode" : "Light Mode"}</Text>
 
-      <Switch
-        trackColor={{ false: colors.secondary, true: colors.secondary }}
-        thumbColor={colors.primary}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={setLight}
-        value={light}
-      />
+        <View style={styles.switch}>
+          <Switch
+            trackColor={{ false: colors.secondary, true: colors.secondary }}
+            thumbColor={colors.primary}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={onChange}
+            value={light}
+          />
+        </View>
+      </View>
+      <View style={styles.divider} />
     </View>
   );
 };
@@ -33,7 +39,22 @@ export const SettingsThemeSelect = () => {
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      alignItems: "center",
+      width: 300,
     },
-    title: {},
+    innerContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: 3,
+    },
+    title: {
+      fontSize: 17,
+    },
+    switch: {
+      padding: 7,
+    },
+    divider: {
+      borderBottomColor: "black",
+      borderBottomWidth: StyleSheet.hairlineWidth,
+    },
   });

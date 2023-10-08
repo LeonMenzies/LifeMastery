@@ -60,6 +60,10 @@ export const getActions = (setAlert: any, setData: any, incompleteActions = fals
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
       .then((actions: actionItemT[]) => {
+        if (actions === null) {
+          actions = [];
+        }
+
         const filteredActions = actions.filter((action: actionItemT) => {
           let add = true;
           if (incompleteActions) {
@@ -67,7 +71,7 @@ export const getActions = (setAlert: any, setData: any, incompleteActions = fals
               add = false;
             }
           }
-          return true;
+          return add;
         });
         setData(filteredActions);
       });
