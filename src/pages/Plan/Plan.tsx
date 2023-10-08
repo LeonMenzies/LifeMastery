@@ -23,7 +23,7 @@ export const Plan = ({ navigation }) => {
   const styles = styling(today, colors);
 
   useEffect(() => {
-    getActions(setAlert, setActions, true);
+    getActions(setAlert, setActions);
   }, []);
 
   useEffect(() => {

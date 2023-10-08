@@ -23,12 +23,12 @@ export const savePlan = (setAlert: Function, plan: PlanT, day: string) => {
   }
 };
 
-export const finalizePlan = (setAlert: Function, plan: PlanT, callBack: any, day: string) => {
+export const finalizePlan = (setAlert: Function, plan: PlanT, navigation: any, day: string) => {
   try {
     const planJson = JSON.stringify(plan);
     AsyncStorage.setItem(day, planJson).then(() => {
       setAlert("Successfully Finalized Plan");
-      callBack();
+      navigation.navigate("Home");
     });
   } catch (e) {
     setAlert("Failed to set plan");

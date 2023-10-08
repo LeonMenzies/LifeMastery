@@ -32,7 +32,7 @@ const styling = (disabled: boolean, colors: ThemeT) =>
       padding: 7,
       margin: 7,
       zIndex: 2,
-      backgroundColor: disabled ? colors.lightGrey : colors.primary,
+      backgroundColor: disabled ? colors.grey : colors.primary,
       minWidth: 100,
       alignItems: "center",
     },

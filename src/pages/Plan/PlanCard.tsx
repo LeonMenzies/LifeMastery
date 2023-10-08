@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, View, TouchableHighlight, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import DraggableFlatList from "react-native-draggable-flatlist";
@@ -78,7 +78,7 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
     finalizePlan(
       setAlert,
       { ...data, finalized: true, date: new Date().toISOString().split("T")[0] },
-      () => navigation.navigate("Plan"),
+      navigation,
       day
     );
   };
@@ -100,7 +100,7 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View>
         <View style={styles.focusContainer}>
           <TextInput
@@ -113,22 +113,31 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
           />
         </View>
         {actions.length > 0 ? (
-          <DraggableFlatList
-            style={styles.actionsList}
-            data={actions}
-            onDragEnd={({ data }) => setActions(data)}
-            keyExtractor={(item) => item.key}
-            renderItem={renderItem}
-          />
+          <View>
+            <DraggableFlatList
+              style={styles.actionsList}
+              data={actions}
+              onDragEnd={({ data }) => setActions(data)}
+              keyExtractor={(item) => item.key}
+              renderItem={renderItem}
+            />
+            <View style={styles.centeredView}>
+              {data.finalized && (
+                <View style={styles.finalizedContainer}>
+                  <Text style={styles.finalizedText}>{"Day Already Finalized"}</Text>
+                </View>
+              )}
+            </View>
+          </View>
         ) : (
           <Text>No Actions in your list</Text>
         )}
       </View>
       <View style={styles.buttonContainer}>
-        <Button title="Save" onPress={handleSave} />
-        <Button title="Finalize" onPress={handleFinalize} />
+        <Button title="Save" onPress={handleSave} disabled={data.finalized} />
+        <Button title="Finalize" onPress={handleFinalize} disabled={data.finalized} />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -153,5 +162,24 @@ const styling = (colors: ThemeT) =>
     buttonContainer: {
       flexDirection: "row",
       justifyContent: "center",
+    },
+    centeredView: {
+      flex: 1,
+      height: "100%",
+      width: "100%",
+      top: "20%",
+      alignItems: "center",
+      position: "absolute",
+    },
+    finalizedContainer: {
+      transform: [{ rotate: "30deg" }],
+      borderRadius: 5,
+      borderColor: colors.error,
+      borderWidth: 2,
+    },
+    finalizedText: {
+      fontSize: 17,
+      padding: 5,
+      color: colors.error,
     },
   });
