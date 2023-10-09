@@ -23,5 +23,5 @@ export const convertTime = (i: number) => {
   const hours = Math.floor(i);
   const minutes = i === 0.25 ? 15 : i === 0.5 ? 30 : 45;
 
-  return ` Hours ${hours}  Mins ${minutes} `;
+  return `${hours}:${minutes}`;
 };

@@ -8,6 +8,7 @@ import { actionsShowAddEditAtom } from "~recoil/actionsShowAddEditAtom";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
+import { convertTime } from "~utils/Helpers";
 
 type ActionsListItemT = {
   item: ActionItemT;
@@ -56,7 +57,7 @@ export const ActionsListItem = ({ item, drag, isActive }: ActionsListItemT) => {
             <View style={styles.actionTitleContainer}>
               <Text style={styles.actionTitle}>{item.action}</Text>
             </View>
-            <Text style={styles.actionTitle}>{item.timeEstimate}</Text>
+            <Text style={styles.actionTitle}>{convertTime(item.timeEstimate)}</Text>
           </View>
           <View style={styles.actionHeading}>
             <View style={styles.actionSubTitleContainer}>
