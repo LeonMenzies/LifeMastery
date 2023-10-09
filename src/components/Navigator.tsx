@@ -18,6 +18,7 @@ import { Settings } from "~pages/Settings/Settings";
 import { Plan } from "~pages/Plan/Plan";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { ActionAddEdit } from "~components/ActionAddEdit";
+import { getDay } from "~utils/Helpers";
 
 export const Navigator: FC<any> = () => {
   const Drawer = createDrawerNavigator();
@@ -114,7 +115,7 @@ export const Navigator: FC<any> = () => {
           name={"Home"}
           options={{
             drawerLabel: () => customLabel("Home", "home"),
-            title: `${date}`,
+            title: `${getDay(new Date(date))}  ${date}`,
             unmountOnBlur: true,
           }}
           component={Home}

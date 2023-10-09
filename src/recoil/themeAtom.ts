@@ -19,7 +19,7 @@ export const lightTheme: ThemeT = {
 export const darkTheme: ThemeT = {
   primary: "#FFC10C",
   secondary: "#ffe79e",
-  background: "#4d4d4d",
+  background: "#1c243a",
   backgroundSecondary: "#535353",
   textPrimary: "#ffffff",
   textSecondary: "#000000",

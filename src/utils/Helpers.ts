@@ -15,7 +15,7 @@ export const generateAOIColor = (count: number) => {
 };
 
 export const getDay = (date: Date) => {
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   return days[date.getDay()];
 };
 
