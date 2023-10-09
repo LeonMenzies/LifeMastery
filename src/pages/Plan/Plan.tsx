@@ -15,7 +15,7 @@ export const Plan = ({ navigation }) => {
 
   const setAlert = useSetRecoilState(alertAtom);
   const [today, setToday] = useState(true);
-  const [actions, setActions] = useRecoilState(actionsAtom);
+  const setActions = useSetRecoilState(actionsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(today, colors);
 
@@ -42,19 +42,9 @@ export const Plan = ({ navigation }) => {
         </TouchableHighlight>
       </View>
       {today ? (
-        <PlanCard
-          day={TODAY_PLAN}
-          actions={actions}
-          setActions={setActions}
-          navigation={navigation}
-        />
+        <PlanCard day={TODAY_PLAN} navigation={navigation} />
       ) : (
-        <PlanCard
-          day={TOMORROW_PLAN}
-          actions={actions}
-          setActions={setActions}
-          navigation={navigation}
-        />
+        <PlanCard day={TOMORROW_PLAN} navigation={navigation} />
       )}
     </SafeAreaView>
   );

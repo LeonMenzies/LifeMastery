@@ -8,6 +8,7 @@ import { PlanSetPriority } from "~pages/Plan/PlanSetPriority";
 import { useState } from "react";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
+import { convertTime } from "~utils/Helpers";
 
 type PlanActionsListItemT = {
   item: ActionItemT;
@@ -65,10 +66,11 @@ export const PlanActionsListItem = ({
               {isInPlan && <View style={styles.inPlan} />}
               <Text style={styles.actionTitle}>{item.action}</Text>
             </View>
-            <Text style={styles.actionTitle}>{item.priority}</Text>
+            <Text style={styles.actionTitle}>{isInPlan ? item.priority : 0}</Text>
           </View>
-          <View>
+          <View style={styles.actionSubHeading}>
             <Text style={styles.actionDate}>{item.dateAdded}</Text>
+            <Text style={styles.actionDate}>{convertTime(item.timeEstimate)}</Text>
           </View>
         </View>
         <PlanSetPriority
@@ -90,6 +92,10 @@ const styling = (colors: ThemeT) =>
       paddingBottom: 5,
     },
     actionHeading: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    actionSubHeading: {
       flexDirection: "row",
       justifyContent: "space-between",
     },

@@ -18,3 +18,10 @@ export const getDay = (date: Date) => {
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   return days[date.getDay()];
 };
+
+export const convertTime = (i: number) => {
+  const hours = Math.floor(i);
+  const minutes = i === 0.25 ? 15 : i === 0.5 ? 30 : 45;
+
+  return ` Hours ${hours}  Mins ${minutes} `;
+};

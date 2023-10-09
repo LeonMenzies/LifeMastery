@@ -11,17 +11,19 @@ import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
 import { Button } from "~components/Button";
 import { themeAtom } from "~recoil/themeAtom";
 import { planAtom } from "~recoil/planAtom";
+import { actionsAtom } from "~recoil/actionsAtom";
+import { updateAction } from "~utils/ActionsHandler";
 
 type PlanCardT = {
   day: string;
-  actions: ActionItemT[];
-  setActions: any;
   navigation: any;
 };
 
-export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) => {
+export const PlanCard = ({ day, navigation }: PlanCardT) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [data, setData] = useRecoilState(planAtom);
+  const [actions, setActions] = useRecoilState(actionsAtom);
+
   const [text, setText] = useState("");
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
