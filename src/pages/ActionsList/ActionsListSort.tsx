@@ -48,6 +48,10 @@ export const ActionsListSort = ({ actions, setActions }: ActionsListSortT) => {
     setSelected(sortType);
   };
 
+  useEffect(() => {
+    setDesc(false);
+  }, [selected]);
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
@@ -58,6 +62,7 @@ export const ActionsListSort = ({ actions, setActions }: ActionsListSortT) => {
             borders={index !== 0}
             selected={string === selected}
             setSelected={sortActionList}
+            desc={desc}
           />
         ))}
       </View>

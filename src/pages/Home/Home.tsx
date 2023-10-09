@@ -78,6 +78,7 @@ export const Home = ({ navigation }) => {
               data={actions}
               setActions={setActions}
               actionKeys={plan.actionKeys}
+              dayComplete={complete}
             />
           );
         })}

@@ -24,10 +24,10 @@ export const Navigator = () => {
   const [alert, setAlert] = useRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useRecoilState(actionsShowAddEditAtom);
   const [settingsVisible, setSettingsVisible] = useState(false);
-  const [date, setDate] = useState(new Date().toLocaleString());
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
   const key = uuidv4();
+  const date = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     if (alert !== "") {
@@ -45,11 +45,6 @@ export const Navigator = () => {
       }, 2000);
     }
   }, [alert]);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => setDate(new Date().toLocaleString()), 1000);
-    return () => clearInterval(intervalId);
-  }, []);
 
   const CustomDrawerContent = (props: any) => {
     return (

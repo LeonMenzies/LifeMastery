@@ -10,9 +10,10 @@ type HomeActionItemT = {
   action: ActionItemT;
   color: string;
   setActions: any;
+  dayComplete: boolean;
 };
 
-export const HomeActionItem = ({ action, color, setActions }: HomeActionItemT) => {
+export const HomeActionItem = ({ action, color, setActions, dayComplete }: HomeActionItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
 
   return (
@@ -24,6 +25,7 @@ export const HomeActionItem = ({ action, color, setActions }: HomeActionItemT) =
           }
           completed={action.isCompleted}
           color={color}
+          disabled={dayComplete}
         />
         <Text>{action.action}</Text>
       </View>

@@ -7,16 +7,18 @@ import { alertAtom } from "~recoil/alertAtom";
 import { actionsShowAddEditAtom } from "~recoil/actionsShowAddEditAtom";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
+import { actionsAtom } from "~recoil/actionsAtom";
 
 type ActionsListItemT = {
   item: ActionItemT;
   drag: any;
   isActive: boolean;
-  setActions: any;
 };
 
-export const ActionsListItem = ({ item, drag, isActive, setActions }: ActionsListItemT) => {
+export const ActionsListItem = ({ item, drag, isActive }: ActionsListItemT) => {
   const setAlert = useSetRecoilState(alertAtom);
+  const setActions = useSetRecoilState(actionsAtom);
+
   const setActionsShowAddEdit = useSetRecoilState(actionsShowAddEditAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);

@@ -9,9 +9,16 @@ type HomeActionSectionT = {
   data: ActionItemT[];
   actionKeys: string[];
   setActions: any;
+  dayComplete: boolean;
 };
 
-export const HomeActionSection = ({ aoi, data, setActions, actionKeys }: HomeActionSectionT) => {
+export const HomeActionSection = ({
+  aoi,
+  data,
+  setActions,
+  actionKeys,
+  dayComplete,
+}: HomeActionSectionT) => {
   const styles = styling(aoi.Color);
 
   const filteredData: ActionItemT[] = data
@@ -30,6 +37,7 @@ export const HomeActionSection = ({ aoi, data, setActions, actionKeys }: HomeAct
             action={action}
             color={aoi.Color}
             setActions={setActions}
+            dayComplete={dayComplete}
           />
         ))}
         <View style={styles.divider} />

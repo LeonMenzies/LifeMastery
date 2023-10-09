@@ -1,5 +1,5 @@
 import "react-native-get-random-values";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { Modal, StyleSheet, View } from "react-native";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 
@@ -23,21 +23,35 @@ type ActionAddEditT = {
 };
 
 export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
-  const [text, setText] = useState(modalVisible.action.action);
-  const [timeEstimate, setTimeEstimate] = useState(modalVisible.action.timeEstimate);
-  const [areaOfImportance, setAreaOfImportance] = useState(modalVisible.action.areaOfImportance);
   const setAlert = useSetRecoilState(alertAtom);
   const setActions = useSetRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
+  const [action, setAction] = useState("");
+  const [timeEstimate, setTimeEstimate] = useState(0);
+  const [areaOfImportance, setAreaOfImportance] = useState("");
+
   useEffect(() => {
+    console.log("gets3");
+
     getAreasOfImportance(setAlert, setAreasOfImportance);
   }, []);
+  console.log("gets1");
+  console.log(modalVisible.action.action);
+
+  useEffect(() => {
+    console.log(modalVisible.action.action);
+    console.log("gets2");
+
+    setAreaOfImportance(modalVisible.action.areaOfImportance);
+    setTimeEstimate(modalVisible.action.timeEstimate);
+    setAction(modalVisible.action.action);
+  }, [areasOfImportance]);
 
   const handleAddTodo = () => {
-    if (!text) {
+    if (!action) {
       setAlert("Action is required");
       return;
     }
@@ -56,10 +70,25 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
       return;
     }
 
-    addAction(setAlert, setActions, text, timeEstimate, areaOfImportance);
-    setText("");
+    addAction(setAlert, setActions, action, timeEstimate, areaOfImportance);
+    setAction("");
     setTimeEstimate(0);
     setAreaOfImportance("");
+  };
+
+  const handleClose = () => {
+    setModalVisible({
+      show: false as boolean,
+      action: {
+        key: "",
+        action: "",
+        isCompleted: false,
+        timeEstimate: 0,
+        priority: 0,
+        areaOfImportance: "",
+        dateAdded: new Date().toISOString().split("T")[0],
+      } as ActionItemT,
+    });
   };
 
   const createOptions = () => {
@@ -97,8 +126,8 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
           />
           <TextInput
             title={"Action"}
-            onChangeText={setText}
-            value={text}
+            onChangeText={setAction}
+            value={action}
             placeholder="Add value..."
             keyboardType="default"
             maxLength={30}
@@ -113,23 +142,7 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
           />
           <View style={styles.buttonContainer}>
             <Button title="Add" onPress={handleAddTodo} />
-            <Button
-              title="Close"
-              onPress={() => {
-                setModalVisible({
-                  show: false as boolean,
-                  action: {
-                    key: "",
-                    action: "",
-                    isCompleted: false,
-                    timeEstimate: 0,
-                    priority: 0,
-                    areaOfImportance: "",
-                    dateAdded: new Date().toISOString().split("T")[0],
-                  } as ActionItemT,
-                });
-              }}
-            />
+            <Button title="Close" onPress={handleClose} />
           </View>
         </View>
       </View>

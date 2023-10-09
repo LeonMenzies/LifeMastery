@@ -24,7 +24,7 @@ export const ActionsList = () => {
   }, []);
 
   const renderItem = ({ item, drag, isActive }) => {
-    return <ActionsListItem item={item} drag={drag} isActive={isActive} setActions={setActions} />;
+    return <ActionsListItem item={item} drag={drag} isActive={isActive} />;
   };
 
   return (
