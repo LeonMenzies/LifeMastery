@@ -34,21 +34,14 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
   const [areaOfImportance, setAreaOfImportance] = useState("");
 
   useEffect(() => {
-    console.log("gets3");
-
     getAreasOfImportance(setAlert, setAreasOfImportance);
-  }, []);
-  console.log("gets1");
-  console.log(modalVisible.action.action);
+  }, [modalVisible.action.action]);
 
   useEffect(() => {
-    console.log(modalVisible.action.action);
-    console.log("gets2");
-
     setAreaOfImportance(modalVisible.action.areaOfImportance);
     setTimeEstimate(modalVisible.action.timeEstimate);
     setAction(modalVisible.action.action);
-  }, [areasOfImportance]);
+  }, [modalVisible.action.action]);
 
   const handleAddTodo = () => {
     if (!action) {

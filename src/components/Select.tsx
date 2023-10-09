@@ -1,6 +1,6 @@
 import Icon from "react-native-vector-icons/AntDesign";
 import { FC, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
 import { useRecoilValue } from "recoil";
 
 import { themeAtom } from "~recoil/themeAtom";
@@ -68,6 +68,11 @@ export const Select: FC<PlanT> = ({
           {options.map((option: optionT) => renderItem(option))}
         </View>
       )}
+      {visible && (
+        <TouchableWithoutFeedback onPress={toggleDropdown}>
+          <View style={styles.outsideClick} />
+        </TouchableWithoutFeedback>
+      )}
     </View>
   );
 };
@@ -78,6 +83,13 @@ const styling = (colors: ThemeT) =>
       width: 300,
       padding: 7,
       zIndex: 3,
+    },
+    outsideClick: {
+      position: "absolute",
+      left: -100,
+      top: -400,
+      height: 1000,
+      width: 500,
     },
     title: {
       fontSize: 15,

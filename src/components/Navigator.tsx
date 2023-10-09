@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { DrawerItem, DrawerItemList, createDrawerNavigator } from "@react-navigation/drawer";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import { v4 as uuidv4 } from "uuid";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -69,6 +69,31 @@ export const Navigator = () => {
     );
   };
 
+  const addButton = () => {
+    return (
+      <TouchableHighlight
+        underlayColor={colors.lightGrey}
+        style={styles.addButton}
+        onPress={() =>
+          setModalVisible({
+            show: true as boolean,
+            action: {
+              key: key,
+              action: "",
+              isCompleted: false,
+              timeEstimate: 0,
+              priority: 0,
+              areaOfImportance: "",
+              dateAdded: date,
+            } as ActionItemT,
+          })
+        }
+      >
+        <Icon name={"plus"} size={17} color={colors.black} />
+      </TouchableHighlight>
+    );
+  };
+
   return (
     <NavigationContainer>
       <Drawer.Navigator
@@ -99,25 +124,7 @@ export const Navigator = () => {
           options={{
             drawerLabel: () => customLabel("Plan", "pencil"),
             unmountOnBlur: true,
-            headerRight: () => (
-              <Button
-                title="Add"
-                onPress={() =>
-                  setModalVisible({
-                    show: true as boolean,
-                    action: {
-                      key: key,
-                      action: "",
-                      isCompleted: false,
-                      timeEstimate: 0,
-                      priority: 0,
-                      areaOfImportance: "",
-                      dateAdded: date,
-                    } as ActionItemT,
-                  })
-                }
-              />
-            ),
+            headerRight: addButton,
           }}
           component={Plan}
         />
@@ -126,25 +133,7 @@ export const Navigator = () => {
           options={{
             drawerLabel: () => customLabel("Actions List", "list"),
             unmountOnBlur: true,
-            headerRight: () => (
-              <Button
-                title="Add"
-                onPress={() =>
-                  setModalVisible({
-                    show: true as boolean,
-                    action: {
-                      key: key,
-                      action: "",
-                      isCompleted: false,
-                      timeEstimate: 0,
-                      priority: 0,
-                      areaOfImportance: "",
-                      dateAdded: date,
-                    } as ActionItemT,
-                  })
-                }
-              />
-            ),
+            headerRight: addButton,
           }}
           component={ActionsList}
         />
@@ -178,5 +167,9 @@ const styling = (colors: ThemeT) =>
     },
     labelText: {
       fontSize: 15,
+    },
+    addButton: {
+      padding: 15,
+      borderRadius: 100,
     },
   });
