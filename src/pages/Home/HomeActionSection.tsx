@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { FC } from "react";
 
-import { ActionItemT } from "~types/Types";
+import { ActionItemT, ThemeT } from "~types/Types";
 import { HomeActionItem } from "~pages/Home/HomeActionItem";
 import { AreaOfImportanceItemT } from "~types/Types";
+import { useRecoilValue } from "recoil";
+import { themeAtom } from "~recoil/themeAtom";
 
 type HomeActionSectionT = {
   aoi: AreaOfImportanceItemT;
@@ -21,7 +23,8 @@ export const HomeActionSection: FC<HomeActionSectionT> = ({
   dayComplete,
 }) => {
   const windowWidth = Dimensions.get("window").width;
-  const styles = styling(aoi.Color, windowWidth);
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(aoi.Color, windowWidth, colors);
 
   const filteredData: ActionItemT[] = data
     .filter((action: ActionItemT) => {
@@ -47,7 +50,7 @@ export const HomeActionSection: FC<HomeActionSectionT> = ({
     );
 };
 
-const styling = (color: string, windowWidth: number) =>
+const styling = (color: string, windowWidth: number, colors: ThemeT) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 10,
@@ -59,7 +62,7 @@ const styling = (color: string, windowWidth: number) =>
       color: color,
     },
     divider: {
-      borderBottomColor: "black",
+      borderBottomColor: colors.textPrimary,
       borderBottomWidth: StyleSheet.hairlineWidth,
       marginTop: 10,
     },

@@ -105,6 +105,7 @@ export const Navigator: FC<any> = () => {
           },
           headerStyle: {
             backgroundColor: colors.background,
+            borderBottomWidth: 0,
           },
           headerTintColor: colors.primary,
           drawerActiveTintColor: colors.primary,
