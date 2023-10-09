@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import DraggableFlatList from "react-native-draggable-flatlist";
@@ -25,9 +25,10 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
   const [text, setText] = useState("");
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getPlan(setAlert, setData, day);
+    getPlan(setAlert, setData, day, setLoading);
   }, [day]);
 
   useEffect(() => {
@@ -107,6 +108,8 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
             maxLength={30}
           />
         </View>
+        {loading && <ActivityIndicator size="large" color={colors.primary} />}
+
         {actions.length > 0 ? (
           <View>
             <DraggableFlatList

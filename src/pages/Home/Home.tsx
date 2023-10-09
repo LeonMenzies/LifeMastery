@@ -1,4 +1,13 @@
-import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  View,
+  Text,
+  ActivityIndicator,
+} from "react-native";
+import ConfettiCannon from "react-native-confetti-cannon";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -20,20 +29,24 @@ export const Home = ({ navigation }) => {
   const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useState([]);
+  const [complete, setComplete] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
+  const windowWidth = Dimensions.get("window").width;
 
   useEffect(() => {
-    if (!plan.finalized) {
+    if (!loading && !plan.finalized) {
       setAlert("You must finalize today first");
       navigation.navigate("Plan");
     } else {
       getAreasOfImportance(setAlert, setAreasOfImportance);
     }
-  }, []);
+  }, [plan]);
 
   useEffect(() => {
-    getPlan(setAlert, setPlan, TODAY_PLAN);
+    getPlan(setAlert, setPlan, TODAY_PLAN, setLoading);
     getActions(setAlert, setActions);
   }, []);
 
@@ -54,6 +67,8 @@ export const Home = ({ navigation }) => {
         total={plan.actionKeys.length}
         complete={calculateCompleted()}
       />
+      {loading && <ActivityIndicator size="large" color={colors.primary} />}
+
       <ScrollView style={styles.scrollContainer}>
         {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
           return (
@@ -67,6 +82,31 @@ export const Home = ({ navigation }) => {
           );
         })}
       </ScrollView>
+
+      {plan.actionKeys.length === calculateCompleted() && !loading && (
+        <ConfettiCannon
+          count={200}
+          explosionSpeed={1500}
+          origin={{ x: windowWidth / 2, y: 0 }}
+          onAnimationEnd={() => setComplete(true)}
+          colors={[
+            "#FFC10C",
+            "#FFCB30",
+            "#F5BD16",
+            "#001EA8",
+            "#163EF5",
+            "#6380FF",
+            "#4360E6",
+            "#99760E",
+            "#E6BC43",
+          ]}
+        />
+      )}
+      {complete && (
+        <View style={styles.completeContainer}>
+          <Text style={styles.completeText}>{"Day is Complete"}</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -80,5 +120,16 @@ const styling = (colors: ThemeT) =>
     },
     scrollContainer: {
       width: "80%",
+    },
+    completeContainer: {
+      borderRadius: 5,
+      borderColor: colors.success,
+      borderWidth: 2,
+      marginBottom: 30,
+    },
+    completeText: {
+      fontSize: 17,
+      padding: 5,
+      color: colors.success,
     },
   });

@@ -2,12 +2,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { PlanT } from "~types/Types";
 
-export const getPlan = (setAlert: Function, setData: Function, day: string) => {
+export const getPlan = (
+  setAlert: Function,
+  setData: Function,
+  day: string,
+  setLoading: Function
+) => {
   try {
     AsyncStorage.getItem(day)
       .then((plan) => JSON.parse(plan))
       .then((plan) => {
-        if (plan !== null) setData(plan);
+        if (plan !== null) {
+          setLoading(false);
+          setData(plan);
+        }
       });
   } catch (e) {
     setAlert("Failed to get plan");

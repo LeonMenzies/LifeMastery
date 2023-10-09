@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, View, Text, DimensionValue } from "react-native";
+import { StyleSheet, View, DimensionValue } from "react-native";
 import { useRecoilValue } from "recoil";
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
