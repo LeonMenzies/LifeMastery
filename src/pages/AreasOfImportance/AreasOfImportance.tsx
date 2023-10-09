@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
 import DraggableFlatList from "react-native-draggable-flatlist";
-import React, { useEffect } from "react";
+import { useEffect, FC } from "react";
 import { Text, SafeAreaView, StyleSheet, View } from "react-native";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 
@@ -12,7 +12,7 @@ import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 
-export const AreasOfImportance = () => {
+export const AreasOfImportance: FC<any> = () => {
   const [data, setData] = useRecoilState(areasOfImportanceAtom);
   const setAlert = useSetRecoilState(alertAtom);
   const colors = useRecoilValue(themeAtom);

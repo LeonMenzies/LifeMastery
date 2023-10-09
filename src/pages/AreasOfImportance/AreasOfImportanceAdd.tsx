@@ -1,5 +1,5 @@
 import "react-native-get-random-values";
-import React, { useState } from "react";
+import { useState, FC } from "react";
 import { View, StyleSheet } from "react-native";
 import { useSetRecoilState } from "recoil";
 
@@ -9,7 +9,7 @@ import { alertAtom } from "~recoil/alertAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { Button } from "~components/Button";
 
-export const AreasOfImportanceAdd = ({}) => {
+export const AreasOfImportanceAdd: FC<any> = () => {
   const [areaOfImportance, setAreaOfImportance] = useState("");
   const styles = styling();
   const setAlert = useSetRecoilState(alertAtom);

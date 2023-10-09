@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, Switch } from "react-native";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { FC } from "react";
 
 import { themeAtom, lightTheme, darkTheme } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
-import { useEffect, useState } from "react";
 import { settingsAtom } from "~recoil/settingsAtom";
 
-export const SettingsThemeSelect = () => {
+export const SettingsThemeSelect: FC<any> = () => {
   const setTheme = useSetRecoilState(themeAtom);
   const [light, setLight] = useRecoilState(settingsAtom);
 

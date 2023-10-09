@@ -1,5 +1,5 @@
 import "react-native-get-random-values";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, FC } from "react";
 import { SafeAreaView, Text, StyleSheet } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 
@@ -12,7 +12,7 @@ import { ThemeT } from "~types/Types";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { ActionsListSort } from "./ActionsListSort";
 
-export const ActionsList = () => {
+export const ActionsList: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
 

@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from "react";
 import { Text, StyleSheet, View } from "react-native";
-import { TextInput as Input } from "react-native";
 import { useRecoilValue } from "recoil";
 import { QUARTER_TIME } from "~utils/Constants";
 import { Picker } from "react-native-wheel-pick";
@@ -8,12 +7,12 @@ import { Picker } from "react-native-wheel-pick";
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 
-type TextInputT = {
+type TimePickerT = {
   title: string;
   setTimeEstimate: any;
 };
 
-export const TimePicker: FC<TextInputT> = ({ title, setTimeEstimate }) => {
+export const TimePicker: FC<TimePickerT> = ({ title, setTimeEstimate }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
   const [hours, setHours] = useState(0);

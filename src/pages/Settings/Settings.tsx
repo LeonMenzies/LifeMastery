@@ -1,6 +1,6 @@
 import { View, Modal, StyleSheet, Text } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FC } from "react";
 
 import { themeAtom } from "~recoil/themeAtom";
 import { clearActions } from "~utils/ActionsHandler";
@@ -18,7 +18,7 @@ type SettingsT = {
   setModalVisible: any;
 };
 
-export const Settings = ({ modalVisible, setModalVisible }: SettingsT) => {
+export const Settings: FC<SettingsT> = ({ modalVisible, setModalVisible }) => {
   const TODAY_PLAN = "today-plan";
   const TOMORROW_PLAN = "tomorrow-plan";
 

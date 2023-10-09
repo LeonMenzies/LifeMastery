@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import SwipeableItem from "react-native-swipeable-item";
@@ -14,7 +15,7 @@ type AreasOfImportanceItemT = {
   isActive: boolean;
 };
 
-export const AreasOfImportanceItem = ({ item, drag, isActive }: AreasOfImportanceItemT) => {
+export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item, drag, isActive }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setData = useSetRecoilState(areasOfImportanceAtom);
   const colors = useRecoilValue(themeAtom);

@@ -1,5 +1,6 @@
-import { Text, StyleSheet, SafeAreaView, View } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import { useSetRecoilState } from "recoil";
+import { FC } from "react";
 
 import { alertAtom } from "~recoil/alertAtom";
 import { updateAction } from "~utils/ActionsHandler";
@@ -13,7 +14,7 @@ type HomeActionItemT = {
   dayComplete: boolean;
 };
 
-export const HomeActionItem = ({ action, color, setActions, dayComplete }: HomeActionItemT) => {
+export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions, dayComplete }) => {
   const setAlert = useSetRecoilState(alertAtom);
 
   return (

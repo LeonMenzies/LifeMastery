@@ -1,14 +1,10 @@
 import "react-native-get-random-values";
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
+import React, { FC, useEffect, useState } from "react";
+import { View, StyleSheet } from "react-native";
 
-import { getActions } from "~utils/ActionsHandler";
-import { alertAtom } from "~recoil/alertAtom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { ActionsListItem } from "~pages/ActionsList/ActionsListItem";
+import { useRecoilValue } from "recoil";
 import { themeAtom } from "~recoil/themeAtom";
 import { ActionItemT, ThemeT } from "~types/Types";
-import { actionsAtom } from "~recoil/actionsAtom";
 import { ActionListSortButton } from "~pages/ActionsList/ActionListSortButton";
 
 type ActionsListSortT = {
@@ -16,8 +12,7 @@ type ActionsListSortT = {
   setActions: any;
 };
 
-export const ActionsListSort = ({ actions, setActions }: ActionsListSortT) => {
-  const setAlert = useSetRecoilState(alertAtom);
+export const ActionsListSort: FC<ActionsListSortT> = ({ actions, setActions }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
   const [selected, setSelected] = useState("Date");
@@ -26,7 +21,7 @@ export const ActionsListSort = ({ actions, setActions }: ActionsListSortT) => {
 
   const sortActionList = (sortType: string) => {
     setActions(
-      actions.slice().sort((a, b) => {
+      actions.slice().sort((a: ActionItemT, b: ActionItemT) => {
         let comparison = 0;
         switch (sortType) {
           case "Date":

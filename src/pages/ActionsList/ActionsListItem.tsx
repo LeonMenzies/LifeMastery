@@ -1,6 +1,7 @@
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import SwipeableItem from "react-native-swipeable-item";
+import { FC } from "react";
 
 import { deleteAction } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
@@ -16,7 +17,7 @@ type ActionsListItemT = {
   isActive: boolean;
 };
 
-export const ActionsListItem = ({ item, drag, isActive }: ActionsListItemT) => {
+export const ActionsListItem: FC<ActionsListItemT> = ({ item, drag, isActive }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setActions = useSetRecoilState(actionsAtom);
 

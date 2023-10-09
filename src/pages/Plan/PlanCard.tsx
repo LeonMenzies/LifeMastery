@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, FC } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import DraggableFlatList from "react-native-draggable-flatlist";
 
@@ -12,7 +12,6 @@ import { Button } from "~components/Button";
 import { themeAtom } from "~recoil/themeAtom";
 import { planAtom } from "~recoil/planAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
-import { updateAction } from "~utils/ActionsHandler";
 import { TOMORROW_PLAN } from "~utils/Constants";
 import { convertTime } from "~utils/Helpers";
 
@@ -21,7 +20,7 @@ type PlanCardT = {
   navigation: any;
 };
 
-export const PlanCard = ({ day, navigation }: PlanCardT) => {
+export const PlanCard: FC<PlanCardT> = ({ day, navigation }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [data, setData] = useRecoilState(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);

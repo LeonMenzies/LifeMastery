@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import { FC } from "react";
 
 import { ActionItemT } from "~types/Types";
 import { HomeActionItem } from "~pages/Home/HomeActionItem";
@@ -12,13 +13,13 @@ type HomeActionSectionT = {
   dayComplete: boolean;
 };
 
-export const HomeActionSection = ({
+export const HomeActionSection: FC<HomeActionSectionT> = ({
   aoi,
   data,
   setActions,
   actionKeys,
   dayComplete,
-}: HomeActionSectionT) => {
+}) => {
   const styles = styling(aoi.Color);
 
   const filteredData: ActionItemT[] = data

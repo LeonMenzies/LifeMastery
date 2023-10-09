@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import ConfettiCannon from "react-native-confetti-cannon";
-import { useEffect, useState } from "react";
+import { useEffect, useState, FC } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { HomeHeader } from "~pages/Home/HomeHeader";
@@ -23,7 +23,7 @@ import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
 
-export const Home = ({ navigation }) => {
+export const Home: FC<any> = ({ navigation }) => {
   const TODAY_PLAN = "today-plan";
 
   const setAlert = useSetRecoilState(alertAtom);

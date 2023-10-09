@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC } from "react";
 import Icon from "react-native-vector-icons/AntDesign";
 import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
 import { useRecoilValue } from "recoil";
@@ -14,13 +14,13 @@ type SortButtonT = {
   setSelected: (sortType: string) => void;
 };
 
-export const ActionListSortButton = ({
+export const ActionListSortButton: FC<SortButtonT> = ({
   text,
   borders,
   selected,
   setSelected,
   desc,
-}: SortButtonT) => {
+}) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors, selected, borders);
 

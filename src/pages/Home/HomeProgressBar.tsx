@@ -1,5 +1,7 @@
+import { FC } from "react";
 import { StyleSheet, View, DimensionValue } from "react-native";
 import { useRecoilValue } from "recoil";
+
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 
@@ -7,7 +9,7 @@ type HomeProgressBarT = {
   percent: number;
 };
 
-export const HomeProgressBar = ({ percent }: HomeProgressBarT) => {
+export const HomeProgressBar: FC<HomeProgressBarT> = ({ percent }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors, `${percent}%`);
 

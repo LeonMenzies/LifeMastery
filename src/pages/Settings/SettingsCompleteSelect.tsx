@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet, Switch } from "react-native";
 import { useRecoilValue, useRecoilState } from "recoil";
+import { FC } from "react";
 
-import { themeAtom, lightTheme, darkTheme } from "~recoil/themeAtom";
+import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 import { settingsAtom } from "~recoil/settingsAtom";
 
-export const SettingsCompleteSelect = () => {
+export const SettingsCompleteSelect: FC<any> = () => {
   const [timePercent, setTimePercent] = useRecoilState(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);

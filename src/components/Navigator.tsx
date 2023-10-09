@@ -1,10 +1,10 @@
 import "react-native-gesture-handler";
 import Toast from "react-native-root-toast";
-import { useEffect, useState } from "react";
+import { useEffect, useState, FC } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { DrawerItem, DrawerItemList, createDrawerNavigator } from "@react-navigation/drawer";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { Button, StyleSheet, Text, View, TouchableHighlight } from "react-native";
+import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import { v4 as uuidv4 } from "uuid";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -19,7 +19,7 @@ import { Plan } from "~pages/Plan/Plan";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { ActionAddEdit } from "~components/ActionAddEdit";
 
-export const Navigator = () => {
+export const Navigator: FC<any> = () => {
   const Drawer = createDrawerNavigator();
   const [alert, setAlert] = useRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useRecoilState(actionsShowAddEditAtom);

@@ -1,5 +1,5 @@
 import "react-native-get-random-values";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, FC } from "react";
 import { Modal, StyleSheet, View, Text } from "react-native";
 
 import { Button } from "~components/Button";
@@ -16,13 +16,13 @@ type PlanSetPriorityT = {
   handleCancel: any;
 };
 
-export const PlanSetPriority = ({
+export const PlanSetPriority: FC<PlanSetPriorityT> = ({
   actionTitle,
   handleSetPriority,
   modalVisible,
   setModalVisible,
   handleCancel,
-}: PlanSetPriorityT) => {
+}) => {
   const [priorityValue, setPriorityValue] = useState(1);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);

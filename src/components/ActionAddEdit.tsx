@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
-import React, { useEffect, useState, useLayoutEffect } from "react";
-import { Modal, StyleSheet, View, Text } from "react-native";
+import React, { useEffect, useState, FC } from "react";
+import { Modal, StyleSheet, View } from "react-native";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 
 import { Select } from "~components/Select";
@@ -23,7 +23,7 @@ type ActionAddEditT = {
   setModalVisible: any;
 };
 
-export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT) => {
+export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisible }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setActions = useSetRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
@@ -51,7 +51,6 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
   };
 
   const handleAddTodo = () => {
-
     if (!action) {
       setAlert("Action is required");
       return;

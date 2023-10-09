@@ -1,6 +1,6 @@
 import { SafeAreaView, StyleSheet, View, TouchableHighlight, Text } from "react-native";
-import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useEffect, useState, FC } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import { alertAtom } from "~recoil/alertAtom";
 import { ThemeT } from "~types/Types";
@@ -10,7 +10,7 @@ import { themeAtom } from "~recoil/themeAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { TODAY_PLAN, TOMORROW_PLAN } from "~utils/Constants";
 
-export const Plan = ({ navigation }) => {
+export const Plan: FC<any> = ({ navigation }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [today, setToday] = useState(true);
   const setActions = useSetRecoilState(actionsAtom);

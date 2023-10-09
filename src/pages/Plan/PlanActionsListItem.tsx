@@ -1,11 +1,11 @@
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { ScaleDecorator } from "react-native-draggable-flatlist";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { FC, useState } from "react";
 
 import { updateAction } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
 import { PlanSetPriority } from "~pages/Plan/PlanSetPriority";
-import { useState } from "react";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
 import { convertTime } from "~utils/Helpers";
@@ -20,7 +20,7 @@ type PlanActionsListItemT = {
   isInPlan: boolean;
 };
 
-export const PlanActionsListItem = ({
+export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
   item,
   drag,
   isActive,
@@ -28,7 +28,7 @@ export const PlanActionsListItem = ({
   addAction,
   removeAction,
   isInPlan,
-}: PlanActionsListItemT) => {
+}) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useState(false);
   const colors = useRecoilValue(themeAtom);

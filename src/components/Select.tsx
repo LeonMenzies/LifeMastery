@@ -11,7 +11,7 @@ type optionT = {
   value: string;
 };
 
-type PlanT = {
+type SelectT = {
   title: string;
   value: string;
   onChange: Function;
@@ -19,7 +19,7 @@ type PlanT = {
   placeholder?: string;
 };
 
-export const Select: FC<PlanT> = ({
+export const Select: FC<SelectT> = ({
   title,
   value,
   onChange,
