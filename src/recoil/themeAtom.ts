@@ -7,7 +7,7 @@ export const lightTheme: ThemeT = {
   background: "#FFFFFF",
   black: "#000000",
   white: "#ffffff",
-  lightGrey: "#F5F5F5",
+  lightGrey: "#e5e5e5",
   grey: "#828282",
   error: "#900000",
   success: "#009000",

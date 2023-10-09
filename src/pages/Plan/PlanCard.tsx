@@ -161,7 +161,6 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.white,
       alignContent: "space-between",
       height: "75%",
     },

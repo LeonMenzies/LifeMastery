@@ -63,7 +63,7 @@ export const Plan = ({ navigation }) => {
 const styling = (today: boolean, colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.white,
+      backgroundColor: colors.background,
       height: "100%",
       alignItems: "center",
     },
@@ -72,18 +72,24 @@ const styling = (today: boolean, colors: ThemeT) =>
       width: "100%",
     },
     buttonToday: {
-      backgroundColor: today ? colors.white : colors.grey,
       alignItems: "center",
       justifyContent: "center",
       width: "50%",
       height: 30,
+      borderColor: colors.black,
+      borderTopWidth: today ? 1 : 0,
+      borderBottomWidth: today ? 0 : 1,
+      borderRightWidth: today ? 1 : 0,
     },
     buttonTomorrow: {
-      backgroundColor: today ? colors.grey : colors.white,
       alignItems: "center",
       justifyContent: "center",
       width: "50%",
       height: 30,
+      borderColor: colors.black,
+      borderTopWidth: today ? 0 : 1,
+      borderBottomWidth: today ? 1 : 0,
+      borderLeftWidth: today ? 0 : 1,
     },
     buttonText: {
       fontSize: 15,

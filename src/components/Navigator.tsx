@@ -74,14 +74,14 @@ export const Navigator = () => {
       <Drawer.Navigator
         screenOptions={{
           drawerStyle: {
-            backgroundColor: colors.background,
+            backgroundColor: colors.white,
             width: 220,
           },
           headerStyle: {
-            backgroundColor: colors.background,
+            backgroundColor: colors.white,
           },
-          headerTintColor: colors.secondary,
-          drawerActiveTintColor: colors.secondary,
+          headerTintColor: colors.primary,
+          drawerActiveTintColor: colors.primary,
         }}
         drawerContent={(props) => <CustomDrawerContent {...props} />}
       >
