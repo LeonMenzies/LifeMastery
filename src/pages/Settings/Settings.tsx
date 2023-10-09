@@ -9,6 +9,7 @@ import { clearPlan } from "~utils/PlanHandler";
 import { ThemeT } from "~types/Types";
 import { Button } from "~components/Button";
 import { SettingsThemeSelect } from "~pages/Settings/SettingsThemeSelect";
+import { SettingsCompleteSelect } from "~pages/Settings/SettingsCompleteSelect";
 import { planAtom } from "~recoil/planAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 
@@ -50,6 +51,7 @@ export const Settings = ({ modalVisible, setModalVisible }: SettingsT) => {
         <View style={styles.modalView}>
           <View>
             <SettingsThemeSelect />
+            <SettingsCompleteSelect />
             <SettingsItem
               title="Clear Actions"
               callBack={() => clearActions(setAlert, setActions)}

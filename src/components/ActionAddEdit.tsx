@@ -5,7 +5,7 @@ import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 
 import { Select } from "~components/Select";
 import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
-import { addAction } from "~utils/ActionsHandler";
+import { addAction, updateAction } from "~utils/ActionsHandler";
 import { TextInput } from "~components/TextInput";
 import { alertAtom } from "~recoil/alertAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
@@ -51,6 +51,7 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
   };
 
   const handleAddTodo = () => {
+
     if (!action) {
       setAlert("Action is required");
       return;
@@ -70,9 +71,17 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
       return;
     }
 
-    addAction(setAlert, setActions, action, timeEstimate, areaOfImportance);
-    reset();
+    modalVisible.action.action
+      ? updateAction(setAlert, setActions, {
+          ...modalVisible.action,
+          action: action,
+          timeEstimate: timeEstimate,
+          areaOfImportance: areaOfImportance,
+        })
+      : addAction(setAlert, setActions, action, timeEstimate, areaOfImportance);
     modalVisible.action.action ? handleClose() : null;
+
+    reset();
   };
 
   const handleClose = () => {
@@ -132,7 +141,7 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
             keyboardType="default"
             maxLength={30}
           />
-          <TimePicker title={"Time Estimate"} setTimeEstimate={setTimeEstimate}/>
+          <TimePicker title={"Time Estimate"} setTimeEstimate={setTimeEstimate} />
           <View style={styles.buttonContainer}>
             <Button title={modalVisible.action.action ? "Save" : "Add"} onPress={handleAddTodo} />
             <Button title="Close" onPress={handleClose} />

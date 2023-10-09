@@ -6,18 +6,17 @@ import { HomeProgressBar } from "~pages/Home/HomeProgressBar";
 
 type HomeHeaderT = {
   focus: string;
-  total: number;
-  complete: number;
+  percent: number;
 };
 
-export const HomeHeader = ({ focus, total, complete }: HomeHeaderT) => {
+export const HomeHeader = ({ focus, percent }: HomeHeaderT) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
   return (
     <View style={styles.container}>
       <Text style={styles.focusText}>Todays Focus: {focus}</Text>
-      {complete > 0 && <HomeProgressBar total={total} complete={complete} />}
+      {percent > 0 && <HomeProgressBar percent={percent} />}
     </View>
   );
 };

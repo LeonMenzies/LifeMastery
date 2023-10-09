@@ -20,7 +20,7 @@ export const TimePicker: FC<TextInputT> = ({ title, setTimeEstimate }) => {
   const [minutes, setMinutes] = useState(0);
 
   useEffect(() => {
-    setTimeEstimate(Number(hours) + minutes);
+    setTimeEstimate(Number(hours) + Number(minutes));
   }, [hours, minutes]);
 
   return (
@@ -31,14 +31,14 @@ export const TimePicker: FC<TextInputT> = ({ title, setTimeEstimate }) => {
           style={{ backgroundColor: colors.background, width: 70, height: 150, top: -40 }}
           selectedValue={hours}
           pickerData={minutes === 0 ? [...Array(10).keys()] : [...Array(9).keys()]}
-          onValueChange={setHours}
+          onValueChange={setMinutes}
         />
         <Text style={styles.timeTitle}>hours</Text>
         <Picker
           style={{ backgroundColor: colors.background, width: 100, height: 150, top: -40 }}
           selectedValue={minutes}
           pickerData={QUARTER_TIME}
-          onValueChange={setMinutes}
+          onValueChange={setHours}
         />
         <Text style={styles.timeTitle}>min</Text>
       </View>

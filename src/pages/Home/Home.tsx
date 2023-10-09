@@ -21,6 +21,7 @@ import { AreaOfImportanceItemT, PlanT, ThemeT, ActionItemT } from "~types/Types"
 import { getPlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
+import { settingsAtom } from "~recoil/settingsAtom";
 
 export const Home = ({ navigation }) => {
   const TODAY_PLAN = "today-plan";
@@ -31,7 +32,7 @@ export const Home = ({ navigation }) => {
   const [areasOfImportance, setAreasOfImportance] = useState([]);
   const [complete, setComplete] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const settings = useRecoilValue(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
   const windowWidth = Dimensions.get("window").width;
@@ -50,23 +51,29 @@ export const Home = ({ navigation }) => {
     getActions(setAlert, setActions);
   }, []);
 
-  const calculateCompleted = () => {
-    let complete = 0;
+  const calculatePercent = () => {
+    let completeTasks = 0;
+    let completeTime = 0;
+    let totalTime = 0;
+
     actions.forEach((action: ActionItemT) => {
-      if (plan.actionKeys.includes(action.key) && action.isCompleted) {
-        complete++;
+      if (plan.actionKeys.includes(action.key)) {
+        totalTime += Number(action.timeEstimate);
+        if (action.isCompleted) {
+          completeTasks++;
+          completeTime += Number(action.timeEstimate);
+        }
       }
     });
-    return complete;
+
+    return settings.timePercent
+      ? (completeTime / totalTime) * 100
+      : (completeTasks / plan.actionKeys.length) * 100;
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader
-        focus={plan.focus}
-        total={plan.actionKeys.length}
-        complete={calculateCompleted()}
-      />
+      <HomeHeader focus={plan.focus} percent={calculatePercent()} />
       {loading && <ActivityIndicator size="large" color={colors.primary} />}
 
       <ScrollView style={styles.scrollContainer}>
@@ -84,7 +91,7 @@ export const Home = ({ navigation }) => {
         })}
       </ScrollView>
 
-      {plan.actionKeys.length === calculateCompleted() && !loading && (
+      {calculatePercent() === 100 && !loading && (
         <ConfettiCannon
           count={200}
           explosionSpeed={1500}

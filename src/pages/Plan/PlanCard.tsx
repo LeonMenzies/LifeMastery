@@ -13,6 +13,8 @@ import { themeAtom } from "~recoil/themeAtom";
 import { planAtom } from "~recoil/planAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { updateAction } from "~utils/ActionsHandler";
+import { TOMORROW_PLAN } from "~utils/Constants";
+import { convertTime } from "~utils/Helpers";
 
 type PlanCardT = {
   day: string;
@@ -141,7 +143,7 @@ export const PlanCard = ({ day, navigation }: PlanCardT) => {
               renderItem={renderItem}
             />
             <View style={styles.totalTimeContainer}>
-              <Text style={styles.totalTimeText}>Total: {checkPlanLength()}</Text>
+              <Text style={styles.totalTimeText}>Total: {convertTime(checkPlanLength())}</Text>
             </View>
             {data.finalized && (
               <View style={styles.centeredView}>
@@ -155,10 +157,16 @@ export const PlanCard = ({ day, navigation }: PlanCardT) => {
           <Text>No Actions in your list</Text>
         )}
       </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Save" onPress={handleSave} disabled={data.finalized} />
-        <Button title="Finalize" onPress={handleFinalize} disabled={data.finalized} />
-      </View>
+      {!loading && (
+        <View style={styles.buttonContainer}>
+          <Button title="Save" onPress={handleSave} disabled={data.finalized} />
+          <Button
+            title="Finalize"
+            onPress={handleFinalize}
+            disabled={data.finalized || day === TOMORROW_PLAN}
+          />
+        </View>
+      )}
     </View>
   );
 };

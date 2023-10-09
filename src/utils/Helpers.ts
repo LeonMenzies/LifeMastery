@@ -21,7 +21,9 @@ export const getDay = (date: Date) => {
 
 export const convertTime = (i: number) => {
   const hours = Math.floor(i);
-  const minutes = i === 0.25 ? 15 : i === 0.5 ? 30 : 45;
+  const decimalPart = i - hours;
+  const minutes =
+    decimalPart === 0.25 ? 15 : decimalPart === 0.5 ? 30 : decimalPart === 0.75 ? 45 : 0;
 
   return `${hours}:${minutes}`;
 };

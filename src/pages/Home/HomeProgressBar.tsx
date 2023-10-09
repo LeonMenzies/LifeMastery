@@ -4,13 +4,11 @@ import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 
 type HomeProgressBarT = {
-  total: number;
-  complete: number;
+  percent: number;
 };
 
-export const HomeProgressBar = ({ total, complete }: HomeProgressBarT) => {
+export const HomeProgressBar = ({ percent }: HomeProgressBarT) => {
   const colors = useRecoilValue(themeAtom);
-  const percent = (complete / total) * 100;
   const styles = styling(colors, `${percent}%`);
 
   return (

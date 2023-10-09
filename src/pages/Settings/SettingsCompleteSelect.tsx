@@ -1,27 +1,25 @@
 import { View, Text, StyleSheet, Switch } from "react-native";
-import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 
 import { themeAtom, lightTheme, darkTheme } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
-import { useEffect, useState } from "react";
 import { settingsAtom } from "~recoil/settingsAtom";
 
-export const SettingsThemeSelect = () => {
-  const setTheme = useSetRecoilState(themeAtom);
-  const [light, setLight] = useRecoilState(settingsAtom);
-
+export const SettingsCompleteSelect = () => {
+  const [timePercent, setTimePercent] = useRecoilState(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
   const onChange = (b: boolean) => {
-    setLight({ ...light, lightMode: b });
-    light.lightMode ? setTheme(darkTheme) : setTheme(lightTheme);
+    setTimePercent({ ...timePercent, timePercent: b });
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <Text style={styles.title}>{light.lightMode ? "Light Mode" : "Dark Mode"}</Text>
+        <Text style={styles.title}>
+          {timePercent.timePercent ? "Time Complete" : "Tasks Complete"}
+        </Text>
 
         <View style={styles.switch}>
           <Switch
@@ -29,7 +27,7 @@ export const SettingsThemeSelect = () => {
             thumbColor={colors.primary}
             ios_backgroundColor="#3e3e3e"
             onValueChange={onChange}
-            value={light.lightMode}
+            value={timePercent.timePercent}
           />
         </View>
       </View>

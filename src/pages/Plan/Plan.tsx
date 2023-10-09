@@ -8,11 +8,9 @@ import { getActions } from "~utils/ActionsHandler";
 import { PlanCard } from "~pages/Plan/PlanCard";
 import { themeAtom } from "~recoil/themeAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
+import { TODAY_PLAN, TOMORROW_PLAN } from "~utils/Constants";
 
 export const Plan = ({ navigation }) => {
-  const TODAY_PLAN = "today-plan";
-  const TOMORROW_PLAN = "tomorrow-plan";
-
   const setAlert = useSetRecoilState(alertAtom);
   const [today, setToday] = useState(true);
   const setActions = useSetRecoilState(actionsAtom);
