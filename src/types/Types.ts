@@ -1,4 +1,4 @@
-export type actionItemT = {
+export type ActionItemT = {
   key: string;
   action: string;
   isCompleted: boolean;

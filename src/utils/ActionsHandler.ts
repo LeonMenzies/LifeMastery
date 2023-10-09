@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
 
-import { actionItemT } from "~types/Types";
+import { ActionItemT } from "~types/Types";
 
 const ACTION_KEY = "action-list";
 
@@ -11,7 +11,7 @@ export const getAction = async (setAlert, setData, AOL_KEY, key) => {
       .then((actionsRaw) => JSON.parse(actionsRaw))
       .then((actions) => {
         if (actions !== null) {
-          actions.array.forEach((element: actionItemT) => {
+          actions.array.forEach((element: ActionItemT) => {
             if (element.key === key) {
               setData(element);
               AOL_KEY(false);
@@ -28,7 +28,7 @@ export const getAction = async (setAlert, setData, AOL_KEY, key) => {
   }
 };
 
-export const updateAction = async (setAlert: Function, setData: Function, action: actionItemT) => {
+export const updateAction = async (setAlert: Function, setData: Function, action: ActionItemT) => {
   try {
     return await AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
@@ -59,12 +59,12 @@ export const getActions = (setAlert: any, setData: any, incompleteActions = fals
   try {
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
-      .then((actions: actionItemT[]) => {
+      .then((actions: ActionItemT[]) => {
         if (actions === null) {
           actions = [];
         }
 
-        const filteredActions = actions.filter((action: actionItemT) => {
+        const filteredActions = actions.filter((action: ActionItemT) => {
           let add = true;
           if (incompleteActions) {
             if (action.isCompleted) {

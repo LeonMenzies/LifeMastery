@@ -11,13 +11,13 @@ import { alertAtom } from "~recoil/alertAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { Button } from "~components/Button";
-import { ThemeT, actionItemT } from "~types/Types";
+import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
 
 type ActionAddEditT = {
   modalVisible: {
     show: boolean;
-    action: actionItemT;
+    action: ActionItemT;
   };
   setModalVisible: any;
 };
@@ -126,7 +126,7 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
                     priority: 0,
                     areaOfImportance: "",
                     dateAdded: new Date().toISOString().split("T")[0],
-                  } as actionItemT,
+                  } as ActionItemT,
                 });
               }}
             />

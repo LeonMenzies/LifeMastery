@@ -16,7 +16,7 @@ import { ActionsList } from "~pages/ActionsList/ActionsList";
 import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
 import { Settings } from "~pages/Settings/Settings";
 import { Plan } from "~pages/Plan/Plan";
-import { ThemeT, actionItemT } from "~types/Types";
+import { ThemeT, ActionItemT } from "~types/Types";
 import { ActionAddEdit } from "~components/ActionAddEdit";
 
 export const Navigator = () => {
@@ -33,7 +33,7 @@ export const Navigator = () => {
     if (alert !== "") {
       let toast = Toast.show(alert, {
         duration: Toast.durations.LONG,
-        position: Toast.positions.TOP,
+        position: Toast.positions.BOTTOM,
         hideOnPress: true,
         shadow: true,
         animation: true,
@@ -118,7 +118,7 @@ export const Navigator = () => {
                       priority: 0,
                       areaOfImportance: "",
                       dateAdded: date,
-                    } as actionItemT,
+                    } as ActionItemT,
                   })
                 }
               />
@@ -145,7 +145,7 @@ export const Navigator = () => {
                       priority: 0,
                       areaOfImportance: "",
                       dateAdded: date,
-                    } as actionItemT,
+                    } as ActionItemT,
                   })
                 }
               />

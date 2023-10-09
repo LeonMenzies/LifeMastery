@@ -6,11 +6,11 @@ import { updateAction } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
 import { PlanSetPriority } from "~pages/Plan/PlanSetPriority";
 import { useState } from "react";
-import { ThemeT, actionItemT } from "~types/Types";
+import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
 
 type PlanActionsListItemT = {
-  item: actionItemT;
+  item: ActionItemT;
   drag: any;
   isActive: boolean;
   setActions: any;

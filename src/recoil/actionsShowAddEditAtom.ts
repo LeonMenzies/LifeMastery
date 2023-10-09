@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { actionItemT } from "~types/Types";
+import { ActionItemT } from "~types/Types";
 
 export const actionsShowAddEditAtom = atom({
   key: "actionsShowAddEdit",
@@ -13,6 +13,6 @@ export const actionsShowAddEditAtom = atom({
       priority: 0,
       areaOfImportance: "",
       dateAdded: new Date().toISOString().split("T")[0],
-    } as actionItemT,
+    } as ActionItemT,
   },
 });

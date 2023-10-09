@@ -17,7 +17,7 @@ import { alertAtom } from "~recoil/alertAtom";
 import { getActions } from "~utils/ActionsHandler";
 import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
 import { HomeActionSection } from "~pages/Home/HomeActionSection";
-import { AreaOfImportanceItemT, PlanT, ThemeT, actionItemT } from "~types/Types";
+import { AreaOfImportanceItemT, PlanT, ThemeT, ActionItemT } from "~types/Types";
 import { getPlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
@@ -52,7 +52,7 @@ export const Home = ({ navigation }) => {
 
   const calculateCompleted = () => {
     let complete = 0;
-    actions.forEach((action: actionItemT) => {
+    actions.forEach((action: ActionItemT) => {
       if (plan.actionKeys.includes(action.key) && action.isCompleted) {
         complete++;
       }

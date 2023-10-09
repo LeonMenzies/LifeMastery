@@ -6,7 +6,7 @@ import DraggableFlatList from "react-native-draggable-flatlist";
 import { alertAtom } from "~recoil/alertAtom";
 import { TextInput } from "~components/TextInput";
 import { getPlan, savePlan, finalizePlan } from "~utils/PlanHandler";
-import { PlanT, ThemeT, actionItemT } from "~types/Types";
+import { PlanT, ThemeT, ActionItemT } from "~types/Types";
 import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
 import { Button } from "~components/Button";
 import { themeAtom } from "~recoil/themeAtom";
@@ -14,7 +14,7 @@ import { planAtom } from "~recoil/planAtom";
 
 type PlanCardT = {
   day: string;
-  actions: actionItemT[];
+  actions: ActionItemT[];
   setActions: any;
   navigation: any;
 };
@@ -56,18 +56,37 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
     }));
   };
 
+  const checkPlanLength = () => {
+    let totalTime = 0;
+    actions.forEach((action: ActionItemT) => {
+      if (data.actionKeys.includes(action.key)) {
+        totalTime += action.timeEstimate;
+      }
+    });
+    return totalTime;
+  };
+
   const handleSave = () => {
     savePlan(setAlert, data, day);
   };
 
   const handleFinalize = () => {
-    if (!text) {
-      setAlert("Focus is required");
+    if (data.actionKeys.length < 1) {
+      setAlert("You must add at least one action to your plan");
       return;
     }
 
-    if (data.actionKeys.length < 1) {
-      setAlert("You must add at least one action to your plan");
+    if (checkPlanLength() > 16) {
+      setAlert("There isn't enough time in the day for all those actions, lets try again");
+      setData((prevData) => ({
+        ...prevData,
+        actionKeys: [],
+      }));
+      return;
+    }
+
+    if (!text) {
+      setAlert("Focus is required");
       return;
     }
 

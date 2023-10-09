@@ -10,6 +10,7 @@ import { ActionsListItem } from "~pages/ActionsList/ActionsListItem";
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 import { actionsAtom } from "~recoil/actionsAtom";
+import { ActionsListSort } from "./ActionsListSort";
 
 export const ActionsList = () => {
   const setAlert = useSetRecoilState(alertAtom);
@@ -28,6 +29,7 @@ export const ActionsList = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ActionsListSort actions={actions} setActions={setActions} />
       {actions.length > 0 ? (
         <DraggableFlatList
           data={actions}

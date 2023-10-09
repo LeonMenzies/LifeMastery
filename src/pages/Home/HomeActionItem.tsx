@@ -4,10 +4,10 @@ import { useSetRecoilState } from "recoil";
 import { alertAtom } from "~recoil/alertAtom";
 import { updateAction } from "~utils/ActionsHandler";
 import { CheckBoxInput } from "~components/CheckBoxInput";
-import { actionItemT } from "~types/Types";
+import { ActionItemT } from "~types/Types";
 
 type HomeActionItemT = {
-  action: actionItemT;
+  action: ActionItemT;
   color: string;
   setActions: any;
 };

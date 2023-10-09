@@ -5,11 +5,11 @@ import SwipeableItem from "react-native-swipeable-item";
 import { deleteAction } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
 import { actionsShowAddEditAtom } from "~recoil/actionsShowAddEditAtom";
-import { ThemeT, actionItemT } from "~types/Types";
+import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
 
 type ActionsListItemT = {
-  item: actionItemT;
+  item: ActionItemT;
   drag: any;
   isActive: boolean;
   setActions: any;
@@ -54,10 +54,13 @@ export const ActionsListItem = ({ item, drag, isActive, setActions }: ActionsLis
             <View style={styles.actionTitleContainer}>
               <Text style={styles.actionTitle}>{item.action}</Text>
             </View>
-            <Text style={styles.actionTitle}>{item.dateAdded}</Text>
+            <Text style={styles.actionTitle}>{item.timeEstimate}</Text>
           </View>
-          <View>
-            <Text style={styles.actionDate}>{item.areaOfImportance}</Text>
+          <View style={styles.actionHeading}>
+            <View style={styles.actionSubTitleContainer}>
+              <Text style={styles.actionDate}>{item.areaOfImportance}</Text>
+            </View>
+            <Text style={styles.actionDate}>{item.dateAdded}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -82,6 +85,9 @@ const styling = (colors: ThemeT) =>
     actionTitleContainer: {
       flexDirection: "row",
       gap: 4,
+    },
+    actionSubTitleContainer: {
+      flexDirection: "row",
     },
     actionDate: {
       fontSize: 13,

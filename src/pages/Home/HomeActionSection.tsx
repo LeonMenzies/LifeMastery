@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 
-import { actionItemT } from "~types/Types";
+import { ActionItemT } from "~types/Types";
 import { HomeActionItem } from "~pages/Home/HomeActionItem";
 import { AreaOfImportanceItemT } from "~types/Types";
 
 type HomeActionSectionT = {
   aoi: AreaOfImportanceItemT;
-  data: actionItemT[];
+  data: ActionItemT[];
   actionKeys: string[];
   setActions: any;
 };
@@ -14,8 +14,8 @@ type HomeActionSectionT = {
 export const HomeActionSection = ({ aoi, data, setActions, actionKeys }: HomeActionSectionT) => {
   const styles = styling(aoi.Color);
 
-  const filteredData: actionItemT[] = data
-    .filter((action: actionItemT) => {
+  const filteredData: ActionItemT[] = data
+    .filter((action: ActionItemT) => {
       return action.areaOfImportance === aoi.AOI && actionKeys.includes(action.key);
     })
     .sort((a, b) => a.priority - b.priority);
@@ -24,7 +24,7 @@ export const HomeActionSection = ({ aoi, data, setActions, actionKeys }: HomeAct
     return (
       <View style={styles.container}>
         <Text style={styles.title}>{aoi.AOI}</Text>
-        {filteredData.map((action: actionItemT) => (
+        {filteredData.map((action: ActionItemT) => (
           <HomeActionItem
             key={action.key}
             action={action}
