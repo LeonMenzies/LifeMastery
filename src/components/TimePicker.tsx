@@ -28,14 +28,14 @@ export const TimePicker: FC<TextInputT> = ({ title, setTimeEstimate }) => {
       <Text style={styles.title}>{title}</Text>
       <View style={styles.pickerContainer}>
         <Picker
-          style={{ backgroundColor: colors.background, width: 50, height: 150, top: -40 }}
+          style={{ backgroundColor: colors.background, width: 70, height: 150, top: -40 }}
           selectedValue={hours}
           pickerData={minutes === 0 ? [...Array(10).keys()] : [...Array(9).keys()]}
           onValueChange={setHours}
         />
         <Text style={styles.timeTitle}>hours</Text>
         <Picker
-          style={{ backgroundColor: colors.background, width: 50, height: 150, top: -40 }}
+          style={{ backgroundColor: colors.background, width: 100, height: 150, top: -40 }}
           selectedValue={minutes}
           pickerData={QUARTER_TIME}
           onValueChange={setMinutes}
