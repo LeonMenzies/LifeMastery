@@ -62,8 +62,6 @@ const styling = (colors: ThemeT, selected: boolean, border: boolean) =>
     },
     text: {
       fontSize: 17,
-    },
-    title: {
-      fontSize: 22,
+      color: selected ? colors.textSecondary : colors.textPrimary,
     },
   });

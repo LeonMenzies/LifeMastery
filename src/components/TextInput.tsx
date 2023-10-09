@@ -59,7 +59,8 @@ const styling = (colors: ThemeT) =>
     input: {
       fontSize: 17,
       padding: 5,
-      borderBottomColor: "black",
+      color: colors.textPrimary,
+      borderBottomColor: colors.textPrimary,
       borderBottomWidth: StyleSheet.hairlineWidth,
     },
   });

@@ -63,7 +63,7 @@ const styling = (colors: ThemeT) =>
     },
     modalView: {
       margin: 20,
-      backgroundColor: colors.white,
+      backgroundColor: colors.background,
       padding: 35,
       alignItems: "center",
       shadowColor: "#000",
@@ -79,7 +79,8 @@ const styling = (colors: ThemeT) =>
       flexDirection: "row",
     },
     modalTitle: {
-      fontSize: 17,
+      fontSize: 20,
+      color: colors.textPrimary,
     },
   });
 

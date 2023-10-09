@@ -46,7 +46,7 @@ export const ActionsListItem: FC<ActionsListItemT> = ({ item, drag, isActive }) 
       <TouchableOpacity
         onLongPress={drag}
         disabled={isActive}
-        style={{ backgroundColor: isActive ? colors.lightGrey : colors.white }}
+        style={{ backgroundColor: isActive ? colors.primary : colors.background }}
         onPress={() =>
           setActionsShowAddEdit({
             show: true,
@@ -79,6 +79,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       paddingTop: 5,
       paddingBottom: 5,
       width: windowWidth - 50,
+      backgroundColor: colors.background,
     },
     actionHeading: {
       flexDirection: "row",
@@ -86,6 +87,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     },
     actionTitle: {
       fontSize: 17,
+      color: colors.textPrimary,
     },
     actionTitleContainer: {
       flexDirection: "row",

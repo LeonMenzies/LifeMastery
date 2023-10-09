@@ -15,7 +15,7 @@ export const Plan: FC<any> = ({ navigation }) => {
   const [today, setToday] = useState(true);
   const setActions = useSetRecoilState(actionsAtom);
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(today, colors);
+  const styles = styling(colors, today);
 
   useEffect(() => {
     getActions(setAlert, setActions);
@@ -25,18 +25,22 @@ export const Plan: FC<any> = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.buttonContainer}>
         <TouchableHighlight
-          underlayColor={colors.grey}
-          style={styles.buttonToday}
+          underlayColor={colors.lightGrey}
           onPress={() => setToday(true)}
+          style={styles.button}
         >
-          <Text style={styles.buttonText}>{"Today"}</Text>
+          <View style={today ? styles.underline : null}>
+            <Text style={styles.buttonText}>{"Today"}</Text>
+          </View>
         </TouchableHighlight>
         <TouchableHighlight
-          underlayColor={colors.grey}
-          style={styles.buttonTomorrow}
+          underlayColor={colors.lightGrey}
           onPress={() => setToday(false)}
+          style={styles.button}
         >
-          <Text style={styles.buttonText}>{"Tomorrow"}</Text>
+          <View style={today ? null : styles.underline}>
+            <Text style={styles.buttonText}>{"Tomorrow"}</Text>
+          </View>
         </TouchableHighlight>
       </View>
       {today ? (
@@ -48,7 +52,7 @@ export const Plan: FC<any> = ({ navigation }) => {
   );
 };
 
-const styling = (today: boolean, colors: ThemeT) =>
+const styling = (colors: ThemeT, today: boolean) =>
   StyleSheet.create({
     container: {
       backgroundColor: colors.background,
@@ -59,27 +63,25 @@ const styling = (today: boolean, colors: ThemeT) =>
       flexDirection: "row",
       width: "100%",
     },
-    buttonToday: {
+    button: {
+      width: "50%",
       alignItems: "center",
       justifyContent: "center",
-      width: "50%",
-      height: 30,
-      borderColor: colors.black,
-      borderTopWidth: today ? 1 : 0,
-      borderBottomWidth: today ? 0 : 1,
-      borderRightWidth: today ? 1 : 0,
     },
     buttonTomorrow: {
+      width: "50%",
       alignItems: "center",
       justifyContent: "center",
-      width: "50%",
-      height: 30,
-      borderColor: colors.black,
-      borderTopWidth: today ? 0 : 1,
-      borderBottomWidth: today ? 1 : 0,
-      borderLeftWidth: today ? 0 : 1,
+    },
+    underline: {
+      borderBottomColor: colors.textPrimary,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      marginBottom: 5,
     },
     buttonText: {
       fontSize: 15,
+      paddingHorizontal: 10,
+      paddingVertical: 3,
+      color: colors.textPrimary,
     },
   });

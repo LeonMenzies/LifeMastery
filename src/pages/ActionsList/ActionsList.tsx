@@ -47,7 +47,7 @@ export const ActionsList: FC<any> = () => {
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.white,
+      backgroundColor: colors.background,
       height: "100%",
       alignItems: "center",
     },

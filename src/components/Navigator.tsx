@@ -72,7 +72,7 @@ export const Navigator: FC<any> = () => {
   const addButton = () => {
     return (
       <TouchableHighlight
-        underlayColor={colors.lightGrey}
+        underlayColor={colors.primary}
         style={styles.addButton}
         onPress={() =>
           setModalVisible({
@@ -89,7 +89,7 @@ export const Navigator: FC<any> = () => {
           })
         }
       >
-        <Icon name={"plus"} size={17} color={colors.black} />
+        <Icon name={"plus"} size={17} color={colors.textPrimary} />
       </TouchableHighlight>
     );
   };
@@ -99,11 +99,11 @@ export const Navigator: FC<any> = () => {
       <Drawer.Navigator
         screenOptions={{
           drawerStyle: {
-            backgroundColor: colors.white,
+            backgroundColor: colors.background,
             width: 220,
           },
           headerStyle: {
-            backgroundColor: colors.white,
+            backgroundColor: colors.background,
           },
           headerTintColor: colors.primary,
           drawerActiveTintColor: colors.primary,
@@ -167,6 +167,7 @@ const styling = (colors: ThemeT) =>
     },
     labelText: {
       fontSize: 15,
+      color: colors.textPrimary,
     },
     addButton: {
       padding: 15,

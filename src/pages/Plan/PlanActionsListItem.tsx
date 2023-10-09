@@ -53,7 +53,7 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
         <TouchableOpacity
           onLongPress={drag}
           disabled={isActive}
-          style={{ backgroundColor: isActive ? colors.lightGrey : colors.white }}
+          style={{ backgroundColor: isActive ? colors.primary : colors.background }}
           onPress={() => {
             if (isInPlan) {
               handleCancel();
@@ -89,6 +89,7 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
 const styling = (colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
+      backgroundColor: colors.background,
       paddingTop: 5,
       paddingBottom: 5,
       width: windowWidth - 50,
@@ -103,6 +104,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     },
     actionTitle: {
       fontSize: 17,
+      color: colors.textPrimary,
     },
     actionTitleContainer: {
       flexDirection: "row",

@@ -97,6 +97,7 @@ const styling = (colors: ThemeT) =>
     },
     selectedText: {
       fontSize: 17,
+      color: colors.textPrimary,
     },
     selectedTextPlaceholder: {
       fontSize: 17,
@@ -108,7 +109,7 @@ const styling = (colors: ThemeT) =>
       alignItems: "center",
       zIndex: 1,
       padding: 5,
-      borderBottomColor: "black",
+      borderBottomColor: colors.textPrimary,
       borderBottomWidth: StyleSheet.hairlineWidth,
     },
     buttonText: {
@@ -118,7 +119,7 @@ const styling = (colors: ThemeT) =>
       margin: 7,
       top: 50,
       position: "absolute",
-      backgroundColor: colors.white,
+      backgroundColor: colors.background,
       width: "100%",
       zIndex: 4,
     },
@@ -130,9 +131,10 @@ const styling = (colors: ThemeT) =>
     },
     itemButtonText: {
       padding: 4,
+      color: colors.textPrimary,
     },
     divider: {
-      borderBottomColor: "black",
+      borderBottomColor: colors.textPrimary,
       borderBottomWidth: StyleSheet.hairlineWidth,
       padding: 1,
     },

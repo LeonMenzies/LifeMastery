@@ -7,6 +7,7 @@ import { updateAction } from "~utils/ActionsHandler";
 import { CheckBoxInput } from "~components/CheckBoxInput";
 import { ActionItemT, ThemeT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
+import { convertTime } from "~utils/Helpers";
 
 type HomeActionItemT = {
   action: ActionItemT;
@@ -32,11 +33,11 @@ export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions,
           color={color}
           disabled={dayComplete}
         />
-        <Text>{action.action}</Text>
+        <Text style={styles.actionText}>{action.action}</Text>
       </View>
       <View style={styles.infoContainer}>
-        <Text>{action.priority}</Text>
-        <Text>{action.timeEstimate}</Text>
+        <Text style={styles.infoText}>{action.priority}</Text>
+        <Text style={styles.infoText}>{convertTime(action.timeEstimate)}</Text>
       </View>
     </View>
   );
@@ -51,6 +52,9 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       justifyContent: "space-between",
       width: windowWidth - 50,
     },
+    actionText: {
+      color: colors.textPrimary,
+    },
     actionContainer: {
       flexDirection: "row",
       alignItems: "center",
@@ -58,6 +62,10 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     infoContainer: {
       flexDirection: "row",
       alignItems: "center",
-      gap: 20,
+      justifyContent: "space-between",
+      width: 70,
+    },
+    infoText: {
+      color: colors.textPrimary,
     },
   });

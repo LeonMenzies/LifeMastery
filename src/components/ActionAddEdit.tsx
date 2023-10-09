@@ -161,7 +161,7 @@ const styling = (colors: ThemeT) =>
     },
     modalView: {
       margin: 20,
-      backgroundColor: colors.white,
+      backgroundColor: colors.background,
       padding: 35,
       alignItems: "center",
       shadowColor: "#000",

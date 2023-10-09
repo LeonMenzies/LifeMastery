@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
+
+import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import SwipeableItem from "react-native-swipeable-item";
 
@@ -19,7 +20,8 @@ export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item, drag, 
   const setAlert = useSetRecoilState(alertAtom);
   const setData = useSetRecoilState(areasOfImportanceAtom);
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(item.Color, colors);
+  const windowWidth = Dimensions.get("window").width;
+  const styles = styling(item.Color, colors, windowWidth);
 
   const UnderlayRight = () => {
     return (
@@ -41,7 +43,7 @@ export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item, drag, 
       <TouchableOpacity
         onLongPress={drag}
         disabled={isActive}
-        style={{ backgroundColor: isActive ? item.Color : "white" }}
+        style={{ backgroundColor: isActive ? colors.primary : colors.background }}
       >
         <View style={styles.container}>
           <Text style={styles.aoiText}>{item.AOI}</Text>
@@ -52,14 +54,15 @@ export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item, drag, 
   );
 };
 
-const styling = (color: string, colors: ThemeT) =>
+const styling = (color: string, colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
       paddingTop: 5,
       paddingBottom: 5,
-      width: 300,
+      width: windowWidth - 50,
       flexDirection: "row",
       justifyContent: "space-between",
+      backgroundColor: colors.background,
     },
     aoiColor: {
       backgroundColor: color,
@@ -68,6 +71,7 @@ const styling = (color: string, colors: ThemeT) =>
     },
     aoiText: {
       fontSize: 17,
+      color: colors.textPrimary,
     },
     underlayText: {
       color: colors.white,

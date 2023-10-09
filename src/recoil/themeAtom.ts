@@ -3,8 +3,11 @@ import { ThemeT } from "~types/Types";
 
 export const lightTheme: ThemeT = {
   primary: "#FFC10C",
-  secondary: "#333333",
+  secondary: "#ffe79e",
   background: "#FFFFFF",
+  backgroundSecondary: "#e6e6e6",
+  textPrimary: "#000000",
+  textSecondary: "#6e6e6e",
   black: "#000000",
   white: "#ffffff",
   lightGrey: "#e5e5e5",
@@ -15,14 +18,17 @@ export const lightTheme: ThemeT = {
 
 export const darkTheme: ThemeT = {
   primary: "#FFC10C",
-  secondary: "#565656",
-  background: "#333333",
+  secondary: "#ffe79e",
+  background: "#4d4d4d",
+  backgroundSecondary: "#535353",
+  textPrimary: "#ffffff",
+  textSecondary: "#000000",
   black: "#000000",
   white: "#ffffff",
-  lightGrey: "#595959",
-  grey: "#464646",
-  error: "#900000",
-  success: "#009000",
+  lightGrey: "#dadada",
+  grey: "#b1b1b1",
+  error: "#cc0000",
+  success: "#00bb00",
 };
 
 export const themeAtom = atom<ThemeT>({

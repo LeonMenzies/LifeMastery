@@ -17,7 +17,7 @@ export const Button: FC<ButtonT> = ({ title, onPress, disabled = false }) => {
 
   return (
     <TouchableHighlight
-      underlayColor={colors.grey}
+      underlayColor={colors.lightGrey}
       style={styles.button}
       onPress={disabled ? undefined : onPress}
     >
@@ -32,7 +32,7 @@ const styling = (disabled: boolean, colors: ThemeT) =>
       padding: 7,
       margin: 7,
       zIndex: 2,
-      backgroundColor: disabled ? colors.grey : colors.primary,
+      backgroundColor: disabled ? colors.lightGrey : colors.primary,
       minWidth: 100,
       alignItems: "center",
     },

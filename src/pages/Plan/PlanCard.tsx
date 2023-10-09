@@ -212,5 +212,6 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     totalTimeText: {
       paddingTop: 5,
       fontSize: 17,
+      color: colors.textPrimary,
     },
   });

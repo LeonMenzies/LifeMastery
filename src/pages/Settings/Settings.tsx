@@ -82,7 +82,7 @@ const styling = (colors: ThemeT) =>
     },
     modalView: {
       margin: 20,
-      backgroundColor: colors.white,
+      backgroundColor: colors.background,
       padding: 35,
       height: "50%",
       width: "80%",
@@ -107,9 +107,10 @@ const styling = (colors: ThemeT) =>
     },
     itemText: {
       fontSize: 17,
+      color: colors.textPrimary,
     },
     divider: {
-      borderBottomColor: "black",
+      borderBottomColor: colors.textPrimary,
       borderBottomWidth: StyleSheet.hairlineWidth,
     },
   });

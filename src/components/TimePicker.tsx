@@ -27,7 +27,12 @@ export const TimePicker: FC<TimePickerT> = ({ title, setTimeEstimate }) => {
       <Text style={styles.title}>{title}</Text>
       <View style={styles.pickerContainer}>
         <Picker
-          style={{ backgroundColor: colors.background, width: 70, height: 150, top: -40 }}
+          style={{
+            backgroundColor: colors.background,
+            width: 70,
+            height: 150,
+            top: -40,
+          }}
           selectedValue={hours}
           pickerData={minutes === 0 ? [...Array(10).keys()] : [...Array(9).keys()]}
           onValueChange={setMinutes}

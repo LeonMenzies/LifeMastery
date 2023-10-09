@@ -26,6 +26,9 @@ export type ThemeT = {
   primary: string;
   secondary: string;
   background: string;
+  backgroundSecondary: string;
+  textPrimary: string;
+  textSecondary: string;
   black: string;
   white: string;
   lightGrey: string;

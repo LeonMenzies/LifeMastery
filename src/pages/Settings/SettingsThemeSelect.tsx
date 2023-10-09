@@ -51,12 +51,13 @@ const styling = (colors: ThemeT) =>
     },
     title: {
       fontSize: 17,
+      color: colors.textPrimary,
     },
     switch: {
       padding: 7,
     },
     divider: {
-      borderBottomColor: "black",
+      borderBottomColor: colors.textPrimary,
       borderBottomWidth: StyleSheet.hairlineWidth,
     },
   });

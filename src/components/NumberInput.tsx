@@ -25,7 +25,7 @@ export const NumberInput: FC<NumberInputT> = ({ onChange, value, maxValue }) => 
           }
         }}
       >
-        <Text>{"-"}</Text>
+        <Text style={styles.text}>{"-"}</Text>
       </TouchableHighlight>
       <Text style={styles.value}>{value}</Text>
       <TouchableHighlight
@@ -36,7 +36,7 @@ export const NumberInput: FC<NumberInputT> = ({ onChange, value, maxValue }) => 
           }
         }}
       >
-        <Text>{"+"}</Text>
+        <Text style={styles.text}>{"+"}</Text>
       </TouchableHighlight>
     </View>
   );
@@ -57,6 +57,10 @@ const styling = (colors: ThemeT) =>
     button: {
       fontSize: 17,
       padding: 10,
-      backgroundColor: colors.lightGrey,
+      backgroundColor: colors.backgroundSecondary,
+    },
+    text: {
+      fontSize: 17,
+      color: colors.textPrimary,
     },
   });
