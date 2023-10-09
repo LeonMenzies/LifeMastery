@@ -60,7 +60,7 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
     let totalTime = 0;
     actions.forEach((action: ActionItemT) => {
       if (data.actionKeys.includes(action.key)) {
-        totalTime += action.timeEstimate;
+        totalTime += Number(action.timeEstimate);
       }
     });
     return totalTime;
@@ -138,6 +138,9 @@ export const PlanCard = ({ day, actions, setActions, navigation }: PlanCardT) =>
               keyExtractor={(item) => item.key}
               renderItem={renderItem}
             />
+            <View style={styles.totalTimeContainer}>
+              <Text style={styles.totalTimeText}>Total: {checkPlanLength()}</Text>
+            </View>
             {data.finalized && (
               <View style={styles.centeredView}>
                 <View style={styles.finalizedContainer}>
@@ -173,7 +176,7 @@ const styling = (colors: ThemeT) =>
       borderRadius: 10,
     },
     actionsList: {
-      height: "85%",
+      height: "88%", //TODO: fix this meh
     },
     buttonContainer: {
       flexDirection: "row",
@@ -197,5 +200,12 @@ const styling = (colors: ThemeT) =>
       fontSize: 17,
       padding: 5,
       color: colors.error,
+    },
+    totalTimeContainer: {
+      alignItems: "flex-end",
+    },
+    totalTimeText: {
+      paddingTop: 5,
+      fontSize: 17,
     },
   });

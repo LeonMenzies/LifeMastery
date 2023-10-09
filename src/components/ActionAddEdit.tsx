@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
 import React, { useEffect, useState, useLayoutEffect } from "react";
-import { Modal, StyleSheet, View } from "react-native";
+import { Modal, StyleSheet, View, Text } from "react-native";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 
 import { Select } from "~components/Select";
@@ -13,6 +13,7 @@ import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { Button } from "~components/Button";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
+import { TimePicker } from "~components/TimePicker";
 
 type ActionAddEditT = {
   modalVisible: {
@@ -43,6 +44,12 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
     setAction(modalVisible.action.action);
   }, [modalVisible.action.action]);
 
+  const reset = () => {
+    setAction("");
+    setTimeEstimate(0);
+    setAreaOfImportance("");
+  };
+
   const handleAddTodo = () => {
     if (!action) {
       setAlert("Action is required");
@@ -64,12 +71,12 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
     }
 
     addAction(setAlert, setActions, action, timeEstimate, areaOfImportance);
-    setAction("");
-    setTimeEstimate(0);
-    setAreaOfImportance("");
+    reset();
+    modalVisible.action.action ? handleClose() : null;
   };
 
   const handleClose = () => {
+    reset();
     setModalVisible({
       show: false as boolean,
       action: {
@@ -125,16 +132,9 @@ export const ActionAddEdit = ({ modalVisible, setModalVisible }: ActionAddEditT)
             keyboardType="default"
             maxLength={30}
           />
-          <TextInput
-            title={"Time estimate"}
-            onChangeText={setTimeEstimate}
-            value={timeEstimate.toString()}
-            placeholder="Add value..."
-            keyboardType="numeric"
-            maxLength={30}
-          />
+          <TimePicker title={"Time Estimate"} setTimeEstimate={setTimeEstimate}/>
           <View style={styles.buttonContainer}>
-            <Button title="Add" onPress={handleAddTodo} />
+            <Button title={modalVisible.action.action ? "Save" : "Add"} onPress={handleAddTodo} />
             <Button title="Close" onPress={handleClose} />
           </View>
         </View>
