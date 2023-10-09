@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator, Dimensions } from "react-native";
 import { useEffect, useState, FC } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import DraggableFlatList from "react-native-draggable-flatlist";
@@ -24,10 +24,10 @@ export const PlanCard: FC<PlanCardT> = ({ day, navigation }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [data, setData] = useRecoilState(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
-
   const [text, setText] = useState("");
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors);
+  const windowWidth = Dimensions.get("window").width;
+  const styles = styling(colors, windowWidth);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -119,77 +119,73 @@ export const PlanCard: FC<PlanCardT> = ({ day, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View>
-        <View style={styles.focusContainer}>
-          <TextInput
-            title={"Focus"}
-            onChangeText={updateFocus}
-            value={text}
-            placeholder="Add focus..."
-            keyboardType="default"
-            maxLength={30}
-          />
-        </View>
-        {loading && <ActivityIndicator size="large" color={colors.primary} />}
-
-        {actions.length > 0 ? (
-          <View>
-            <DraggableFlatList
-              style={styles.actionsList}
-              data={actions}
-              onDragEnd={({ data }) => setActions(data)}
-              keyExtractor={(item) => item.key}
-              renderItem={renderItem}
-            />
-            <View style={styles.totalTimeContainer}>
-              <Text style={styles.totalTimeText}>Total: {convertTime(checkPlanLength())}</Text>
-            </View>
-            {data.finalized && (
-              <View style={styles.centeredView}>
-                <View style={styles.finalizedContainer}>
-                  <Text style={styles.finalizedText}>{"Day is Finalized"}</Text>
-                </View>
-              </View>
-            )}
-          </View>
-        ) : (
-          <Text>No Actions in your list</Text>
-        )}
+      <View style={styles.focusContainer}>
+        <TextInput
+          title={"Focus"}
+          onChangeText={updateFocus}
+          value={text}
+          placeholder="Add focus..."
+          keyboardType="default"
+          maxLength={30}
+        />
       </View>
-      {!loading && (
-        <View style={styles.buttonContainer}>
-          <Button title="Save" onPress={handleSave} disabled={data.finalized} />
-          <Button
-            title="Finalize"
-            onPress={handleFinalize}
-            disabled={data.finalized || day === TOMORROW_PLAN}
+      {loading && <ActivityIndicator size="large" color={colors.primary} />}
+
+      {actions.length > 0 ? (
+        <View>
+          <DraggableFlatList
+            data={actions}
+            onDragEnd={({ data }) => setActions(data)}
+            keyExtractor={(item) => item.key}
+            renderItem={renderItem}
           />
+          {data.finalized && (
+            <View style={styles.centeredView}>
+              <View style={styles.finalizedContainer}>
+                <Text style={styles.finalizedText}>{"Day is Finalized"}</Text>
+              </View>
+            </View>
+          )}
+        </View>
+      ) : (
+        <Text>No Actions in your list</Text>
+      )}
+
+      {!loading && (
+        <View>
+          <View style={styles.totalTimeContainer}>
+            <Text style={styles.totalTimeText}>Total: {convertTime(checkPlanLength())}</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title="Save" onPress={handleSave} disabled={data.finalized} />
+            <Button
+              title="Finalize"
+              onPress={handleFinalize}
+              disabled={data.finalized || day === TOMORROW_PLAN}
+            />
+          </View>
         </View>
       )}
     </View>
   );
 };
 
-const styling = (colors: ThemeT) =>
+const styling = (colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
-      alignContent: "space-between",
-      height: "75%",
+      justifyContent: "space-between",
+      alignItems: "center",
+      height: "70%",
     },
     focusContainer: {
       padding: 10,
       margin: 10,
-      backgroundColor: colors.lightGrey,
-      borderColor: colors.grey,
-      borderWidth: 1,
-      borderRadius: 10,
-    },
-    actionsList: {
-      height: "88%", //TODO: fix this meh
+      backgroundColor: colors.primary,
     },
     buttonContainer: {
       flexDirection: "row",
       justifyContent: "center",
+      width: windowWidth - 50,
     },
     centeredView: {
       flex: 1,

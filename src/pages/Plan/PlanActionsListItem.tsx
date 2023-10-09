@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
+import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
 import { ScaleDecorator } from "react-native-draggable-flatlist";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FC, useState } from "react";
@@ -31,8 +31,9 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
 }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useState(false);
+  const windowWidth = Dimensions.get("window").width;
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors);
+  const styles = styling(colors, windowWidth);
 
   const handleSetPriority = (val: number) => {
     updateAction(setAlert, setActions, { ...item, priority: val });
@@ -47,20 +48,20 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
   };
 
   return (
-    <ScaleDecorator key={item.key}>
-      <TouchableOpacity
-        onLongPress={drag}
-        disabled={isActive}
-        style={{ backgroundColor: isActive ? colors.lightGrey : colors.white }}
-        onPress={() => {
-          if (isInPlan) {
-            handleCancel();
-          } else {
-            setModalVisible(true);
-          }
-        }}
-      >
-        <View style={styles.container}>
+    <View style={styles.container}>
+      <ScaleDecorator key={item.key}>
+        <TouchableOpacity
+          onLongPress={drag}
+          disabled={isActive}
+          style={{ backgroundColor: isActive ? colors.lightGrey : colors.white }}
+          onPress={() => {
+            if (isInPlan) {
+              handleCancel();
+            } else {
+              setModalVisible(true);
+            }
+          }}
+        >
           <View style={styles.actionHeading}>
             <View style={styles.actionTitleContainer}>
               {isInPlan && <View style={styles.inPlan} />}
@@ -72,24 +73,25 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
             <Text style={styles.actionDate}>{item.dateAdded}</Text>
             <Text style={styles.actionDate}>{convertTime(item.timeEstimate)}</Text>
           </View>
-        </View>
-        <PlanSetPriority
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          actionTitle={item.action}
-          handleSetPriority={handleSetPriority}
-          handleCancel={handleCancel}
-        />
-      </TouchableOpacity>
-    </ScaleDecorator>
+          <PlanSetPriority
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            actionTitle={item.action}
+            handleSetPriority={handleSetPriority}
+            handleCancel={handleCancel}
+          />
+        </TouchableOpacity>
+      </ScaleDecorator>
+    </View>
   );
 };
 
-const styling = (colors: ThemeT) =>
+const styling = (colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
       paddingTop: 5,
       paddingBottom: 5,
+      width: windowWidth - 50,
     },
     actionHeading: {
       flexDirection: "row",

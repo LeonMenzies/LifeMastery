@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
+import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import SwipeableItem from "react-native-swipeable-item";
 import { FC } from "react";
@@ -23,7 +23,8 @@ export const ActionsListItem: FC<ActionsListItemT> = ({ item, drag, isActive }) 
 
   const setActionsShowAddEdit = useSetRecoilState(actionsShowAddEditAtom);
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors);
+  const windowWidth = Dimensions.get("window").width;
+  const styles = styling(colors, windowWidth);
 
   const UnderlayRight = () => {
     return (
@@ -72,12 +73,12 @@ export const ActionsListItem: FC<ActionsListItemT> = ({ item, drag, isActive }) 
   );
 };
 
-const styling = (colors: ThemeT) =>
+const styling = (colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
       paddingTop: 5,
       paddingBottom: 5,
-      width: 300,
+      width: windowWidth - 50,
     },
     actionHeading: {
       flexDirection: "row",

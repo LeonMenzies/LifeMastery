@@ -1,11 +1,12 @@
-import { Text, StyleSheet, View } from "react-native";
-import { useSetRecoilState } from "recoil";
+import { Text, StyleSheet, View, Dimensions } from "react-native";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FC } from "react";
 
 import { alertAtom } from "~recoil/alertAtom";
 import { updateAction } from "~utils/ActionsHandler";
 import { CheckBoxInput } from "~components/CheckBoxInput";
-import { ActionItemT } from "~types/Types";
+import { ActionItemT, ThemeT } from "~types/Types";
+import { themeAtom } from "~recoil/themeAtom";
 
 type HomeActionItemT = {
   action: ActionItemT;
@@ -16,6 +17,9 @@ type HomeActionItemT = {
 
 export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions, dayComplete }) => {
   const setAlert = useSetRecoilState(alertAtom);
+  const windowWidth = Dimensions.get("window").width;
+  const colors = useRecoilValue(themeAtom);
+  const styles = styling(colors, windowWidth);
 
   return (
     <View style={styles.container}>
@@ -38,20 +42,22 @@ export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions,
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 2,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  actionContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  infoContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 20,
-  },
-});
+const styling = (colors: ThemeT, windowWidth: number) =>
+  StyleSheet.create({
+    container: {
+      padding: 2,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      width: windowWidth - 50,
+    },
+    actionContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    infoContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 20,
+    },
+  });

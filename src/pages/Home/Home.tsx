@@ -76,7 +76,7 @@ export const Home: FC<any> = ({ navigation }) => {
       <HomeHeader focus={plan.focus} percent={calculatePercent()} />
       {loading && <ActivityIndicator size="large" color={colors.primary} />}
 
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView>
         {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
           return (
             <HomeActionSection
@@ -125,9 +125,6 @@ const styling = (colors: ThemeT) =>
       backgroundColor: colors.white,
       height: "100%",
       alignItems: "center",
-    },
-    scrollContainer: {
-      width: "80%",
     },
     completeContainer: {
       borderRadius: 5,

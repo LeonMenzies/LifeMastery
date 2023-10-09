@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { FC } from "react";
 
 import { ActionItemT } from "~types/Types";
@@ -20,7 +20,8 @@ export const HomeActionSection: FC<HomeActionSectionT> = ({
   actionKeys,
   dayComplete,
 }) => {
-  const styles = styling(aoi.Color);
+  const windowWidth = Dimensions.get("window").width;
+  const styles = styling(aoi.Color, windowWidth);
 
   const filteredData: ActionItemT[] = data
     .filter((action: ActionItemT) => {
@@ -46,10 +47,11 @@ export const HomeActionSection: FC<HomeActionSectionT> = ({
     );
 };
 
-const styling = (color: string) =>
+const styling = (color: string, windowWidth: number) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 10,
+      width: windowWidth - 50,
     },
     title: {
       fontSize: 20,

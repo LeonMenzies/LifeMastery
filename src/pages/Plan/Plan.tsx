@@ -52,8 +52,8 @@ const styling = (today: boolean, colors: ThemeT) =>
   StyleSheet.create({
     container: {
       backgroundColor: colors.background,
-      height: "100%",
       alignItems: "center",
+      flex: 1,
     },
     buttonContainer: {
       flexDirection: "row",
