@@ -121,7 +121,7 @@ export const PlanCard: FC<PlanCardT> = ({ day, navigation }) => {
     <View style={styles.container}>
       <View style={styles.focusContainer}>
         <TextInput
-          title={"Focus"}
+          title={"My Key Focus For Today"}
           onChangeText={updateFocus}
           value={text}
           placeholder="Add focus..."

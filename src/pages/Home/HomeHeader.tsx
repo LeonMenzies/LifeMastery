@@ -17,7 +17,7 @@ export const HomeHeader: FC<HomeHeaderT> = ({ focus, percent }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.focusText}>Todays Focus: {focus}</Text>
+      <Text style={styles.focusText}>Key Focus: {focus}</Text>
       {percent > 0 && <HomeProgressBar percent={percent} />}
     </View>
   );

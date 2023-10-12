@@ -28,7 +28,16 @@ export const Navigator: FC<any> = () => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
   const key = uuidv4();
-  const date = new Date().toISOString().split("T")[0];
+  const date = new Date();
+
+  const options = {
+    weekday: "long" as const,
+    month: "short" as const,
+    day: "numeric" as const,
+  };
+
+  const dateFormatter = new Intl.DateTimeFormat("en-US", options);
+  const formattedDate = dateFormatter.format(date);
 
   useEffect(() => {
     if (alert !== "") {
@@ -85,7 +94,7 @@ export const Navigator: FC<any> = () => {
               timeEstimate: 0,
               priority: 0,
               areaOfImportance: "",
-              dateAdded: date,
+              dateAdded: date.toISOString().split("T")[0],
             } as ActionItemT,
           })
         }
@@ -116,7 +125,7 @@ export const Navigator: FC<any> = () => {
           name={"Home"}
           options={{
             drawerLabel: () => customLabel("Home", "home"),
-            title: `${getDay(new Date(date))}  ${date}`,
+            title: `${formattedDate}`,
             unmountOnBlur: true,
           }}
           component={Home}

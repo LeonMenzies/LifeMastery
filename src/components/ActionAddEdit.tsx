@@ -14,6 +14,7 @@ import { Button } from "~components/Button";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
 import { TimePicker } from "~components/TimePicker";
+import { TextInputAutoComplete } from "./TextInputAutoComplete";
 
 type ActionAddEditT = {
   modalVisible: {
@@ -25,7 +26,7 @@ type ActionAddEditT = {
 
 export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisible }) => {
   const setAlert = useSetRecoilState(alertAtom);
-  const setActions = useSetRecoilState(actionsAtom);
+  const [actions, setActions] = useRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
@@ -48,6 +49,10 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
     setAction("");
     setTimeEstimate(0);
     setAreaOfImportance("");
+  };
+
+  const createAutoCompleteText = () => {
+    return actions.map((action: ActionItemT) => action.action);
   };
 
   const handleAddTodo = () => {
@@ -132,13 +137,14 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
             value={areaOfImportance}
             onChange={setAreaOfImportance}
           />
-          <TextInput
+          <TextInputAutoComplete
             title={"Action"}
             onChangeText={setAction}
             value={action}
             placeholder="Add value..."
             keyboardType="default"
             maxLength={30}
+            autoCompleteText={createAutoCompleteText()}
           />
           <TimePicker title={"Time Estimate"} setTimeEstimate={setTimeEstimate} />
           <View style={styles.buttonContainer}>

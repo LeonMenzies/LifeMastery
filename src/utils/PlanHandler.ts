@@ -15,6 +15,9 @@ export const getPlan = (
         if (plan !== null) {
           setLoading(false);
           setData(plan);
+        } else {
+          setLoading(false);
+          setData({}); //TODO: return empty day
         }
       });
   } catch (e) {
