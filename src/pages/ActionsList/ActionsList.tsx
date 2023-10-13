@@ -1,5 +1,5 @@
 import "react-native-get-random-values";
-import React, { useEffect, FC } from "react";
+import React, { useEffect, FC, useState } from "react";
 import { SafeAreaView, Text, StyleSheet } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 
@@ -15,7 +15,7 @@ import { ActionsListSort } from "./ActionsListSort";
 export const ActionsList: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
-
+  const [showComplete, setShowComplete] = useState(false);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
@@ -24,12 +24,20 @@ export const ActionsList: FC<any> = () => {
   }, []);
 
   const renderItem = ({ item, drag, isActive }) => {
+    if (!showComplete && !item.isCompleted) {
+      return;
+    }
     return <ActionsListItem item={item} drag={drag} isActive={isActive} />;
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ActionsListSort actions={actions} setActions={setActions} />
+      <ActionsListSort
+        actions={actions}
+        setActions={setActions}
+        showComplete={showComplete}
+        setShowComplete={setShowComplete}
+      />
       {actions.length > 0 ? (
         <DraggableFlatList
           data={actions}

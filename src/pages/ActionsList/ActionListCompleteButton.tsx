@@ -10,36 +10,17 @@ type SortButtonT = {
   text: string;
   borders: boolean;
   selected: boolean;
-  desc: boolean;
-  setSelected: (sortType: string) => void;
+  onPress: () => void;
 };
 
-export const ActionListSortButton: FC<SortButtonT> = ({
-  text,
-  borders,
-  selected,
-  setSelected,
-  desc,
-}) => {
+export const ActionListCompleteButton: FC<SortButtonT> = ({ text, borders, selected, onPress }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors, selected, borders);
 
-  const Carrot = ({}) => {
-    if (!selected) {
-      return <></>;
-    }
-    return desc ? <Icon name="caretup" /> : <Icon name="caretdown" />;
-  };
-
   return (
-    <TouchableHighlight
-      underlayColor={colors.grey}
-      style={styles.button}
-      onPress={() => setSelected(text)}
-    >
+    <TouchableHighlight underlayColor={colors.grey} style={styles.button} onPress={onPress}>
       <View style={styles.container}>
         <Text style={styles.text}>{text}</Text>
-        <Carrot />
       </View>
     </TouchableHighlight>
   );

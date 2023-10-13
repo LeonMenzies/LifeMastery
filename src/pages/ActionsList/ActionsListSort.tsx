@@ -6,13 +6,21 @@ import { useRecoilValue } from "recoil";
 import { themeAtom } from "~recoil/themeAtom";
 import { ActionItemT, ThemeT } from "~types/Types";
 import { ActionListSortButton } from "~pages/ActionsList/ActionListSortButton";
+import { ActionListCompleteButton } from "~pages/ActionsList/ActionListCompleteButton";
 
 type ActionsListSortT = {
   actions: ActionItemT[];
   setActions: any;
+  showComplete: boolean;
+  setShowComplete: (b: boolean) => void;
 };
 
-export const ActionsListSort: FC<ActionsListSortT> = ({ actions, setActions }) => {
+export const ActionsListSort: FC<ActionsListSortT> = ({
+  actions,
+  setActions,
+  showComplete,
+  setShowComplete,
+}) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
   const [selected, setSelected] = useState("Date");
@@ -47,6 +55,10 @@ export const ActionsListSort: FC<ActionsListSortT> = ({ actions, setActions }) =
     setDesc(false);
   }, [selected]);
 
+  useEffect(() => {
+    setDesc(false);
+  }, [showComplete]);
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
@@ -60,6 +72,12 @@ export const ActionsListSort: FC<ActionsListSortT> = ({ actions, setActions }) =
             desc={desc}
           />
         ))}
+        <ActionListCompleteButton
+          text={"Complete"}
+          borders={true}
+          selected={showComplete}
+          onPress={() => setShowComplete(!showComplete)}
+        />
       </View>
     </View>
   );
