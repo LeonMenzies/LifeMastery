@@ -8,19 +8,20 @@ import { CheckBoxInput } from "~components/CheckBoxInput";
 import { ActionItemT, ThemeT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
 import { convertTime } from "~utils/Helpers";
+import { planAtom } from "~recoil/planAtom";
 
 type HomeActionItemT = {
   action: ActionItemT;
   color: string;
   setActions: any;
-  dayComplete: boolean;
 };
 
-export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions, dayComplete }) => {
+export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const windowWidth = Dimensions.get("window").width;
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors, windowWidth);
+  const plan = useRecoilValue(planAtom);
 
   return (
     <View style={styles.container}>
@@ -31,7 +32,7 @@ export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions,
           }
           completed={action.isCompleted}
           color={color}
-          disabled={dayComplete}
+          disabled={plan.complete}
         />
         <Text style={styles.actionText}>{action.action}</Text>
       </View>

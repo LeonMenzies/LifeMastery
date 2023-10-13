@@ -1,16 +1,6 @@
-export const generateAOIColor = (count: number) => {
-  const COLORS = [
-    "#FFC10C",
-    "#FFCB30",
-    "#F5BD16",
-    "#001EA8",
-    "#163EF5",
-    "#6380FF",
-    "#4360E6",
-    "#99760E",
-    "#E6BC43",
-  ];
+import { COLORS } from "~utils/Constants";
 
+export const generateAOIColor = (count: number) => {
   return count > 8 ? COLORS[0] : COLORS[count];
 };
 

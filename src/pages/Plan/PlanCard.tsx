@@ -102,6 +102,8 @@ export const PlanCard: FC<PlanCardT> = ({ day, navigation }) => {
   };
 
   const renderItem = ({ item, drag, isActive }) => {
+    if (item.isCompleted) return;
+
     const isInPlan = data.actionKeys.some((actionKey: string) => actionKey === item.key);
 
     return (

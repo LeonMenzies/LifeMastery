@@ -7,6 +7,7 @@ export const planAtom = atom({
     date: "",
     focus: "",
     finalized: false,
+    complete: false,
     actionKeys: [] as string[],
   },
 });

@@ -12,7 +12,6 @@ type HomeActionSectionT = {
   data: ActionItemT[];
   actionKeys: string[];
   setActions: any;
-  dayComplete: boolean;
 };
 
 export const HomeActionSection: FC<HomeActionSectionT> = ({
@@ -20,7 +19,6 @@ export const HomeActionSection: FC<HomeActionSectionT> = ({
   data,
   setActions,
   actionKeys,
-  dayComplete,
 }) => {
   const windowWidth = Dimensions.get("window").width;
   const colors = useRecoilValue(themeAtom);
@@ -42,7 +40,6 @@ export const HomeActionSection: FC<HomeActionSectionT> = ({
             action={action}
             color={aoi.Color}
             setActions={setActions}
-            dayComplete={dayComplete}
           />
         ))}
         <View style={styles.divider} />

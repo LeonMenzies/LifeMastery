@@ -24,9 +24,7 @@ export const ActionsList: FC<any> = () => {
   }, []);
 
   const renderItem = ({ item, drag, isActive }) => {
-    if (!showComplete && !item.isCompleted) {
-      return;
-    }
+    if (!showComplete && item.isCompleted) return; // Hide complete actions
     return <ActionsListItem item={item} drag={drag} isActive={isActive} />;
   };
 

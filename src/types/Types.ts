@@ -19,6 +19,7 @@ export type PlanT = {
   date: string;
   focus: string;
   finalized: boolean;
+  complete: boolean;
   actionKeys: string[];
 };
 

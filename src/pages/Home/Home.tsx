@@ -7,7 +7,6 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
-import ConfettiCannon from "react-native-confetti-cannon";
 import { useEffect, useState, FC } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -18,10 +17,11 @@ import { getActions } from "~utils/ActionsHandler";
 import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
 import { HomeActionSection } from "~pages/Home/HomeActionSection";
 import { AreaOfImportanceItemT, PlanT, ThemeT, ActionItemT } from "~types/Types";
-import { getPlan } from "~utils/PlanHandler";
+import { getPlan, updatePlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
+import { COLORS } from "~utils/Constants";
 
 export const Home: FC<any> = ({ navigation }) => {
   const TODAY_PLAN = "today-plan";
@@ -30,12 +30,10 @@ export const Home: FC<any> = ({ navigation }) => {
   const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useState([]);
-  const [complete, setComplete] = useState(false);
   const [loading, setLoading] = useState(true);
   const settings = useRecoilValue(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
-  const windowWidth = Dimensions.get("window").width;
 
   useEffect(() => {
     if (!loading && !plan.finalized) {
@@ -71,6 +69,10 @@ export const Home: FC<any> = ({ navigation }) => {
       : (completeTasks / plan.actionKeys.length) * 100;
   };
 
+  // const checkComplete = () => {
+  //   if (percent === 100) updatePlan(setAlert, setPlan, { ...plan, complete: true }, TODAY_PLAN);
+  // };
+
   return (
     <SafeAreaView style={styles.container}>
       <HomeHeader focus={plan.focus} percent={calculatePercent()} />
@@ -85,32 +87,11 @@ export const Home: FC<any> = ({ navigation }) => {
               data={actions}
               setActions={setActions}
               actionKeys={plan.actionKeys}
-              dayComplete={complete}
             />
           );
         })}
       </ScrollView>
-
-      {calculatePercent() === 100 && !loading && (
-        <ConfettiCannon
-          count={200}
-          explosionSpeed={1500}
-          origin={{ x: windowWidth / 2, y: 0 }}
-          onAnimationEnd={() => setComplete(true)}
-          colors={[
-            "#FFC10C",
-            "#FFCB30",
-            "#F5BD16",
-            "#001EA8",
-            "#163EF5",
-            "#6380FF",
-            "#4360E6",
-            "#99760E",
-            "#E6BC43",
-          ]}
-        />
-      )}
-      {complete && (
+      {plan.complete && (
         <View style={styles.completeContainer}>
           <Text style={styles.completeText}>{"Day is Complete"}</Text>
         </View>

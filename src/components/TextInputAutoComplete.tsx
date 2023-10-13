@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { TextInput as Input } from "react-native";
 import { useRecoilValue } from "recoil";
+import { v4 as uuidv4 } from "uuid";
 
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
@@ -79,8 +80,10 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
   };
 
   const renderItem = (text: string) => {
+    const uniqueKey = uuidv4();
+
     return (
-      <TouchableOpacity key={text} style={styles.itemButton} onPress={() => onItemPress(text)}>
+      <TouchableOpacity key={uniqueKey} style={styles.itemButton} onPress={() => onItemPress(text)}>
         <Text style={styles.itemButtonText}>{sliceString(text)}</Text>
         <View style={styles.divider} />
       </TouchableOpacity>
