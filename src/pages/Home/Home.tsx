@@ -22,8 +22,9 @@ import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
 import { TODAY_PLAN } from "~utils/Constants";
+import { NavigatorItem } from "~components/navigator/NavigatorItem";
 
-export const Home: FC<any> = ({ navigation }) => {
+export const Home: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
@@ -36,7 +37,7 @@ export const Home: FC<any> = ({ navigation }) => {
   useEffect(() => {
     if (!loading && !plan.finalized) {
       setAlert("You must finalize today first");
-      navigation.navigate("Plan");
+      // navigation.navigate("Plan");
     } else {
       getAreasOfImportance(setAlert, setAreasOfImportance);
     }
@@ -72,29 +73,31 @@ export const Home: FC<any> = ({ navigation }) => {
   // };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <HomeHeader focus={plan.focus} percent={calculatePercent()} />
-      {loading && <ActivityIndicator size="large" color={colors.primary} />}
+    <NavigatorItem rightButton={() => {}} rightButtonIcon={"info-circle"} title={"plus"}>
+      <View style={styles.container}>
+        <HomeHeader focus={plan.focus} percent={calculatePercent()} />
+        {loading && <ActivityIndicator size="large" color={colors.primary} />}
 
-      <ScrollView>
-        {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
-          return (
-            <HomeActionSection
-              key={aoi.key}
-              aoi={aoi}
-              data={actions}
-              setActions={setActions}
-              actionKeys={plan.actionKeys}
-            />
-          );
-        })}
-      </ScrollView>
-      {plan.complete && (
-        <View style={styles.completeContainer}>
-          <Text style={styles.completeText}>{"Day is Complete"}</Text>
-        </View>
-      )}
-    </SafeAreaView>
+        <ScrollView>
+          {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
+            return (
+              <HomeActionSection
+                key={aoi.key}
+                aoi={aoi}
+                data={actions}
+                setActions={setActions}
+                actionKeys={plan.actionKeys}
+              />
+            );
+          })}
+        </ScrollView>
+        {plan.complete && (
+          <View style={styles.completeContainer}>
+            <Text style={styles.completeText}>{"Day is Complete"}</Text>
+          </View>
+        )}
+      </View>
+    </NavigatorItem>
   );
 };
 

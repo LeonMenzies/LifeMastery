@@ -10,7 +10,7 @@ import { ThemeT } from "~types/Types";
 type TextInputAutoCompleteT = {
   title: string;
   value: string;
-  onChangeText: any;
+  onChangeText: (e: string) => void;
   placeholder: string;
   maxLength: number;
   keyboardType: any;

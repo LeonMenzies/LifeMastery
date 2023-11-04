@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
 import React, { useEffect, FC, useState } from "react";
-import { SafeAreaView, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 
 import { getActions } from "~utils/ActionsHandler";
@@ -8,14 +8,20 @@ import { alertAtom } from "~recoil/alertAtom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ActionsListItem } from "~pages/ActionsList/ActionsListItem";
 import { themeAtom } from "~recoil/themeAtom";
-import { ThemeT } from "~types/Types";
+import { ActionItemT, ThemeT } from "~types/Types";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { ActionsListSort } from "./ActionsListSort";
+import { NavigatorItem } from "~components/navigator/NavigatorItem";
+import { ActionAddEdit } from "~components/ActionAddEdit";
+import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
 
 export const ActionsList: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
+  const setAction = useSetRecoilState(createActionAtom);
   const [showComplete, setShowComplete] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
@@ -23,30 +29,28 @@ export const ActionsList: FC<any> = () => {
     getActions(setAlert, setActions);
   }, []);
 
-  const renderItem = ({ item, drag, isActive }) => {
-    if (!showComplete && item.isCompleted) return; // Hide complete actions
-    return <ActionsListItem item={item} drag={drag} isActive={isActive} />;
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
-      <ActionsListSort
-        actions={actions}
-        setActions={setActions}
-        showComplete={showComplete}
-        setShowComplete={setShowComplete}
-      />
-      {actions.length > 0 ? (
-        <DraggableFlatList
-          data={actions}
-          onDragEnd={({ data }) => setActions(data)}
-          keyExtractor={(item) => item.key}
-          renderItem={renderItem}
+    <NavigatorItem
+      rightButton={() => {
+        setModalVisible(true);
+        setAction(emptyAction);
+      }}
+      rightButtonIcon={"plus"}
+      title={"Actions"}
+    >
+      <View style={styles.container}>
+        <ActionsListSort
+          actions={actions}
+          setActions={setActions}
+          showComplete={showComplete}
+          setShowComplete={setShowComplete}
         />
-      ) : (
-        <Text>No Actions in your list</Text>
-      )}
-    </SafeAreaView>
+        {actions.map((item: ActionItemT, index: number) => (
+          <ActionsListItem item={item} setModalVisible={setModalVisible} key={index} />
+        ))}
+      </View>
+      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
+    </NavigatorItem>
   );
 };
 

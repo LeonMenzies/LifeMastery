@@ -10,7 +10,8 @@ import { AreasOfImportanceAdd } from "~pages/AreasOfImportance/AreasOfImportance
 import { alertAtom } from "~recoil/alertAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { themeAtom } from "~recoil/themeAtom";
-import { ThemeT } from "~types/Types";
+import { AreaOfImportanceItemT, ThemeT } from "~types/Types";
+import { NavigatorItem } from "~components/navigator/NavigatorItem";
 
 export const AreasOfImportance: FC<any> = () => {
   const [data, setData] = useRecoilState(areasOfImportanceAtom);
@@ -23,22 +24,17 @@ export const AreasOfImportance: FC<any> = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <AreasOfImportanceAdd />
+    <NavigatorItem rightButton={() => {}} rightButtonIcon={""} title={"Areas Of Importance"}>
+      <View style={styles.container}>
+        <AreasOfImportanceAdd />
 
-      <View>
-        {data.length > 0 ? (
-          <DraggableFlatList
-            data={data}
-            onDragEnd={({ data }) => setData(data)}
-            keyExtractor={(item) => item.key}
-            renderItem={AreasOfImportanceItem}
-          />
-        ) : (
-          <Text>No AOL's in your list</Text>
-        )}
+        <View>
+          {data.map((item: AreaOfImportanceItemT, index: number) => (
+            <AreasOfImportanceItem key={index} item={item} />
+          ))}
+        </View>
       </View>
-    </SafeAreaView>
+    </NavigatorItem>
   );
 };
 

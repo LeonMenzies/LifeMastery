@@ -14,7 +14,7 @@ type optionT = {
 type SelectT = {
   title: string;
   value: string;
-  onChange: Function;
+  onChange: (e: string) => void;
   options: optionT[];
   placeholder?: string;
 };
@@ -34,7 +34,7 @@ export const Select: FC<SelectT> = ({
     setVisible(!visible);
   };
 
-  const onItemPress = (item): void => {
+  const onItemPress = (item: string): void => {
     onChange(item);
     setVisible(false);
   };

@@ -12,11 +12,9 @@ import { themeAtom } from "~recoil/themeAtom";
 
 type AreasOfImportanceItemT = {
   item: AreaOfImportanceItemT;
-  drag: any;
-  isActive: boolean;
 };
 
-export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item, drag, isActive }) => {
+export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const setData = useSetRecoilState(areasOfImportanceAtom);
   const colors = useRecoilValue(themeAtom);
@@ -34,23 +32,12 @@ export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item, drag, 
   };
 
   return (
-    <SwipeableItem
-      key={item.key}
-      item={item}
-      renderUnderlayLeft={UnderlayRight}
-      snapPointsLeft={[50]}
-    >
-      <TouchableOpacity
-        onLongPress={drag}
-        disabled={isActive}
-        style={{ backgroundColor: isActive ? colors.primary : colors.background }}
-      >
-        <View style={styles.container}>
-          <Text style={styles.aoiText}>{item.AOI}</Text>
-          <View style={styles.aoiColor} />
-        </View>
-      </TouchableOpacity>
-    </SwipeableItem>
+    <TouchableOpacity onLongPress={() => {}}>
+      <View style={styles.container}>
+        <Text style={styles.aoiText}>{item.AOI}</Text>
+        <View style={styles.aoiColor} />
+      </View>
+    </TouchableOpacity>
   );
 };
 

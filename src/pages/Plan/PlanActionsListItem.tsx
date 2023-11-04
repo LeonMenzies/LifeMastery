@@ -12,8 +12,6 @@ import { convertTime } from "~utils/Helpers";
 
 type PlanActionsListItemT = {
   item: ActionItemT;
-  drag: any;
-  isActive: boolean;
   setActions: any;
   addAction: (k: string) => void;
   removeAction: (k: string) => void;
@@ -22,8 +20,6 @@ type PlanActionsListItemT = {
 
 export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
   item,
-  drag,
-  isActive,
   setActions,
   addAction,
   removeAction,
@@ -49,39 +45,35 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
 
   return (
     <View style={styles.container}>
-      <ScaleDecorator key={item.key}>
-        <TouchableOpacity
-          onLongPress={drag}
-          disabled={isActive}
-          style={{ backgroundColor: isActive ? colors.primary : colors.background }}
-          onPress={() => {
-            if (isInPlan) {
-              handleCancel();
-            } else {
-              setModalVisible(true);
-            }
-          }}
-        >
-          <View style={styles.actionHeading}>
-            <View style={styles.actionTitleContainer}>
-              {isInPlan && <View style={styles.inPlan} />}
-              <Text style={styles.actionTitle}>{item.action}</Text>
-            </View>
-            <Text style={styles.actionTitle}>{isInPlan ? item.priority : 0}</Text>
+      <TouchableOpacity
+        onLongPress={() => {}}
+        onPress={() => {
+          if (isInPlan) {
+            handleCancel();
+          } else {
+            setModalVisible(true);
+          }
+        }}
+      >
+        <View style={styles.actionHeading}>
+          <View style={styles.actionTitleContainer}>
+            {isInPlan && <View style={styles.inPlan} />}
+            <Text style={styles.actionTitle}>{item.action}</Text>
           </View>
-          <View style={styles.actionSubHeading}>
-            <Text style={styles.actionDate}>{item.dateAdded}</Text>
-            <Text style={styles.actionDate}>{convertTime(item.timeEstimate)}</Text>
-          </View>
-          <PlanSetPriority
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            actionTitle={item.action}
-            handleSetPriority={handleSetPriority}
-            handleCancel={handleCancel}
-          />
-        </TouchableOpacity>
-      </ScaleDecorator>
+          <Text style={styles.actionTitle}>{isInPlan ? item.priority : 0}</Text>
+        </View>
+        <View style={styles.actionSubHeading}>
+          <Text style={styles.actionDate}>{item.dateAdded}</Text>
+          <Text style={styles.actionDate}>{convertTime(item.timeEstimate)}</Text>
+        </View>
+        <PlanSetPriority
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          actionTitle={item.action}
+          handleSetPriority={handleSetPriority}
+          handleCancel={handleCancel}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import { View, Modal, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FC } from "react";
 
@@ -12,6 +12,7 @@ import { SettingsThemeSelect } from "~pages/Settings/SettingsThemeSelect";
 import { SettingsCompleteSelect } from "~pages/Settings/SettingsCompleteSelect";
 import { planAtom } from "~recoil/planAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
+import { Modal } from "~components/Modal";
 
 type SettingsT = {
   modalVisible: boolean;
@@ -41,33 +42,21 @@ export const Settings: FC<SettingsT> = ({ modalVisible, setModalVisible }) => {
   };
 
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}
-    >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <View>
-            <SettingsThemeSelect />
-            <SettingsCompleteSelect />
-            <SettingsItem
-              title="Clear Actions"
-              callBack={() => clearActions(setAlert, setActions)}
-            />
-            <SettingsItem
-              title="Clear Todays Plan"
-              callBack={() => clearPlan(setAlert, setPlan, TODAY_PLAN)}
-            />
-            <SettingsItem
-              title="Clear Tomorrows Plan"
-              callBack={() => clearPlan(setAlert, setPlan, TOMORROW_PLAN)}
-            />
-          </View>
-          <Button title="Close" onPress={() => setModalVisible(false)} />
-        </View>
+    <Modal visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+      <View>
+        <SettingsThemeSelect />
+        <SettingsCompleteSelect />
+        <SettingsItem title="Clear Actions" callBack={() => clearActions(setAlert, setActions)} />
+        <SettingsItem
+          title="Clear Todays Plan"
+          callBack={() => clearPlan(setAlert, setPlan, TODAY_PLAN)}
+        />
+        <SettingsItem
+          title="Clear Tomorrows Plan"
+          callBack={() => clearPlan(setAlert, setPlan, TOMORROW_PLAN)}
+        />
       </View>
+      <Button title="Close" onPress={() => setModalVisible(false)} />
     </Modal>
   );
 };

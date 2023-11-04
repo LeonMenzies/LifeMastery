@@ -9,10 +9,13 @@ import { PlanCard } from "~pages/Plan/PlanCard";
 import { themeAtom } from "~recoil/themeAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { TODAY_PLAN, TOMORROW_PLAN } from "~utils/Constants";
+import { ActionAddEdit } from "~components/ActionAddEdit";
+import { NavigatorItem } from "~components/navigator/NavigatorItem";
 
-export const Plan: FC<any> = ({ navigation }) => {
+export const Plan: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [today, setToday] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
   const setActions = useSetRecoilState(actionsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors, today);
@@ -22,33 +25,36 @@ export const Plan: FC<any> = ({ navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.buttonContainer}>
-        <TouchableHighlight
-          underlayColor={colors.lightGrey}
-          onPress={() => setToday(true)}
-          style={styles.button}
-        >
-          <View style={today ? styles.underline : null}>
-            <Text style={styles.buttonText}>{"Today"}</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor={colors.lightGrey}
-          onPress={() => setToday(false)}
-          style={styles.button}
-        >
-          <View style={today ? null : styles.underline}>
-            <Text style={styles.buttonText}>{"Tomorrow"}</Text>
-          </View>
-        </TouchableHighlight>
+    <NavigatorItem
+      rightButton={() => setModalVisible(true)}
+      rightButtonIcon={"plus"}
+      title={"Plan"}
+    >
+      <View style={styles.container}>
+        <View style={styles.buttonContainer}>
+          <TouchableHighlight
+            underlayColor={colors.lightGrey}
+            onPress={() => setToday(true)}
+            style={styles.button}
+          >
+            <View style={today ? styles.underline : null}>
+              <Text style={styles.buttonText}>{"Today"}</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight
+            underlayColor={colors.lightGrey}
+            onPress={() => setToday(false)}
+            style={styles.button}
+          >
+            <View style={today ? null : styles.underline}>
+              <Text style={styles.buttonText}>{"Tomorrow"}</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+        {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
       </View>
-      {today ? (
-        <PlanCard day={TODAY_PLAN} navigation={navigation} />
-      ) : (
-        <PlanCard day={TOMORROW_PLAN} navigation={navigation} />
-      )}
-    </SafeAreaView>
+      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
+    </NavigatorItem>
   );
 };
 

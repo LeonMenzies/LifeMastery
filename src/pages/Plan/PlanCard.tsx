@@ -17,10 +17,9 @@ import { convertTime } from "~utils/Helpers";
 
 type PlanCardT = {
   day: string;
-  navigation: any;
 };
 
-export const PlanCard: FC<PlanCardT> = ({ day, navigation }) => {
+export const PlanCard: FC<PlanCardT> = ({ day }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [data, setData] = useRecoilState(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
@@ -93,60 +92,51 @@ export const PlanCard: FC<PlanCardT> = ({ day, navigation }) => {
       return;
     }
 
-    finalizePlan(setAlert, { ...data, finalized: true }, navigation, day);
+    finalizePlan(setAlert, { ...data, finalized: true }, setHome, day);
   };
 
-  const renderItem = ({ item, drag, isActive }) => {
-    if (item.isCompleted) return;
-
-    const isInPlan = data.actionKeys.some((actionKey: string) => actionKey === item.key);
-
-    return (
-      <PlanActionsListItem
-        item={item}
-        drag={drag}
-        isActive={isActive}
-        setActions={setActions}
-        addAction={addActionKey}
-        removeAction={removeActionKey}
-        isInPlan={isInPlan}
-      />
-    );
-  };
+  const setHome = () => {};
 
   return (
     <View style={styles.container}>
-      <View style={styles.focusContainer}>
-        <TextInput
-          title={"My Key Focus For Today"}
-          onChangeText={updateFocus}
-          value={text}
-          placeholder="Add focus..."
-          keyboardType="default"
-          maxLength={30}
-        />
-      </View>
-      {loading && <ActivityIndicator size="large" color={colors.primary} />}
-
-      {actions.length > 0 ? (
-        <View>
-          <DraggableFlatList
-            data={actions}
-            onDragEnd={({ data }) => setActions(data)}
-            keyExtractor={(item) => item.key}
-            renderItem={renderItem}
+      <View>
+        <View style={styles.focusContainer}>
+          <TextInput
+            title={"My Key Focus For Today"}
+            onChangeText={updateFocus}
+            value={text}
+            placeholder="Add focus..."
+            keyboardType="default"
+            maxLength={30}
           />
-          {data.finalized && (
-            <View style={styles.centeredView}>
-              <View style={styles.finalizedContainer}>
-                <Text style={styles.finalizedText}>{"Day is Finalized"}</Text>
-              </View>
-            </View>
-          )}
         </View>
-      ) : (
-        <Text>No Actions in your list</Text>
-      )}
+        {loading && <ActivityIndicator size="large" color={colors.primary} />}
+
+        {actions.length > 0 ? (
+          <View>
+            {actions.map((item: ActionItemT, index: number) => (
+              <PlanActionsListItem
+                key={index}
+                item={item}
+                setActions={setActions}
+                addAction={addActionKey}
+                removeAction={removeActionKey}
+                isInPlan={data.actionKeys.some((actionKey: string) => actionKey === item.key)}
+              />
+            ))}
+
+            {data.finalized && (
+              <View style={styles.centeredView}>
+                <View style={styles.finalizedContainer}>
+                  <Text style={styles.finalizedText}>{"Day is Finalized"}</Text>
+                </View>
+              </View>
+            )}
+          </View>
+        ) : (
+          <Text>No Actions in your list</Text>
+        )}
+      </View>
 
       {!loading && (
         <View>
@@ -172,7 +162,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     container: {
       justifyContent: "space-between",
       alignItems: "center",
-      height: "70%",
+      flex: 1,
     },
     focusContainer: {
       padding: 10,

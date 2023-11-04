@@ -2,7 +2,6 @@ import "react-native-get-random-values";
 import React, { useEffect, useState, FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
-import Slider from "react-native-a11y-slider";
 
 import { Select } from "~components/Select";
 import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
@@ -14,16 +13,13 @@ import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { Button } from "~components/Button";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
-import { TimePicker } from "~components/TimePicker";
 import { TextInputAutoComplete } from "./TextInputAutoComplete";
 import { SliderInput } from "./SliderInput";
 import { Modal } from "./Modal";
+import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
 
 type ActionAddEditT = {
-  modalVisible: {
-    show: boolean;
-    action: ActionItemT;
-  };
+  modalVisible: boolean;
   setModalVisible: any;
 };
 
@@ -31,36 +27,32 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
   const setAlert = useSetRecoilState(alertAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
+  const [actionItem, setActionItem] = useRecoilState<ActionItemT>(createActionAtom);
+  const [timeHours, setTimeHours] = useState(0);
+  const [timeMinutes, setTimeMinutes] = useState(0);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
-  const [action, setAction] = useState("");
-  const [timeEstimate, setTimeEstimate] = useState(0);
-
-  const [timeHours, setTimeHours] = useState(1);
-  const [timeMinutes, setTimeMinutes] = useState(0);
-
-  const [areaOfImportance, setAreaOfImportance] = useState("");
-
   useEffect(() => {
     const decimalHours = timeHours + timeMinutes / 60;
-    setTimeEstimate(decimalHours);
+    updateActionItem(actionItem, { timeEstimate: decimalHours });
   }, [timeHours, timeMinutes]);
 
   useEffect(() => {
     getAreasOfImportance(setAlert, setAreasOfImportance);
-  }, [modalVisible.action.action]);
+  }, [actionItem.action]);
 
-  useEffect(() => {
-    setAreaOfImportance(modalVisible.action.areaOfImportance);
-    setTimeEstimate(modalVisible.action.timeEstimate);
-    setAction(modalVisible.action.action);
-  }, [modalVisible.action.action]);
+  const updateActionItem = (originalAction: ActionItemT, updates: Partial<ActionItemT>) => {
+    setActionItem({
+      ...originalAction,
+      ...updates,
+    });
+  };
 
-  const reset = () => {
-    setAction("");
-    setTimeEstimate(0);
-    setAreaOfImportance("");
+  const convertTime = (decimalHours: number): { hours: number; minutes: number } => {
+    const hours = Math.floor(decimalHours);
+    const minutes = Math.round((decimalHours - hours) * 60);
+    return { hours: hours, minutes: minutes };
   };
 
   const createAutoCompleteText = () => {
@@ -68,84 +60,58 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
   };
 
   const handleAddTodo = () => {
-    if (!action) {
+    if (!actionItem.action) {
       setAlert("Action is required");
       return;
     }
-    if (timeEstimate === 0) {
+    if (actionItem.timeEstimate === 0) {
       setAlert("Time Estimate is required");
       return;
     }
 
-    if (timeEstimate > 9) {
+    if (actionItem.timeEstimate > 9) {
       setAlert("Time estimate cannot be over 9 hours");
       return;
     }
 
-    if (!areaOfImportance || areaOfImportance === "No AOI found, please add from the AOI tab") {
+    if (
+      !actionItem.areaOfImportance ||
+      actionItem.areaOfImportance === "No AOI found, please add from the AOI tab"
+    ) {
       setAlert("Area of Importance is required");
       return;
     }
 
-    modalVisible.action.action
-      ? updateAction(setAlert, setActions, {
-          ...modalVisible.action,
-          action: action,
-          timeEstimate: timeEstimate,
-          areaOfImportance: areaOfImportance,
-        })
-      : addAction(setAlert, setActions, action, timeEstimate, areaOfImportance);
-    modalVisible.action.action ? handleClose() : null;
-
-    reset();
+    actionItem.action
+      ? updateAction(setAlert, setActions, actionItem)
+      : addAction(
+          setAlert,
+          setActions,
+          actionItem.action,
+          actionItem.timeEstimate,
+          actionItem.areaOfImportance
+        );
+    actionItem.action ? setModalVisible(false) : null;
+    setActionItem(emptyAction);
   };
 
-  const handleClose = () => {
-    reset();
-    setModalVisible({
-      show: false as boolean,
-      action: {
-        key: "",
-        action: "",
-        isCompleted: false,
-        timeEstimate: 0,
-        priority: 0,
-        areaOfImportance: "",
-        dateAdded: new Date().toISOString().split("T")[0],
-      } as ActionItemT,
-    });
-  };
-
-  const createOptions = () => {
-    if (!areasOfImportance || areasOfImportance.length === 0) {
-      return [
-        {
-          label: "No AOI found, please add from the AOI tab",
-          value: "",
-        },
-      ];
-    }
-
-    return areasOfImportance.map((item) => {
-      return {
-        label: item.AOI,
-        value: item.AOI,
-      };
-    });
-  };
+  const createOptions = () =>
+    areasOfImportance && areasOfImportance.length > 0
+      ? areasOfImportance.map((item) => ({ label: item.AOI, value: item.AOI }))
+      : [{ label: "No AOI found, please add from the AOI tab", value: "" }];
 
   return (
-    <Modal visible={modalVisible.show} onRequestClose={() => setModalVisible(false)}>
+    <Modal visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
       <Select
         title={"Area of Importance"}
         options={createOptions()}
-        value={areaOfImportance}
-        onChange={setAreaOfImportance}
+        value={actionItem.areaOfImportance}
+        onChange={(e) => updateActionItem(actionItem, { areaOfImportance: e })}
       />
       <TextInputAutoComplete
         title={"Action"}
-        onChangeText={setAction}
-        value={action}
+        onChangeText={(e) => updateActionItem(actionItem, { action: e })}
+        value={actionItem.action}
         placeholder="Add value..."
         keyboardType="default"
         maxLength={30}
@@ -158,7 +124,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
         increment={1}
         markerColor={colors.primary}
         onChange={(values: number[]) => setTimeHours(values[0])}
-        values={[timeHours]}
+        values={[convertTime(actionItem.timeEstimate).hours]}
         showLabel={false}
       />
       <SliderInput
@@ -168,13 +134,12 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
         increment={5}
         markerColor={colors.primary}
         onChange={(values: number[]) => setTimeMinutes(values[0])}
-        values={[timeMinutes]}
+        values={[convertTime(actionItem.timeEstimate).minutes]}
         showLabel={false}
       />
-      {/* <TimePicker title={"Time Estimate"} setTimeEstimate={setTimeEstimate} /> */}
       <View style={styles.buttonContainer}>
-        <Button title={modalVisible.action.action ? "Save" : "Add"} onPress={handleAddTodo} />
-        <Button title="Close" onPress={handleClose} />
+        <Button title={actionItem.action ? "Save" : "Add"} onPress={handleAddTodo} />
+        <Button title="Close" onPress={() => setModalVisible(false)} />
       </View>
     </Modal>
   );
