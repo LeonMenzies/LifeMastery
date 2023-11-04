@@ -1,7 +1,6 @@
 import "react-native-get-random-values";
 import React, { useEffect, FC, useState } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-import DraggableFlatList from "react-native-draggable-flatlist";
+import { View, StyleSheet } from "react-native";
 
 import { getActions } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";

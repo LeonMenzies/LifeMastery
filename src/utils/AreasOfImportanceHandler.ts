@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
+import { AreaOfImportanceItemT } from "~types/Types";
 
-import { generateAOIColor } from "~utils/Helpers";
+import { getAOIColor } from "~utils/Helpers";
 
 const AOI_KEY = "aol-list";
 
@@ -17,7 +18,7 @@ export const getAreasOfImportance = (setAlert, setData) => {
   }
 };
 
-export const addAreaOfImportance = (setAlert, setData, AOI) => {
+export const addAreaOfImportance = (setAlert: any, setData: any, AOI: AreaOfImportanceItemT) => {
   const key = uuidv4();
 
   try {
@@ -31,8 +32,8 @@ export const addAreaOfImportance = (setAlert, setData, AOI) => {
         const newAreaOfImportance = {
           key: key,
           AOI: AOI,
-          Color: generateAOIColor(areaOfImportance.length),
-        };
+          Color: getAOIColor(areaOfImportance),
+        };        
 
         if (areaOfImportance.length >= 9) {
           setAlert("You cannot have more than 9 Areas Of Importance");

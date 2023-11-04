@@ -10,30 +10,23 @@ import { navigatorAtom } from "~recoil/navigatorAtom";
 type NavigatorMenuItemT = {
   title: string;
   icon: string;
-  active: boolean;
-  setPage: any;
   pageKey: string;
   width: number;
 };
 
-export const NavigatorMenuItem: FC<NavigatorMenuItemT> = ({
-  title,
-  icon,
-  setPage,
-  active,
-  pageKey,
-  width,
-}) => {
-  const [show, setShow] = useRecoilState(navigatorAtom);
+export const NavigatorMenuItem: FC<NavigatorMenuItemT> = ({ title, icon, pageKey, width }) => {
+  const [navigator, setNavigator] = useRecoilState(navigatorAtom);
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors, active, width);
+  const styles = styling(colors, navigator.page == pageKey, width);
 
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => {
-        setPage(pageKey);
-        setShow(false);
+        setNavigator({
+          page: pageKey,
+          show: false,
+        });
       }}
     >
       <View style={styles.innerContainer}>

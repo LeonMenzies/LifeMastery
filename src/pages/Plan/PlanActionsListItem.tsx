@@ -1,5 +1,4 @@
 import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
-import { ScaleDecorator } from "react-native-draggable-flatlist";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FC, useState } from "react";
 

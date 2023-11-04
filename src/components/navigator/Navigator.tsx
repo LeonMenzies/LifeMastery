@@ -12,6 +12,7 @@ import { Home } from "~pages/Home/Home";
 import { ActionsList } from "~pages/ActionsList/ActionsList";
 import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
 import { alertAtom } from "~recoil/alertAtom";
+import { navigatorAtom } from "~recoil/navigatorAtom";
 
 type NavigatorT = {};
 
@@ -28,10 +29,12 @@ export type PageItem = {
 export const Navigator: FC<NavigatorT> = () => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
-  const [page, setPage] = useState("home");
   const [alert, setAlert] = useRecoilState(alertAtom);
+  const navigator = useRecoilValue(navigatorAtom);
 
   useEffect(() => {
+    console.log(alert);
+
     if (alert !== "") {
       let toast = Toast.show(alert, {
         duration: Toast.durations.LONG,
@@ -49,23 +52,23 @@ export const Navigator: FC<NavigatorT> = () => {
   }, [alert]);
 
   const pageMap: PageItems = {
-    home: {
+    plan: {
       title: "Plan",
       icon: "home",
       component: <Plan />,
     },
-    todo: {
+    home: {
       title: "Home",
       icon: "list",
       component: <Home />,
     },
-    rest: {
-      title: "ActionsList",
+    actionsList: {
+      title: "Actions List",
       icon: "clock-o",
       component: <ActionsList />,
     },
-    workout: {
-      title: "AreasOfImportance",
+    areasOfImportance: {
+      title: "Areas Of Importance",
       icon: "male",
       component: <AreasOfImportance />,
     },
@@ -73,8 +76,8 @@ export const Navigator: FC<NavigatorT> = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <NavigatorMenu pageMap={pageMap} setPage={setPage} active={page} />
-      {pageMap[page].component}
+      <NavigatorMenu pageMap={pageMap} />
+      {pageMap[navigator.page].component}
     </SafeAreaView>
   );
 };

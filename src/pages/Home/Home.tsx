@@ -23,6 +23,9 @@ import { themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
 import { TODAY_PLAN } from "~utils/Constants";
 import { NavigatorItem } from "~components/navigator/NavigatorItem";
+import { ActionAddEdit } from "~components/ActionAddEdit";
+import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
+import { navigatorAtom } from "~recoil/navigatorAtom";
 
 export const Home: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
@@ -30,14 +33,30 @@ export const Home: FC<any> = () => {
   const [actions, setActions] = useRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const setAction = useSetRecoilState(createActionAtom);
+  const setNavigator = useSetRecoilState(navigatorAtom);
+
   const settings = useRecoilValue(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
+  const options = {
+    weekday: "long" as const,
+    month: "short" as const,
+    day: "numeric" as const,
+  };
+
+  const dateFormatter = new Intl.DateTimeFormat("en-US", options);
+  const formattedDate = dateFormatter.format(new Date());
+
   useEffect(() => {
     if (!loading && !plan.finalized) {
       setAlert("You must finalize today first");
-      // navigation.navigate("Plan");
+      setNavigator({
+        page: "plan",
+        show: false,
+      });
     } else {
       getAreasOfImportance(setAlert, setAreasOfImportance);
     }
@@ -68,12 +87,15 @@ export const Home: FC<any> = () => {
       : (completeTasks / plan.actionKeys.length) * 100;
   };
 
-  // const checkComplete = () => {
-  //   if (percent === 100) updatePlan(setAlert, setPlan, { ...plan, complete: true }, TODAY_PLAN);
-  // };
-
   return (
-    <NavigatorItem rightButton={() => {}} rightButtonIcon={"info-circle"} title={"plus"}>
+    <NavigatorItem
+      rightButton={() => {
+        setModalVisible(true);
+        setAction(emptyAction);
+      }}
+      rightButtonIcon={"plus"}
+      title={formattedDate}
+    >
       <View style={styles.container}>
         <HomeHeader focus={plan.focus} percent={calculatePercent()} />
         {loading && <ActivityIndicator size="large" color={colors.primary} />}
@@ -97,6 +119,7 @@ export const Home: FC<any> = () => {
           </View>
         )}
       </View>
+      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </NavigatorItem>
   );
 };

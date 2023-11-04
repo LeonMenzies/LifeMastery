@@ -1,41 +1,58 @@
 import { FC } from "react";
 
 import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import SwipeableItem from "react-native-swipeable-item";
+import { useRecoilValue } from "recoil";
 
-import { deleteAreaOfImportance } from "~utils/AreasOfImportanceHandler";
-import { alertAtom } from "~recoil/alertAtom";
-import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { AreaOfImportanceItemT, ThemeT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
+import { CheckBoxInput } from "~components/CheckBoxInput";
 
 type AreasOfImportanceItemT = {
   item: AreaOfImportanceItemT;
+  deleteItem: boolean;
+  setDeleteItem: Function;
+  deleteItems: string[];
+  setDeleteItems: Function;
 };
 
-export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item }) => {
-  const setAlert = useSetRecoilState(alertAtom);
-  const setData = useSetRecoilState(areasOfImportanceAtom);
+export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({
+  item,
+  deleteItem,
+  setDeleteItem,
+  deleteItems,
+  setDeleteItems,
+}) => {
   const colors = useRecoilValue(themeAtom);
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(item.Color, colors, windowWidth);
 
-  const UnderlayRight = () => {
-    return (
-      <View style={styles.underlayRight}>
-        <TouchableOpacity onPress={() => deleteAreaOfImportance(setAlert, setData, item.key)}>
-          <Text style={styles.underlayText}>X</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  function toggleItemInArray() {
+    if (deleteItem)
+      setDeleteItems(
+        deleteItems.includes(item.key)
+          ? deleteItems.filter((val) => val !== item.key)
+          : [...deleteItems, item.key]
+      );
+  }
 
   return (
-    <TouchableOpacity onLongPress={() => {}}>
+    <TouchableOpacity
+      activeOpacity={deleteItem ? 0.2 : 1}
+      onLongPress={() => setDeleteItem(true)}
+      onPress={toggleItemInArray}
+    >
       <View style={styles.container}>
         <Text style={styles.aoiText}>{item.AOI}</Text>
-        <View style={styles.aoiColor} />
+        {deleteItem ? (
+          <CheckBoxInput
+            onPress={() => {}}
+            completed={deleteItems.includes(item.key)}
+            color={colors.error}
+            disabled={false}
+          />
+        ) : (
+          <View style={styles.aoiColor} />
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -44,33 +61,23 @@ export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item }) => {
 const styling = (color: string, colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
-      paddingTop: 5,
-      paddingBottom: 5,
       width: windowWidth - 50,
       flexDirection: "row",
       justifyContent: "space-between",
       backgroundColor: colors.background,
+      height: 40,
     },
     aoiColor: {
+      borderRadius: 100,
       backgroundColor: color,
-      width: 15,
-      height: 15,
+      borderColor: color,
+      borderWidth: 1,
+      width: 20,
+      height: 20,
+      margin: 5,
     },
     aoiText: {
-      fontSize: 17,
+      fontSize: 20,
       color: colors.textPrimary,
-    },
-    underlayText: {
-      color: colors.white,
-      fontSize: 22,
-      fontWeight: "bold",
-    },
-    underlayRight: {
-      flex: 1,
-      width: 50,
-      backgroundColor: "tomato",
-      alignSelf: "flex-end",
-      justifyContent: "center",
-      alignItems: "center",
     },
   });

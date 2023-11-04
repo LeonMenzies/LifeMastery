@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { Animated, Easing, StyleSheet, Dimensions, View } from "react-native";
 
 import { themeAtom } from "~recoil/themeAtom";
@@ -12,27 +12,25 @@ import { Settings } from "~pages/Settings/Settings";
 
 type NavigatorMenuT = {
   pageMap: PageItems;
-  active: string;
-  setPage: any;
 };
 
-export const NavigatorMenu: FC<NavigatorMenuT> = ({ pageMap, setPage, active }) => {
-  const show = useRecoilValue(navigatorAtom);
+export const NavigatorMenu: FC<NavigatorMenuT> = ({ pageMap }) => {
+  const navigator = useRecoilValue(navigatorAtom);
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors, show);
-  const width = Dimensions.get("window").width / 2;
+  const styles = styling(colors, navigator.show);
+  const width = Dimensions.get("window").width / 1.8;
   const [settingsVisible, setSettingsVisible] = useState(false);
 
   const animatedWidth = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.timing(animatedWidth, {
-      toValue: show ? width : 0,
+      toValue: navigator.show ? width : 0,
       duration: 200,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
-  }, [show]);
+  }, [navigator.show]);
 
   return (
     <Animated.View style={[styles.container, { width: animatedWidth }]}>
@@ -43,9 +41,7 @@ export const NavigatorMenu: FC<NavigatorMenuT> = ({ pageMap, setPage, active }) 
               key={key}
               title={value.title}
               icon={value.icon}
-              setPage={setPage}
               pageKey={key}
-              active={key === active}
               width={width}
             />
           );

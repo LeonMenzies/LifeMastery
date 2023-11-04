@@ -1,8 +1,9 @@
-import { PlanT } from "~types/Types";
+import { AreaOfImportanceItemT, PlanT } from "~types/Types";
 import { COLORS, TOMORROW_PLAN } from "~utils/Constants";
 
-export const generateAOIColor = (count: number) => {
-  return count > 8 ? COLORS[0] : COLORS[count];
+export const getAOIColor = (areaOfImportance: AreaOfImportanceItemT[]) => {
+  const usedColors = areaOfImportance.map((item) => item.Color);
+  return COLORS.find((color) => !usedColors.includes(color));
 };
 
 export const getDay = (date: Date) => {

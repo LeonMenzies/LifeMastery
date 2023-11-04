@@ -16,13 +16,18 @@ type NavigatorHeaderT = {
 export const NavigatorHeader: FC<NavigatorHeaderT> = ({ rightButton, rightButtonIcon, title }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
-  const [show, setShow] = useRecoilState(navigatorAtom);
+  const [navigator, setNavigator] = useRecoilState(navigatorAtom);
 
   return (
     <View style={styles.container}>
       <IconButton
-        icon={show ? "align-left" : "align-justify"}
-        onPress={() => setShow(true)}
+        icon={navigator.show ? "align-left" : "align-justify"}
+        onPress={() =>
+          setNavigator({
+            page: navigator.page,
+            show: true,
+          })
+        }
         color={colors.primary}
       />
 

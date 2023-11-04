@@ -64,10 +64,6 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       setAlert("Action is required");
       return;
     }
-    if (actionItem.timeEstimate === 0) {
-      setAlert("Time Estimate is required");
-      return;
-    }
 
     if (actionItem.timeEstimate > 9) {
       setAlert("Time estimate cannot be over 9 hours");

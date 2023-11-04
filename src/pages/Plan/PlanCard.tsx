@@ -1,7 +1,6 @@
 import { StyleSheet, View, Text, ActivityIndicator, Dimensions } from "react-native";
 import { useEffect, useState, FC } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import DraggableFlatList from "react-native-draggable-flatlist";
 
 import { alertAtom } from "~recoil/alertAtom";
 import { TextInput } from "~components/TextInput";

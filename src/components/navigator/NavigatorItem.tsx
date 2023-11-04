@@ -23,13 +23,22 @@ export const NavigatorItem: FC<NavigatorItemT> = ({
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
   const colors = useRecoilValue(themeAtom);
-  const [show, setShow] = useRecoilState(navigatorAtom);
+  const [navigator, setNavigator] = useRecoilState(navigatorAtom);
   const styles = styling(colors, width, height);
 
   return (
     <View style={styles.container}>
-      {show && (
-        <TouchableOpacity style={styles.overlay} activeOpacity={1} onPress={() => setShow(false)} />
+      {navigator.show && (
+        <TouchableOpacity
+          style={styles.overlay}
+          activeOpacity={1}
+          onPress={() =>
+            setNavigator({
+              page: navigator.page,
+              show: false,
+            })
+          }
+        />
       )}
       <NavigatorHeader rightButton={rightButton} rightButtonIcon={rightButtonIcon} title={title} />
       {children}
