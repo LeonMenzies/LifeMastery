@@ -1,7 +1,8 @@
 import "react-native-get-random-values";
 import React, { useEffect, useState, FC } from "react";
-import { Modal, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
+import Slider from "react-native-a11y-slider";
 
 import { Select } from "~components/Select";
 import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
@@ -15,6 +16,8 @@ import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
 import { TimePicker } from "~components/TimePicker";
 import { TextInputAutoComplete } from "./TextInputAutoComplete";
+import { SliderInput } from "./SliderInput";
+import { Modal } from "./Modal";
 
 type ActionAddEditT = {
   modalVisible: {
@@ -33,7 +36,16 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
 
   const [action, setAction] = useState("");
   const [timeEstimate, setTimeEstimate] = useState(0);
+
+  const [timeHours, setTimeHours] = useState(1);
+  const [timeMinutes, setTimeMinutes] = useState(0);
+
   const [areaOfImportance, setAreaOfImportance] = useState("");
+
+  useEffect(() => {
+    const decimalHours = timeHours + timeMinutes / 60;
+    setTimeEstimate(decimalHours);
+  }, [timeHours, timeMinutes]);
 
   useEffect(() => {
     getAreasOfImportance(setAlert, setAreasOfImportance);
@@ -123,35 +135,46 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
   };
 
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={modalVisible.show}
-      onRequestClose={() => setModalVisible(false)}
-    >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Select
-            title={"Area of Importance"}
-            options={createOptions()}
-            value={areaOfImportance}
-            onChange={setAreaOfImportance}
-          />
-          <TextInputAutoComplete
-            title={"Action"}
-            onChangeText={setAction}
-            value={action}
-            placeholder="Add value..."
-            keyboardType="default"
-            maxLength={30}
-            autoCompleteText={createAutoCompleteText()}
-          />
-          <TimePicker title={"Time Estimate"} setTimeEstimate={setTimeEstimate} />
-          <View style={styles.buttonContainer}>
-            <Button title={modalVisible.action.action ? "Save" : "Add"} onPress={handleAddTodo} />
-            <Button title="Close" onPress={handleClose} />
-          </View>
-        </View>
+    <Modal visible={modalVisible.show} onRequestClose={() => setModalVisible(false)}>
+      <Select
+        title={"Area of Importance"}
+        options={createOptions()}
+        value={areaOfImportance}
+        onChange={setAreaOfImportance}
+      />
+      <TextInputAutoComplete
+        title={"Action"}
+        onChangeText={setAction}
+        value={action}
+        placeholder="Add value..."
+        keyboardType="default"
+        maxLength={30}
+        autoCompleteText={createAutoCompleteText()}
+      />
+      <SliderInput
+        title={"Hours"}
+        min={0}
+        max={12}
+        increment={1}
+        markerColor={colors.primary}
+        onChange={(values: number[]) => setTimeHours(values[0])}
+        values={[timeHours]}
+        showLabel={false}
+      />
+      <SliderInput
+        title={"Minutes"}
+        min={0}
+        max={60}
+        increment={5}
+        markerColor={colors.primary}
+        onChange={(values: number[]) => setTimeMinutes(values[0])}
+        values={[timeMinutes]}
+        showLabel={false}
+      />
+      {/* <TimePicker title={"Time Estimate"} setTimeEstimate={setTimeEstimate} /> */}
+      <View style={styles.buttonContainer}>
+        <Button title={modalVisible.action.action ? "Save" : "Add"} onPress={handleAddTodo} />
+        <Button title="Close" onPress={handleClose} />
       </View>
     </Modal>
   );

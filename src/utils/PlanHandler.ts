@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { PlanT } from "~types/Types";
+import { TOMORROW_PLAN } from "~utils/Constants";
+import { setPlanDateStringify } from "~utils/Helpers";
 
 export const getPlan = (
   setAlert: Function,
@@ -11,13 +13,42 @@ export const getPlan = (
   try {
     AsyncStorage.getItem(day)
       .then((plan) => JSON.parse(plan))
-      .then((plan) => {
+      .then((plan: PlanT) => {
         if (plan !== null) {
-          setLoading(false);
-          setData(plan);
+          //Handle day switch
+          if (plan.date == new Date().toISOString().split("T")[0]) {
+            setLoading(false);
+            setData(plan);
+          } else {
+            AsyncStorage.getItem(TOMORROW_PLAN)
+              .then((plan) => JSON.parse(plan))
+              .then((plan: PlanT) => {
+                if (plan !== null && plan.date == new Date().toISOString().split("T")[0]) {
+                  setLoading(false);
+                  setData(plan);
+                } else {
+                  setLoading(false);
+                  setData({
+                    key: "",
+                    date: "",
+                    focus: "",
+                    complete: false,
+                    finalized: false,
+                    actionKeys: [] as string[],
+                  });
+                }
+              });
+          }
         } else {
           setLoading(false);
-          setData({}); //TODO: return empty day
+          setData({
+            key: "",
+            date: "",
+            focus: "",
+            complete: false,
+            finalized: false,
+            actionKeys: [] as string[],
+          });
         }
       });
   } catch (e) {
@@ -27,7 +58,7 @@ export const getPlan = (
 
 export const savePlan = (setAlert: Function, plan: PlanT, day: string) => {
   try {
-    const planJson = JSON.stringify(plan);
+    const planJson = setPlanDateStringify(plan, day);
     AsyncStorage.setItem(day, planJson).then(() => setAlert("Successfully Saved Plan"));
   } catch (e) {
     setAlert("Failed to set plan");
@@ -70,7 +101,7 @@ export const updatePlan = (setAlert: Function, setData: Function, plan: PlanT, d
 
 export const finalizePlan = (setAlert: Function, plan: PlanT, navigation: any, day: string) => {
   try {
-    const planJson = JSON.stringify(plan);
+    const planJson = setPlanDateStringify(plan, day);
     AsyncStorage.setItem(day, planJson).then(() => {
       setAlert("Successfully Finalized Plan");
       navigation.navigate("Home");
@@ -86,6 +117,7 @@ export const clearPlan = (setAlert: Function, setData: Function, day: string) =>
       key: "",
       date: "",
       focus: "",
+      complete: false,
       finalized: false,
       actionKeys: [] as string[],
     };

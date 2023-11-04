@@ -93,12 +93,7 @@ export const PlanCard: FC<PlanCardT> = ({ day, navigation }) => {
       return;
     }
 
-    finalizePlan(
-      setAlert,
-      { ...data, finalized: true, date: new Date().toISOString().split("T")[0] },
-      navigation,
-      day
-    );
+    finalizePlan(setAlert, { ...data, finalized: true }, navigation, day);
   };
 
   const renderItem = ({ item, drag, isActive }) => {

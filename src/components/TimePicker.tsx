@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { useRecoilValue } from "recoil";
-import { QUARTER_TIME } from "~utils/Constants";
 import { Picker } from "react-native-wheel-pick";
 
+import { TIME_MINUTES } from "~utils/Constants";
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 
@@ -41,7 +41,7 @@ export const TimePicker: FC<TimePickerT> = ({ title, setTimeEstimate }) => {
         <Picker
           style={{ backgroundColor: colors.background, width: 100, height: 150, top: -40 }}
           selectedValue={minutes}
-          pickerData={QUARTER_TIME}
+          pickerData={TIME_MINUTES}
           onValueChange={setHours}
         />
         <Text style={styles.timeTitle}>min</Text>

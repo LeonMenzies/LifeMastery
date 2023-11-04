@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Icon from "react-native-vector-icons/AntDesign";
-import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useRecoilValue } from "recoil";
 
 import { themeAtom } from "~recoil/themeAtom";
@@ -32,16 +32,12 @@ export const ActionListSortButton: FC<SortButtonT> = ({
   };
 
   return (
-    <TouchableHighlight
-      underlayColor={colors.grey}
-      style={styles.button}
-      onPress={() => setSelected(text)}
-    >
+    <TouchableOpacity style={styles.button} onPress={() => setSelected(text)}>
       <View style={styles.container}>
         <Text style={styles.text}>{text}</Text>
         <Carrot />
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 

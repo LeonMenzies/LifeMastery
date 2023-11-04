@@ -21,11 +21,9 @@ import { getPlan, updatePlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
-import { COLORS } from "~utils/Constants";
+import { TODAY_PLAN } from "~utils/Constants";
 
 export const Home: FC<any> = ({ navigation }) => {
-  const TODAY_PLAN = "today-plan";
-
   const setAlert = useSetRecoilState(alertAtom);
   const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);

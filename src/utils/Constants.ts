@@ -1,8 +1,17 @@
-export const QUARTER_TIME = [
+export const TIME_MINUTES = [
   { value: 0, label: "0" },
+  { value: 0.25, label: "5" },
+  { value: 0., label: "10" },
   { value: 0.25, label: "15" },
-  { value: 0.5, label: "30" },
+  { value: 0.30, label: "20" },
+  { value: 0.40, label: "25" },
+  { value: 0.50, label: "30" },
+  { value: 0.75, label: "35" },
+  { value: 0.75, label: "40" },
   { value: 0.75, label: "45" },
+  { value: 0.75, label: "40" },
+  { value: 0.75, label: "55" },
+
 ];
 
 export const COLORS = [
