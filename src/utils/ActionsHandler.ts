@@ -68,6 +68,7 @@ export const addAction = (setAlert, setData, action, timeEstimate, areaOfImporta
     areaOfImportance: areaOfImportance,
     dateAdded: new Date().toISOString().split("T")[0],
   };
+
   try {
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))

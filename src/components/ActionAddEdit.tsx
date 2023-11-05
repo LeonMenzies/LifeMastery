@@ -6,7 +6,6 @@ import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import { Select } from "~components/Select";
 import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
 import { addAction, updateAction } from "~utils/ActionsHandler";
-import { TextInput } from "~components/TextInput";
 import { alertAtom } from "~recoil/alertAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
@@ -21,9 +20,10 @@ import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
 type ActionAddEditT = {
   modalVisible: boolean;
   setModalVisible: any;
+  newAction: boolean;
 };
 
-export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisible }) => {
+export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisible, newAction }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
@@ -34,8 +34,13 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
   const styles = styling(colors);
 
   useEffect(() => {
-    const decimalHours = timeHours + timeMinutes / 60;
-    updateActionItem(actionItem, { timeEstimate: decimalHours });
+    setTimeHours(Math.floor(actionItem.timeEstimate / 60));
+    setTimeMinutes(actionItem.timeEstimate % 60);
+  }, [modalVisible]);
+
+  useEffect(() => {
+    const minutes = timeHours * 60 + timeMinutes;
+    updateActionItem(actionItem, { timeEstimate: minutes });
   }, [timeHours, timeMinutes]);
 
   useEffect(() => {
@@ -49,12 +54,6 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
     });
   };
 
-  const convertTime = (decimalHours: number): { hours: number; minutes: number } => {
-    const hours = Math.floor(decimalHours);
-    const minutes = Math.round((decimalHours - hours) * 60);
-    return { hours: hours, minutes: minutes };
-  };
-
   const createAutoCompleteText = () => {
     return actions.map((action: ActionItemT) => action.action);
   };
@@ -65,7 +64,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       return;
     }
 
-    if (actionItem.timeEstimate > 9) {
+    if (actionItem.timeEstimate > 9 * 60) {
       setAlert("Time estimate cannot be over 9 hours");
       return;
     }
@@ -78,16 +77,22 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       return;
     }
 
-    actionItem.action
-      ? updateAction(setAlert, setActions, actionItem)
-      : addAction(
+    newAction
+      ? addAction(
           setAlert,
           setActions,
           actionItem.action,
           actionItem.timeEstimate,
           actionItem.areaOfImportance
-        );
-    actionItem.action ? setModalVisible(false) : null;
+        )
+      : updateAction(setAlert, setActions, actionItem);
+
+    newAction
+      ? null
+      : setModalVisible({
+          show: false,
+          newAction: true,
+        });
     setActionItem(emptyAction);
   };
 
@@ -97,7 +102,15 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       : [{ label: "No AOI found, please add from the AOI tab", value: "" }];
 
   return (
-    <Modal visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+    <Modal
+      visible={modalVisible}
+      onRequestClose={() =>
+        setModalVisible({
+          show: false,
+          newAction: true,
+        })
+      }
+    >
       <Select
         title={"Area of Importance"}
         options={createOptions()}
@@ -120,22 +133,30 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
         increment={1}
         markerColor={colors.primary}
         onChange={(values: number[]) => setTimeHours(values[0])}
-        values={[convertTime(actionItem.timeEstimate).hours]}
+        values={[timeHours]}
         showLabel={false}
       />
       <SliderInput
         title={"Minutes"}
         min={0}
-        max={60}
+        max={55}
         increment={5}
         markerColor={colors.primary}
         onChange={(values: number[]) => setTimeMinutes(values[0])}
-        values={[convertTime(actionItem.timeEstimate).minutes]}
+        values={[timeMinutes]}
         showLabel={false}
       />
       <View style={styles.buttonContainer}>
-        <Button title={actionItem.action ? "Save" : "Add"} onPress={handleAddTodo} />
-        <Button title="Close" onPress={() => setModalVisible(false)} />
+        <Button title={newAction ? "Add" : "Save"} onPress={handleAddTodo} />
+        <Button
+          title="Close"
+          onPress={() =>
+            setModalVisible({
+              show: false,
+              newAction: true,
+            })
+          }
+        />
       </View>
     </Modal>
   );

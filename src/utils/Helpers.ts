@@ -11,10 +11,8 @@ export const getDay = (date: Date) => {
   return days[date.getDay()];
 };
 
-export const convertTime = (decimalHours: number): string => {
-  const hours = Math.floor(decimalHours);
-  const minutes = Math.round((decimalHours - hours) * 60);
-  return `${hours}:${minutes}`;
+export const convertTime = (decimalMinutes: number): string => {
+  return `${Math.floor(decimalMinutes / 60)}:${decimalMinutes % 60}`;
 };
 
 export const setPlanDateStringify = (plan: PlanT, day: string): string => {

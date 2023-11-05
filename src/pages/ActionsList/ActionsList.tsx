@@ -19,7 +19,10 @@ export const ActionsList: FC<any> = () => {
   const [actions, setActions] = useRecoilState(actionsAtom);
   const setAction = useSetRecoilState(createActionAtom);
   const [showComplete, setShowComplete] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState<{ show: boolean; newAction: boolean }>({
+    show: false,
+    newAction: true,
+  });
 
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
@@ -31,7 +34,10 @@ export const ActionsList: FC<any> = () => {
   return (
     <NavigatorItem
       rightButton={() => {
-        setModalVisible(true);
+        setModalVisible({
+          show: true,
+          newAction: true,
+        });
         setAction(emptyAction);
       }}
       rightButtonIcon={"plus"}
@@ -48,7 +54,11 @@ export const ActionsList: FC<any> = () => {
           <ActionsListItem item={item} setModalVisible={setModalVisible} key={index} />
         ))}
       </View>
-      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      <ActionAddEdit
+        modalVisible={modalVisible.show}
+        setModalVisible={setModalVisible}
+        newAction={modalVisible.newAction}
+      />
     </NavigatorItem>
   );
 };

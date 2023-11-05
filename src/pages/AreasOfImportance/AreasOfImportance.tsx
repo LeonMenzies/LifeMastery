@@ -4,7 +4,7 @@ import { Text, Dimensions, StyleSheet, View } from "react-native";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 
 import { AreasOfImportanceItem } from "~pages/AreasOfImportance/AreasOfImportanceItem";
-import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
+import { deleteAreaOfImportance, getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
 import { AreasOfImportanceAdd } from "~pages/AreasOfImportance/AreasOfImportanceAdd";
 import { alertAtom } from "~recoil/alertAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
@@ -56,7 +56,14 @@ export const AreasOfImportance: FC<any> = () => {
                 setDeleteItems([]);
               }}
             />
-            <Button title="Delete" onPress={() => {}} disabled={deleteItems.length < 1} />
+            <Button
+              title="Delete"
+              onPress={() => {
+                deleteAreaOfImportance(setAlert, setData, deleteItems);
+                setDeleteItem(false);
+              }}
+              disabled={deleteItems.length < 1}
+            />
           </View>
         )}
       </View>

@@ -15,7 +15,10 @@ import { NavigatorItem } from "~components/navigator/NavigatorItem";
 export const Plan: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [today, setToday] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState<{ show: boolean; newAction: boolean }>({
+    show: false,
+    newAction: true,
+  });
   const setActions = useSetRecoilState(actionsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors, today);
@@ -26,7 +29,12 @@ export const Plan: FC<any> = () => {
 
   return (
     <NavigatorItem
-      rightButton={() => setModalVisible(true)}
+      rightButton={() =>
+        setModalVisible({
+          show: true,
+          newAction: true,
+        })
+      }
       rightButtonIcon={"plus"}
       title={"Plan"}
     >
@@ -53,7 +61,11 @@ export const Plan: FC<any> = () => {
         </View>
         {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
       </View>
-      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      <ActionAddEdit
+        modalVisible={modalVisible.show}
+        setModalVisible={setModalVisible}
+        newAction={true}
+      />
     </NavigatorItem>
   );
 };

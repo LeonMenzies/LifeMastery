@@ -29,7 +29,10 @@ export const ActionsListItem: FC<ActionsListItemT> = ({ item, setModalVisible })
     <TouchableOpacity
       onLongPress={() => {}}
       onPress={() => {
-        setModalVisible(true);
+        setModalVisible({
+          show: true,
+          newAction: false,
+        });
         setAction(item);
       }}
     >

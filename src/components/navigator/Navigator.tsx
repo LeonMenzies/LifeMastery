@@ -33,8 +33,6 @@ export const Navigator: FC<NavigatorT> = () => {
   const navigator = useRecoilValue(navigatorAtom);
 
   useEffect(() => {
-    console.log(alert);
-
     if (alert !== "") {
       let toast = Toast.show(alert, {
         duration: Toast.durations.LONG,

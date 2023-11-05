@@ -18,22 +18,31 @@ export const getAreasOfImportance = (setAlert, setData) => {
   }
 };
 
-export const addAreaOfImportance = (setAlert: any, setData: any, AOI: AreaOfImportanceItemT) => {
+export const addAreaOfImportance = (setAlert: any, setData: any, AOI: string) => {
   const key = uuidv4();
 
   try {
     AsyncStorage.getItem(AOI_KEY)
       .then((areaOfImportanceRaw) => JSON.parse(areaOfImportanceRaw))
-      .then((areaOfImportance) => {
+      .then((areaOfImportance: AreaOfImportanceItemT[]) => {
         if (areaOfImportance === null) {
           areaOfImportance = [];
+        }
+
+        if (
+          areaOfImportance.some(
+            (obj: AreaOfImportanceItemT) => obj.AOI.toLowerCase() === AOI.toLowerCase()
+          )
+        ) {
+          setAlert("Areas of importance must be unique");
+          return;
         }
 
         const newAreaOfImportance = {
           key: key,
           AOI: AOI,
           Color: getAOIColor(areaOfImportance),
-        };        
+        };
 
         if (areaOfImportance.length >= 9) {
           setAlert("You cannot have more than 9 Areas Of Importance");
@@ -49,17 +58,20 @@ export const addAreaOfImportance = (setAlert: any, setData: any, AOI: AreaOfImpo
   }
 };
 
-export const deleteAreaOfImportance = (setAlert, setData, key) => {
+export const deleteAreaOfImportance = (setAlert: Function, setData: Function, keys: string[]) => {
   try {
     AsyncStorage.getItem(AOI_KEY)
       .then((areaOfImportanceRaw) => JSON.parse(areaOfImportanceRaw))
       .then((areaOfImportance) => {
-        const filteredAreaOfImportance = areaOfImportance.filter((v) => v.key !== key);
+        const filteredAreaOfImportance = areaOfImportance.filter(
+          (v: AreaOfImportanceItemT) => !keys.includes(v.key)
+        );
 
         if (filteredAreaOfImportance >= areaOfImportance) {
           setAlert("Failed to delete AOI");
           return;
         }
+
         const AreaOfImportanceList = JSON.stringify(filteredAreaOfImportance);
         AsyncStorage.setItem(AOI_KEY, AreaOfImportanceList).then(() => {
           setData(filteredAreaOfImportance);
