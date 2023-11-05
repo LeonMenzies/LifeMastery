@@ -78,6 +78,7 @@ const styling = (colors: ThemeT, today: boolean) =>
       flex: 1,
     },
     addContainer: {
+      marginTop: 50,
       width: "100%",
       paddingLeft: 10,
     },

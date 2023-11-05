@@ -76,7 +76,7 @@ export const Navigator: FC<NavigatorT> = () => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.component}>{pageMap[navigator].component}</SafeAreaView>
+      <View style={styles.component}>{pageMap[navigator].component}</View>
       <NavigatorMenu pageMap={pageMap} />
     </View>
   );

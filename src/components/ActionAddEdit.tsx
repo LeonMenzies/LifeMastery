@@ -111,52 +111,45 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
         })
       }
     >
-      <Select
-        title={"Area of Importance"}
-        options={createOptions()}
-        value={actionItem.areaOfImportance}
-        onChange={(e) => updateActionItem(actionItem, { areaOfImportance: e })}
-      />
-      <TextInputAutoComplete
-        title={"Action"}
-        onChangeText={(e) => updateActionItem(actionItem, { action: e })}
-        value={actionItem.action}
-        placeholder="Add value..."
-        keyboardType="default"
-        maxLength={30}
-        autoCompleteText={createAutoCompleteText()}
-      />
-      <SliderInput
-        title={"Hours"}
-        min={0}
-        max={12}
-        increment={1}
-        markerColor={colors.primary}
-        onChange={(values: number[]) => setTimeHours(values[0])}
-        values={[timeHours]}
-        showLabel={false}
-      />
-      <SliderInput
-        title={"Minutes"}
-        min={0}
-        max={55}
-        increment={5}
-        markerColor={colors.primary}
-        onChange={(values: number[]) => setTimeMinutes(values[0])}
-        values={[timeMinutes]}
-        showLabel={false}
-      />
+      <View>
+        <Select
+          title={"Area of Importance"}
+          options={createOptions()}
+          value={actionItem.areaOfImportance}
+          onChange={(e) => updateActionItem(actionItem, { areaOfImportance: e })}
+        />
+        <TextInputAutoComplete
+          title={"Action"}
+          onChangeText={(e) => updateActionItem(actionItem, { action: e })}
+          value={actionItem.action}
+          placeholder="Add value..."
+          keyboardType="default"
+          maxLength={30}
+          autoCompleteText={createAutoCompleteText()}
+        />
+        <SliderInput
+          title={"Hours"}
+          min={0}
+          max={12}
+          increment={1}
+          markerColor={colors.primary}
+          onChange={(values: number[]) => setTimeHours(values[0])}
+          values={[timeHours]}
+          showLabel={false}
+        />
+        <SliderInput
+          title={"Minutes"}
+          min={0}
+          max={55}
+          increment={5}
+          markerColor={colors.primary}
+          onChange={(values: number[]) => setTimeMinutes(values[0])}
+          values={[timeMinutes]}
+          showLabel={false}
+        />
+      </View>
       <View style={styles.buttonContainer}>
         <Button title={newAction ? "Add" : "Save"} onPress={handleAddTodo} />
-        <Button
-          title="Close"
-          onPress={() =>
-            setModalVisible({
-              show: false,
-              newAction: true,
-            })
-          }
-        />
       </View>
     </Modal>
   );
@@ -164,27 +157,8 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
 
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
-    centeredView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-    },
-    modalView: {
-      margin: 20,
-      backgroundColor: colors.background,
-      padding: 35,
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      elevation: 5,
-    },
     buttonContainer: {
-      padding: 10,
+      padding: 30,
       flexDirection: "row",
     },
   });

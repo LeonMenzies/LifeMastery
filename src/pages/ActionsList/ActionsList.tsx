@@ -32,17 +32,6 @@ export const ActionsList: FC<any> = () => {
   }, []);
 
   return (
-    // <NavigatorItem
-    //   rightButton={() => {
-    //     setModalVisible({
-    //       show: true,
-    //       newAction: true,
-    //     });
-    //     setAction(emptyAction);
-    //   }}
-    //   rightButtonIcon={"plus"}
-    //   title={"Actions"}
-    // >
     <View style={styles.container}>
       <View style={styles.addContainer}>
         <IconButton
@@ -91,6 +80,7 @@ const styling = (colors: ThemeT) =>
       alignItems: "center",
     },
     addContainer: {
+      marginTop: 50,
       width: "100%",
       paddingHorizontal: 10,
       flexDirection: "row",
