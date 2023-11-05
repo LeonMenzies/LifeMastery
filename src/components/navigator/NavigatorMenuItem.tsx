@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import Icon from "react-native-vector-icons/SimpleLineIcons";
 
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
@@ -17,21 +17,22 @@ type NavigatorMenuItemT = {
 export const NavigatorMenuItem: FC<NavigatorMenuItemT> = ({ title, icon, pageKey, width }) => {
   const [navigator, setNavigator] = useRecoilState(navigatorAtom);
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors, navigator.page == pageKey, width);
+  const styles = styling(colors, width);
 
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => {
-        setNavigator({
-          page: pageKey,
-          show: false,
-        });
+        setNavigator(pageKey);
       }}
     >
       <View style={styles.innerContainer}>
         <View style={styles.icon}>
-          <Icon name={icon} size={18} color={colors.primary} />
+          <Icon
+            name={icon}
+            size={24}
+            color={navigator == pageKey ? colors.secondary : colors.primary}
+          />
         </View>
         <Text style={styles.title}>{title}</Text>
       </View>
@@ -39,26 +40,24 @@ export const NavigatorMenuItem: FC<NavigatorMenuItemT> = ({ title, icon, pageKey
   );
 };
 
-const styling = (colors: ThemeT, active: boolean, width: number) =>
+const styling = (colors: ThemeT, width: number) =>
   StyleSheet.create({
     container: {
       width: width,
     },
     innerContainer: {
       alignItems: "center",
-      backgroundColor: active ? colors.secondary : colors.background,
-      flexDirection: "row",
-      borderRadius: 5,
-      padding: 8,
-      margin: 5,
-      gap: 10,
+      flexDirection: "column",
+      backgroundColor: colors.background,
+      borderRadius: 15,
+      padding: 4,
+      margin: 8,
     },
     title: {
       color: colors.textPrimary,
-      fontSize: 18,
+      fontSize: 12,
     },
     icon: {
-      width: 20,
       alignItems: "center",
     },
   });

@@ -22,9 +22,7 @@ import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
 import { TODAY_PLAN } from "~utils/Constants";
-import { NavigatorItem } from "~components/navigator/NavigatorItem";
-import { ActionAddEdit } from "~components/ActionAddEdit";
-import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
+import { createActionAtom } from "~recoil/createActionAtom";
 import { navigatorAtom } from "~recoil/navigatorAtom";
 
 export const Home: FC<any> = () => {
@@ -53,10 +51,7 @@ export const Home: FC<any> = () => {
   useEffect(() => {
     if (!loading && !plan.finalized) {
       setAlert("You must finalize today first");
-      setNavigator({
-        page: "plan",
-        show: false,
-      });
+      setNavigator("plan");
     } else {
       getAreasOfImportance(setAlert, setAreasOfImportance);
     }
@@ -88,46 +83,33 @@ export const Home: FC<any> = () => {
   };
 
   return (
-    <NavigatorItem
-      rightButton={() => {
-        setModalVisible(true);
-        setAction(emptyAction);
-      }}
-      rightButtonIcon={"plus"}
-      title={formattedDate}
-    >
-      <View style={styles.container}>
-        <HomeHeader focus={plan.focus} percent={calculatePercent()} />
-        {loading && <ActivityIndicator size="large" color={colors.primary} />}
+    <View style={styles.container}>
+      <HomeHeader focus={plan.focus} percent={calculatePercent()} />
+      {loading && <ActivityIndicator size="large" color={colors.primary} />}
 
-        <ScrollView>
-          {areasOfImportance.map((aoi: AreaOfImportanceItemT) => {
-            return (
-              <HomeActionSection
-                key={aoi.key}
-                aoi={aoi}
-                data={actions}
-                setActions={setActions}
-                actionKeys={plan.actionKeys}
-              />
-            );
-          })}
-        </ScrollView>
-        {plan.complete && (
-          <View style={styles.completeContainer}>
-            <Text style={styles.completeText}>{"Day is Complete"}</Text>
-          </View>
-        )}
-      </View>
-      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
-    </NavigatorItem>
+      <ScrollView>
+        {areasOfImportance.map((aoi: AreaOfImportanceItemT) => (
+          <HomeActionSection
+            key={aoi.key}
+            aoi={aoi}
+            data={actions}
+            setActions={setActions}
+            actionKeys={plan.actionKeys}
+          />
+        ))}
+      </ScrollView>
+      {plan.complete && (
+        <View style={styles.completeContainer}>
+          <Text style={styles.completeText}>{"Day is Complete"}</Text>
+        </View>
+      )}
+    </View>
   );
 };
 
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.background,
       height: "100%",
       alignItems: "center",
     },

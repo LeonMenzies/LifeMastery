@@ -10,7 +10,6 @@ import { alertAtom } from "~recoil/alertAtom";
 import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { AreaOfImportanceItemT, ThemeT } from "~types/Types";
-import { NavigatorItem } from "~components/navigator/NavigatorItem";
 import { Button } from "~components/Button";
 
 export const AreasOfImportance: FC<any> = () => {
@@ -29,45 +28,43 @@ export const AreasOfImportance: FC<any> = () => {
   }, []);
 
   return (
-    <NavigatorItem rightButton={() => {}} rightButtonIcon={""} title={"Areas Of Importance"}>
-      <View style={styles.container}>
-        <View>
-          <AreasOfImportanceAdd />
+    <View style={styles.container}>
+      <View>
+        <AreasOfImportanceAdd />
 
-          <View>
-            {data.map((item: AreaOfImportanceItemT, index: number) => (
-              <AreasOfImportanceItem
-                key={index}
-                item={item}
-                deleteItem={deleteItem}
-                setDeleteItem={setDeleteItem}
-                deleteItems={deleteItems}
-                setDeleteItems={setDeleteItems}
-              />
-            ))}
-          </View>
+        <View>
+          {data.map((item: AreaOfImportanceItemT, index: number) => (
+            <AreasOfImportanceItem
+              key={index}
+              item={item}
+              deleteItem={deleteItem}
+              setDeleteItem={setDeleteItem}
+              deleteItems={deleteItems}
+              setDeleteItems={setDeleteItems}
+            />
+          ))}
         </View>
-        {deleteItem && (
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Cancel"
-              onPress={() => {
-                setDeleteItem(false);
-                setDeleteItems([]);
-              }}
-            />
-            <Button
-              title="Delete"
-              onPress={() => {
-                deleteAreaOfImportance(setAlert, setData, deleteItems);
-                setDeleteItem(false);
-              }}
-              disabled={deleteItems.length < 1}
-            />
-          </View>
-        )}
       </View>
-    </NavigatorItem>
+      {deleteItem && (
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Cancel"
+            onPress={() => {
+              setDeleteItem(false);
+              setDeleteItems([]);
+            }}
+          />
+          <Button
+            title="Delete"
+            onPress={() => {
+              deleteAreaOfImportance(setAlert, setData, deleteItems);
+              setDeleteItem(false);
+            }}
+            disabled={deleteItems.length < 1}
+          />
+        </View>
+      )}
+    </View>
   );
 };
 

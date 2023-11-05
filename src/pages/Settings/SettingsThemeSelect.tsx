@@ -41,7 +41,7 @@ export const SettingsThemeSelect: FC<any> = () => {
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      width: 300,
+      width: "80%",
     },
     innerContainer: {
       flexDirection: "row",

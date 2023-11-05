@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, View, Dimensions } from "react-native";
 import Toast from "react-native-root-toast";
 
 import { themeAtom } from "~recoil/themeAtom";
@@ -10,7 +10,7 @@ import { NavigatorMenu } from "~components/navigator/NavigatorMenu";
 import { Plan } from "~pages/Plan/Plan";
 import { Home } from "~pages/Home/Home";
 import { ActionsList } from "~pages/ActionsList/ActionsList";
-import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
+import { Settings } from "~pages/Settings/Settings";
 import { alertAtom } from "~recoil/alertAtom";
 import { navigatorAtom } from "~recoil/navigatorAtom";
 
@@ -27,8 +27,10 @@ export type PageItem = {
 };
 
 export const Navigator: FC<NavigatorT> = () => {
+  const height = Dimensions.get("window").height;
+
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors);
+  const styles = styling(colors, height);
   const [alert, setAlert] = useRecoilState(alertAtom);
   const navigator = useRecoilValue(navigatorAtom);
 
@@ -36,7 +38,7 @@ export const Navigator: FC<NavigatorT> = () => {
     if (alert !== "") {
       let toast = Toast.show(alert, {
         duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM,
+        position: Toast.positions.TOP,
         hideOnPress: true,
         shadow: true,
         animation: true,
@@ -50,41 +52,44 @@ export const Navigator: FC<NavigatorT> = () => {
   }, [alert]);
 
   const pageMap: PageItems = {
-    plan: {
-      title: "Plan",
-      icon: "home",
-      component: <Plan />,
-    },
     home: {
       title: "Home",
-      icon: "list",
+      icon: "home",
       component: <Home />,
     },
+    plan: {
+      title: "Plan",
+      icon: "note",
+      component: <Plan />,
+    },
     actionsList: {
-      title: "Actions List",
-      icon: "clock-o",
+      title: "Actions",
+      icon: "list",
       component: <ActionsList />,
     },
     areasOfImportance: {
-      title: "Areas Of Importance",
-      icon: "male",
-      component: <AreasOfImportance />,
+      title: "Settings",
+      icon: "settings",
+      component: <Settings />,
     },
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <SafeAreaView style={styles.component}>{pageMap[navigator].component}</SafeAreaView>
       <NavigatorMenu pageMap={pageMap} />
-      {pageMap[navigator.page].component}
-    </SafeAreaView>
+    </View>
   );
 };
 
-const styling = (colors: ThemeT) =>
+const styling = (colors: ThemeT, height: number) =>
   StyleSheet.create({
     container: {
-      flexDirection: "row",
+      flexDirection: "column",
       flex: 1,
       backgroundColor: colors.background,
+    },
+    component: {
+      height: height - 100,
     },
   });

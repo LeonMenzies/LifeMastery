@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, View, TouchableHighlight, Text } from "react-native";
+import { StyleSheet, View, TouchableHighlight, Text } from "react-native";
 import { useEffect, useState, FC } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -9,8 +9,8 @@ import { PlanCard } from "~pages/Plan/PlanCard";
 import { themeAtom } from "~recoil/themeAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { TODAY_PLAN, TOMORROW_PLAN } from "~utils/Constants";
+import { IconButton } from "~components/IconButton";
 import { ActionAddEdit } from "~components/ActionAddEdit";
-import { NavigatorItem } from "~components/navigator/NavigatorItem";
 
 export const Plan: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
@@ -28,54 +28,58 @@ export const Plan: FC<any> = () => {
   }, []);
 
   return (
-    <NavigatorItem
-      rightButton={() =>
-        setModalVisible({
-          show: true,
-          newAction: true,
-        })
-      }
-      rightButtonIcon={"plus"}
-      title={"Plan"}
-    >
-      <View style={styles.container}>
-        <View style={styles.buttonContainer}>
-          <TouchableHighlight
-            underlayColor={colors.lightGrey}
-            onPress={() => setToday(true)}
-            style={styles.button}
-          >
-            <View style={today ? styles.underline : null}>
-              <Text style={styles.buttonText}>{"Today"}</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            underlayColor={colors.lightGrey}
-            onPress={() => setToday(false)}
-            style={styles.button}
-          >
-            <View style={today ? null : styles.underline}>
-              <Text style={styles.buttonText}>{"Tomorrow"}</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-        {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
+    <View style={styles.container}>
+      <View style={styles.addContainer}>
+        <IconButton
+          icon={"plus"}
+          color={colors.primary}
+          onPress={() =>
+            setModalVisible({
+              show: true,
+              newAction: true,
+            })
+          }
+        />
       </View>
+      <View style={styles.buttonContainer}>
+        <TouchableHighlight
+          underlayColor={colors.lightGrey}
+          onPress={() => setToday(true)}
+          style={styles.button}
+        >
+          <View style={today ? styles.underline : null}>
+            <Text style={styles.buttonText}>{"Today"}</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight
+          underlayColor={colors.lightGrey}
+          onPress={() => setToday(false)}
+          style={styles.button}
+        >
+          <View style={today ? null : styles.underline}>
+            <Text style={styles.buttonText}>{"Tomorrow"}</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+      {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
       <ActionAddEdit
         modalVisible={modalVisible.show}
         setModalVisible={setModalVisible}
         newAction={true}
       />
-    </NavigatorItem>
+    </View>
   );
 };
 
 const styling = (colors: ThemeT, today: boolean) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.background,
       alignItems: "center",
       flex: 1,
+    },
+    addContainer: {
+      width: "100%",
+      paddingLeft: 10,
     },
     buttonContainer: {
       flexDirection: "row",

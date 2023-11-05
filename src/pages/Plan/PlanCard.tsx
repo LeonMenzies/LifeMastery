@@ -13,6 +13,7 @@ import { planAtom } from "~recoil/planAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { TOMORROW_PLAN } from "~utils/Constants";
 import { convertTime } from "~utils/Helpers";
+import { navigatorAtom } from "~recoil/navigatorAtom";
 
 type PlanCardT = {
   day: string;
@@ -27,6 +28,7 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(colors, windowWidth);
   const [loading, setLoading] = useState(true);
+  const setNavigator = useSetRecoilState(navigatorAtom);
 
   useEffect(() => {
     getPlan(setAlert, setData, day, setLoading);
@@ -77,7 +79,7 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
       return;
     }
 
-    if (checkPlanLength() > 16) {
+    if (checkPlanLength() > 16 * 60) {
       setAlert("There isn't enough time in the day for all those actions, lets try again");
       setData((prevData) => ({
         ...prevData,
@@ -94,7 +96,9 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
     finalizePlan(setAlert, { ...data, finalized: true }, setHome, day);
   };
 
-  const setHome = () => {};
+  const setHome = () => {
+    setNavigator("plan");
+  };
 
   return (
     <View style={styles.container}>

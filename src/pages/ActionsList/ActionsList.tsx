@@ -10,9 +10,9 @@ import { themeAtom } from "~recoil/themeAtom";
 import { ActionItemT, ThemeT } from "~types/Types";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { ActionsListSort } from "./ActionsListSort";
-import { NavigatorItem } from "~components/navigator/NavigatorItem";
 import { ActionAddEdit } from "~components/ActionAddEdit";
 import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
+import { IconButton } from "~components/IconButton";
 
 export const ActionsList: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
@@ -32,42 +32,68 @@ export const ActionsList: FC<any> = () => {
   }, []);
 
   return (
-    <NavigatorItem
-      rightButton={() => {
-        setModalVisible({
-          show: true,
-          newAction: true,
-        });
-        setAction(emptyAction);
-      }}
-      rightButtonIcon={"plus"}
-      title={"Actions"}
-    >
-      <View style={styles.container}>
-        <ActionsListSort
-          actions={actions}
-          setActions={setActions}
-          showComplete={showComplete}
-          setShowComplete={setShowComplete}
+    // <NavigatorItem
+    //   rightButton={() => {
+    //     setModalVisible({
+    //       show: true,
+    //       newAction: true,
+    //     });
+    //     setAction(emptyAction);
+    //   }}
+    //   rightButtonIcon={"plus"}
+    //   title={"Actions"}
+    // >
+    <View style={styles.container}>
+      <View style={styles.addContainer}>
+        <IconButton
+          icon={"plus"}
+          color={colors.primary}
+          onPress={() =>
+            setModalVisible({
+              show: true,
+              newAction: true,
+            })
+          }
         />
-        {actions.map((item: ActionItemT, index: number) => (
-          <ActionsListItem item={item} setModalVisible={setModalVisible} key={index} />
-        ))}
+        <IconButton
+          icon={"question"}
+          color={colors.primary}
+          onPress={() =>
+            setModalVisible({
+              show: true,
+              newAction: true,
+            })
+          }
+        />
       </View>
+      <ActionsListSort
+        actions={actions}
+        setActions={setActions}
+        showComplete={showComplete}
+        setShowComplete={setShowComplete}
+      />
+      {actions.map((item: ActionItemT, index: number) => (
+        <ActionsListItem item={item} setModalVisible={setModalVisible} key={index} />
+      ))}
+
       <ActionAddEdit
         modalVisible={modalVisible.show}
         setModalVisible={setModalVisible}
         newAction={modalVisible.newAction}
       />
-    </NavigatorItem>
+    </View>
   );
 };
 
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.background,
-      height: "100%",
       alignItems: "center",
+    },
+    addContainer: {
+      width: "100%",
+      paddingHorizontal: 10,
+      flexDirection: "row",
+      justifyContent: "space-between",
     },
   });

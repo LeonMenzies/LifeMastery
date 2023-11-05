@@ -14,12 +14,7 @@ import { planAtom } from "~recoil/planAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { Modal } from "~components/Modal";
 
-type SettingsT = {
-  modalVisible: boolean;
-  setModalVisible: any;
-};
-
-export const Settings: FC<SettingsT> = ({ modalVisible, setModalVisible }) => {
+export const Settings: FC<any> = () => {
   const TODAY_PLAN = "today-plan";
   const TOMORROW_PLAN = "tomorrow-plan";
 
@@ -42,51 +37,30 @@ export const Settings: FC<SettingsT> = ({ modalVisible, setModalVisible }) => {
   };
 
   return (
-    <Modal visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
-      <View>
-        <SettingsThemeSelect />
-        <SettingsCompleteSelect />
-        <SettingsItem title="Clear Actions" callBack={() => clearActions(setAlert, setActions)} />
-        <SettingsItem
-          title="Clear Todays Plan"
-          callBack={() => clearPlan(setAlert, setPlan, TODAY_PLAN)}
-        />
-        <SettingsItem
-          title="Clear Tomorrows Plan"
-          callBack={() => clearPlan(setAlert, setPlan, TOMORROW_PLAN)}
-        />
-      </View>
-      <Button title="Close" onPress={() => setModalVisible(false)} />
-    </Modal>
+    <View style={styles.container}>
+      <SettingsThemeSelect />
+      <SettingsCompleteSelect />
+      <SettingsItem title="Clear Actions" callBack={() => clearActions(setAlert, setActions)} />
+      <SettingsItem
+        title="Clear Todays Plan"
+        callBack={() => clearPlan(setAlert, setPlan, TODAY_PLAN)}
+      />
+      <SettingsItem
+        title="Clear Tomorrows Plan"
+        callBack={() => clearPlan(setAlert, setPlan, TOMORROW_PLAN)}
+      />
+    </View>
   );
 };
 
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
-    centeredView: {
-      flex: 1,
-      justifyContent: "center",
+    container: {
       alignItems: "center",
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-    },
-    modalView: {
-      margin: 20,
-      backgroundColor: colors.background,
-      padding: 35,
-      height: "50%",
-      width: "80%",
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      elevation: 5,
-      justifyContent: "space-between",
+      marginTop: 50,
     },
     itemContainer: {
-      width: 300,
+      width: "80%",
     },
     itemInnerContainer: {
       flexDirection: "row",

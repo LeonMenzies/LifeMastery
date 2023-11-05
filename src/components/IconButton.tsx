@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
 import { useRecoilValue } from "recoil";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/SimpleLineIcons";
 
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
