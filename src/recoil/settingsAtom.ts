@@ -1,9 +1,12 @@
 import { atom } from "recoil";
+import { SettingsT } from "~types/Types";
 
-export const settingsAtom = atom({
+export const defaultSettings = {
+  timePercent: true,
+  lightMode: true,
+};
+
+export const settingsAtom = atom<SettingsT>({
   key: "settings",
-  default: {
-    timePercent: true,
-    lightMode: true,
-  },
+  default: defaultSettings,
 });

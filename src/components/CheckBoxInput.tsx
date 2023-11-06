@@ -22,7 +22,7 @@ const styling = (color: string, completed: boolean, colors: ThemeT) =>
   StyleSheet.create({
     button: {
       borderRadius: 100,
-      backgroundColor: completed ? color : colors.white,
+      backgroundColor: completed ? color : null,
       borderColor: "grey",
       borderWidth: 1,
       width: 20,

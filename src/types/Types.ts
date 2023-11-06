@@ -23,6 +23,11 @@ export type PlanT = {
   actionKeys: string[];
 };
 
+export type SettingsT = {
+  timePercent: boolean;
+  lightMode: boolean;
+};
+
 export type ThemeT = {
   primary: string;
   secondary: string;

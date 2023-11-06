@@ -5,6 +5,7 @@ import { FC } from "react";
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 import { settingsAtom } from "~recoil/settingsAtom";
+import { saveSettings } from "~utils/SettingsHandler";
 
 export const SettingsCompleteSelect: FC<any> = () => {
   const [timePercent, setTimePercent] = useRecoilState(settingsAtom);
@@ -12,7 +13,9 @@ export const SettingsCompleteSelect: FC<any> = () => {
   const styles = styling(colors);
 
   const onChange = (b: boolean) => {
-    setTimePercent({ ...timePercent, timePercent: b });
+    const newSettings = { ...timePercent, timePercent: b };
+    setTimePercent(newSettings);
+    saveSettings(newSettings);
   };
 
   return (

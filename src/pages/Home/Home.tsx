@@ -11,10 +11,11 @@ import { HomeActionSection } from "~pages/Home/HomeActionSection";
 import { AreaOfImportanceItemT, PlanT, ThemeT, ActionItemT } from "~types/Types";
 import { getPlan, updatePlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
-import { themeAtom } from "~recoil/themeAtom";
+import { darkTheme, lightTheme, themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
 import { TODAY_PLAN } from "~utils/Constants";
 import { navigatorAtom } from "~recoil/navigatorAtom";
+import { getSettings, getTheme } from "~utils/SettingsHandler";
 
 export const Home: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
@@ -23,8 +24,8 @@ export const Home: FC<any> = () => {
   const [areasOfImportance, setAreasOfImportance] = useState([]);
   const [percent, setPercent] = useState(0);
   const setNavigator = useSetRecoilState(navigatorAtom);
-
-  const settings = useRecoilValue(settingsAtom);
+  const setTheme = useSetRecoilState(themeAtom);
+  const [settings, setSettings] = useRecoilState(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
@@ -38,6 +39,7 @@ export const Home: FC<any> = () => {
   }, [plan]);
 
   useEffect(() => {
+    getTheme(setTheme);
     getPlan(setAlert, setPlan, TODAY_PLAN);
     getActions(setAlert, setActions);
   }, []);
@@ -64,6 +66,7 @@ export const Home: FC<any> = () => {
     if (calculatedPercent == 100) {
       updatePlan(setAlert, setPlan, { ...plan, complete: true }, TODAY_PLAN);
     }
+    setPercent(calculatedPercent);
   }, [actions]);
 
   return (

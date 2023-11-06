@@ -1,27 +1,34 @@
 import { View, Text, StyleSheet, Switch } from "react-native";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 import { themeAtom, lightTheme, darkTheme } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 import { settingsAtom } from "~recoil/settingsAtom";
+import { getSettings, saveSettings } from "~utils/SettingsHandler";
 
 export const SettingsThemeSelect: FC<any> = () => {
   const setTheme = useSetRecoilState(themeAtom);
-  const [light, setLight] = useRecoilState(settingsAtom);
+  const [settings, setSettings] = useRecoilState(settingsAtom);
 
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
   const onChange = (b: boolean) => {
-    setLight({ ...light, lightMode: b });
-    light.lightMode ? setTheme(darkTheme) : setTheme(lightTheme);
+    const newSettings = { ...settings, lightMode: b };
+    setSettings(newSettings);
+    saveSettings(newSettings);
+    b ? setTheme(lightTheme) : setTheme(darkTheme);
   };
+
+  useEffect(() => {
+    getSettings(setSettings);
+  }, [settings]);
 
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <Text style={styles.title}>{light.lightMode ? "Light Mode" : "Dark Mode"}</Text>
+        <Text style={styles.title}>{settings.lightMode ? "Light Mode" : "Dark Mode"}</Text>
 
         <View style={styles.switch}>
           <Switch
@@ -29,7 +36,7 @@ export const SettingsThemeSelect: FC<any> = () => {
             thumbColor={colors.primary}
             ios_backgroundColor="#3e3e3e"
             onValueChange={onChange}
-            value={light.lightMode}
+            value={settings.lightMode}
           />
         </View>
       </View>

@@ -36,7 +36,7 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
   const onChange = (text: string) => {
     onChangeText(text);
 
-    if (text.length > 1) {
+    if (text.length > 1 && false) {
       setVisible(true);
 
       const sortedStrings = autoComplete

@@ -1,8 +1,8 @@
 import { View, StyleSheet, Text } from "react-native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { FC } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { FC, useEffect } from "react";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { darkTheme, lightTheme, themeAtom } from "~recoil/themeAtom";
 import { clearActions } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
 import { clearPlan } from "~utils/PlanHandler";
@@ -12,15 +12,16 @@ import { SettingsThemeSelect } from "~pages/Settings/SettingsThemeSelect";
 import { SettingsCompleteSelect } from "~pages/Settings/SettingsCompleteSelect";
 import { planAtom } from "~recoil/planAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
-import { Modal } from "~components/Modal";
+import { getSettings } from "~utils/SettingsHandler";
+import { settingsAtom } from "~recoil/settingsAtom";
 
 export const Settings: FC<any> = () => {
   const TODAY_PLAN = "today-plan";
   const TOMORROW_PLAN = "tomorrow-plan";
-
   const setAlert = useSetRecoilState(alertAtom);
   const setPlan = useSetRecoilState(planAtom);
   const setActions = useSetRecoilState(actionsAtom);
+
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
