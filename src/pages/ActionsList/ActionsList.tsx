@@ -12,15 +12,17 @@ import { actionsAtom } from "~recoil/actionsAtom";
 import { ActionsListSort } from "./ActionsListSort";
 import { ActionAddEdit } from "~components/ActionAddEdit";
 import { IconButton } from "~components/IconButton";
+import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
 
 export const ActionsList: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
   const [showComplete, setShowComplete] = useState(false);
-  const [modalVisible, setModalVisible] = useState<{ show: boolean; newAction: boolean }>({
+  const [actionModal, setActionModal] = useState<{ show: boolean; newAction: boolean }>({
     show: false,
     newAction: true,
   });
+  const [aoiModal, setAoiModal] = useState<boolean>(false);
 
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
@@ -36,22 +38,13 @@ export const ActionsList: FC<any> = () => {
           icon={"plus"}
           color={colors.primary}
           onPress={() =>
-            setModalVisible({
+            setActionModal({
               show: true,
               newAction: true,
             })
           }
         />
-        <IconButton
-          icon={"question"}
-          color={colors.primary}
-          onPress={() =>
-            setModalVisible({
-              show: true,
-              newAction: true,
-            })
-          }
-        />
+        <IconButton icon={"options"} color={colors.primary} onPress={() => setAoiModal(true)} />
       </View>
       <ActionsListSort
         actions={actions}
@@ -62,13 +55,14 @@ export const ActionsList: FC<any> = () => {
 
       {actions.length > 0 ? (
         actions.map((item: ActionItemT, index: number) => (
-          <ActionsListItem item={item} setModalVisible={setModalVisible} key={index} />
+          <ActionsListItem item={item} setModalVisible={setActionModal} key={index} />
         ))
       ) : (
         <Text style={{ color: colors.grey, marginTop: 50 }}>No Actions</Text>
       )}
 
-      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      <ActionAddEdit modalVisible={actionModal} setModalVisible={setActionModal} />
+      <AreasOfImportance modalVisible={aoiModal} setModalVisible={setAoiModal} />
     </View>
   );
 };

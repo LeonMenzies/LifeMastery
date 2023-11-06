@@ -91,12 +91,12 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
       setAlert("Focus is required");
       return;
     }
-
+    setData({ ...data, finalized: true });
     finalizePlan(setAlert, { ...data, finalized: true }, setHome, day);
   };
 
   const setHome = () => {
-    setNavigator("plan");
+    setNavigator("home");
   };
 
   return (

@@ -36,16 +36,12 @@ export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({
   }
 
   return (
-    <TouchableOpacity
-      activeOpacity={deleteItem ? 0.2 : 1}
-      onLongPress={() => setDeleteItem(true)}
-      onPress={toggleItemInArray}
-    >
+    <TouchableOpacity activeOpacity={1} onLongPress={() => setDeleteItem(true)}>
       <View style={styles.container}>
         <Text style={styles.aoiText}>{item.AOI}</Text>
         {deleteItem ? (
           <CheckBoxInput
-            onPress={() => {}}
+            onPress={toggleItemInArray}
             completed={deleteItems.includes(item.key)}
             color={colors.error}
             disabled={false}

@@ -1,12 +1,4 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  View,
-  Text,
-  ActivityIndicator,
-} from "react-native";
+import { StyleSheet, ScrollView, View, Text, ActivityIndicator } from "react-native";
 import { useEffect, useState, FC } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -22,7 +14,6 @@ import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
 import { TODAY_PLAN } from "~utils/Constants";
-import { createActionAtom } from "~recoil/createActionAtom";
 import { navigatorAtom } from "~recoil/navigatorAtom";
 
 export const Home: FC<any> = () => {
@@ -30,26 +21,15 @@ export const Home: FC<any> = () => {
   const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
-  const setAction = useSetRecoilState(createActionAtom);
+  const [percent, setPercent] = useState(0);
   const setNavigator = useSetRecoilState(navigatorAtom);
 
   const settings = useRecoilValue(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
-  const options = {
-    weekday: "long" as const,
-    month: "short" as const,
-    day: "numeric" as const,
-  };
-
-  const dateFormatter = new Intl.DateTimeFormat("en-US", options);
-  const formattedDate = dateFormatter.format(new Date());
-
   useEffect(() => {
-    if (!loading && !plan.finalized) {
+    if (!plan.finalized) {
       setAlert("You must finalize today first");
       setNavigator("plan");
     } else {
@@ -58,11 +38,11 @@ export const Home: FC<any> = () => {
   }, [plan]);
 
   useEffect(() => {
-    getPlan(setAlert, setPlan, TODAY_PLAN, setLoading);
+    getPlan(setAlert, setPlan, TODAY_PLAN);
     getActions(setAlert, setActions);
   }, []);
 
-  const calculatePercent = () => {
+  useEffect(() => {
     let completeTasks = 0;
     let completeTime = 0;
     let totalTime = 0;
@@ -77,15 +57,18 @@ export const Home: FC<any> = () => {
       }
     });
 
-    return settings.timePercent
+    const calculatedPercent = settings.timePercent
       ? (completeTime / totalTime) * 100
       : (completeTasks / plan.actionKeys.length) * 100;
-  };
+
+    if (calculatedPercent == 100) {
+      updatePlan(setAlert, setPlan, { ...plan, complete: true }, TODAY_PLAN);
+    }
+  }, [actions]);
 
   return (
     <View style={styles.container}>
-      <HomeHeader focus={plan.focus} percent={calculatePercent()} />
-      {loading && <ActivityIndicator size="large" color={colors.primary} />}
+      <HomeHeader focus={plan.focus} percent={percent} />
 
       <ScrollView>
         {areasOfImportance.map((aoi: AreaOfImportanceItemT) => (

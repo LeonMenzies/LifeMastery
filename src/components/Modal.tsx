@@ -31,7 +31,7 @@ export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
       }).start(() => {});
     } else {
       Animated.timing(animatedHeight, {
-        toValue: height - modalHeight,
+        toValue: height,
         duration: 400,
         easing: Easing.ease,
         useNativeDriver: false,
@@ -42,7 +42,7 @@ export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
   }, [visible]);
 
   const backgroundColor = animatedHeight.interpolate({
-    inputRange: [0, height - modalHeight],
+    inputRange: [0, height],
     outputRange: ["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0)"],
   });
 
@@ -65,13 +65,7 @@ export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
           <View style={styles.closeContainer}>
             <IconButton color={colors.primary} icon={"close"} onPress={onRequestClose} />
           </View>
-          {/* <View
-            onLayout={(event) => {
-              var { x, y, width, height } = event.nativeEvent.layout;
-              console.log(height);
-            }}
-            style={styles.innerContainer}
-          > */}
+
           <View
             onLayout={(event) => {
               const { height } = event.nativeEvent.layout;
@@ -91,13 +85,14 @@ const styling = (colors: ThemeT, height: number, width: number, modalHeight: num
     container: {
       position: "absolute",
       width: width,
+      height: height,
     },
     innerContainer: {
       width: width,
       alignItems: "center",
     },
     clickAway: {
-      height: modalHeight,
+      height: height - modalHeight - 200,
     },
     modal: {
       alignItems: "center",
@@ -105,8 +100,8 @@ const styling = (colors: ThemeT, height: number, width: number, modalHeight: num
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       backgroundColor: colors.background,
-      height: height - modalHeight,
       zIndex: 20,
+      height: height - modalHeight + 400,
     },
     closeContainer: {
       width: "100%",

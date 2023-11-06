@@ -11,8 +11,14 @@ import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { AreaOfImportanceItemT, ThemeT } from "~types/Types";
 import { Button } from "~components/Button";
+import { Modal } from "~components/Modal";
 
-export const AreasOfImportance: FC<any> = () => {
+type AreasOfImportanceT = {
+  modalVisible: boolean;
+  setModalVisible: Function;
+};
+
+export const AreasOfImportance: FC<AreasOfImportanceT> = ({ modalVisible, setModalVisible }) => {
   const [data, setData] = useRecoilState(areasOfImportanceAtom);
   const [deleteItem, setDeleteItem] = useState(false);
   const [deleteItems, setDeleteItems] = useState<string[]>([]);
@@ -28,43 +34,45 @@ export const AreasOfImportance: FC<any> = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View>
-        <AreasOfImportanceAdd />
-
+    <Modal visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+      <View style={styles.container}>
         <View>
-          {data.map((item: AreaOfImportanceItemT, index: number) => (
-            <AreasOfImportanceItem
-              key={index}
-              item={item}
-              deleteItem={deleteItem}
-              setDeleteItem={setDeleteItem}
-              deleteItems={deleteItems}
-              setDeleteItems={setDeleteItems}
+          <View>
+            {data.map((item: AreaOfImportanceItemT, index: number) => (
+              <AreasOfImportanceItem
+                key={index}
+                item={item}
+                deleteItem={deleteItem}
+                setDeleteItem={setDeleteItem}
+                deleteItems={deleteItems}
+                setDeleteItems={setDeleteItems}
+              />
+            ))}
+          </View>
+        </View>
+        {deleteItem ? (
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Cancel"
+              onPress={() => {
+                setDeleteItem(false);
+                setDeleteItems([]);
+              }}
             />
-          ))}
-        </View>
+            <Button
+              title="Delete"
+              onPress={() => {
+                deleteAreaOfImportance(setAlert, setData, deleteItems);
+                setDeleteItem(false);
+              }}
+              disabled={deleteItems.length < 1}
+            />
+          </View>
+        ) : (
+          <AreasOfImportanceAdd />
+        )}
       </View>
-      {deleteItem && (
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Cancel"
-            onPress={() => {
-              setDeleteItem(false);
-              setDeleteItems([]);
-            }}
-          />
-          <Button
-            title="Delete"
-            onPress={() => {
-              deleteAreaOfImportance(setAlert, setData, deleteItems);
-              setDeleteItem(false);
-            }}
-            disabled={deleteItems.length < 1}
-          />
-        </View>
-      )}
-    </View>
+    </Modal>
   );
 };
 
@@ -73,7 +81,6 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     container: {
       justifyContent: "space-between",
       alignItems: "center",
-      flex: 1,
     },
     buttonContainer: {
       flexDirection: "row",

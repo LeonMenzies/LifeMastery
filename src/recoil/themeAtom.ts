@@ -3,7 +3,7 @@ import { ThemeT } from "~types/Types";
 
 export const lightTheme: ThemeT = {
   primary: "#FFC10C",
-  secondary: "#0227AD",
+  secondary: "#ffe79e",
   background: "#FFFFFF",
   backgroundSecondary: "#e6e6e6",
   textPrimary: "#000000",

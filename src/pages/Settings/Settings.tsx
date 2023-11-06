@@ -57,7 +57,7 @@ const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
       alignItems: "center",
-      marginTop: 50,
+      marginTop: 60,
     },
     itemContainer: {
       width: "80%",

@@ -84,7 +84,7 @@ export const updatePlan = (setAlert: Function, setData: Function, plan: PlanT, d
       });
 
     const planJson = JSON.stringify(plan);
-    AsyncStorage.setItem(day, planJson).then(() => setAlert("Successfully Saved Plan"));
+    AsyncStorage.setItem(day, planJson);
   } catch (e) {
     setAlert("Failed to set plan");
   }
