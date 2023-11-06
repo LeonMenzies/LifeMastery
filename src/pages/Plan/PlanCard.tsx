@@ -27,11 +27,10 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
   const colors = useRecoilValue(themeAtom);
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(colors, windowWidth);
-  const [loading, setLoading] = useState(true);
   const setNavigator = useSetRecoilState(navigatorAtom);
 
   useEffect(() => {
-    getPlan(setAlert, setData, day, setLoading);
+    getPlan(setAlert, setData, day);
   }, [day]);
 
   useEffect(() => {
@@ -102,18 +101,15 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
 
   return (
     <View style={styles.container}>
-      <View>
-        <View style={styles.focusContainer}>
-          <TextInput
-            title={"My Key Focus For Today"}
-            onChangeText={updateFocus}
-            value={text}
-            placeholder="Add focus..."
-            keyboardType="default"
-            maxLength={30}
-          />
-        </View>
-        {loading && <ActivityIndicator size="large" color={colors.primary} />}
+      <View style={styles.focusContainer}>
+        <TextInput
+          title={"My Key Focus For Today"}
+          onChangeText={updateFocus}
+          value={text}
+          placeholder="Add focus..."
+          keyboardType="default"
+          maxLength={30}
+        />
 
         {actions.length > 0 ? (
           <View>
@@ -137,25 +133,22 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
             )}
           </View>
         ) : (
-          <Text>No Actions in your list</Text>
+          <Text style={{ color: colors.grey, marginTop: 50 }}>No Actions</Text>
         )}
       </View>
-
-      {!loading && (
-        <View>
-          <View style={styles.totalTimeContainer}>
-            <Text style={styles.totalTimeText}>Total: {convertTime(checkPlanLength())}</Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Save" onPress={handleSave} disabled={data.finalized} />
-            <Button
-              title="Finalize"
-              onPress={handleFinalize}
-              disabled={data.finalized || day === TOMORROW_PLAN}
-            />
-          </View>
+      <View>
+        <View style={styles.totalTimeContainer}>
+          <Text style={styles.totalTimeText}>Total: {convertTime(checkPlanLength())}</Text>
         </View>
-      )}
+        <View style={styles.buttonContainer}>
+          <Button title="Save" onPress={handleSave} disabled={data.finalized} />
+          <Button
+            title="Finalize"
+            onPress={handleFinalize}
+            disabled={data.finalized || day === TOMORROW_PLAN}
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -170,7 +163,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     focusContainer: {
       padding: 10,
       margin: 10,
-      backgroundColor: colors.primary,
+      alignItems: "center",
     },
     buttonContainer: {
       flexDirection: "row",

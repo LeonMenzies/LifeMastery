@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
 import React, { useEffect, FC, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 
 import { getActions } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
@@ -11,13 +11,11 @@ import { ActionItemT, ThemeT } from "~types/Types";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { ActionsListSort } from "./ActionsListSort";
 import { ActionAddEdit } from "~components/ActionAddEdit";
-import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
 import { IconButton } from "~components/IconButton";
 
 export const ActionsList: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
-  const setAction = useSetRecoilState(createActionAtom);
   const [showComplete, setShowComplete] = useState(false);
   const [modalVisible, setModalVisible] = useState<{ show: boolean; newAction: boolean }>({
     show: false,
@@ -61,15 +59,16 @@ export const ActionsList: FC<any> = () => {
         showComplete={showComplete}
         setShowComplete={setShowComplete}
       />
-      {actions.map((item: ActionItemT, index: number) => (
-        <ActionsListItem item={item} setModalVisible={setModalVisible} key={index} />
-      ))}
 
-      <ActionAddEdit
-        modalVisible={modalVisible.show}
-        setModalVisible={setModalVisible}
-        newAction={modalVisible.newAction}
-      />
+      {actions.length > 0 ? (
+        actions.map((item: ActionItemT, index: number) => (
+          <ActionsListItem item={item} setModalVisible={setModalVisible} key={index} />
+        ))
+      ) : (
+        <Text style={{ color: colors.grey, marginTop: 50 }}>No Actions</Text>
+      )}
+
+      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </View>
   );
 };

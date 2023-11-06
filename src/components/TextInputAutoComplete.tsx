@@ -115,9 +115,9 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      width: 300,
-      padding: 7,
+      padding: 10,
       zIndex: 2,
+      width: "100%",
     },
     title: {
       fontSize: 15,

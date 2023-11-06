@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableHighlight, Text } from "react-native";
+import { StyleSheet, View, TouchableHighlight, Text, TouchableOpacity } from "react-native";
 import { useEffect, useState, FC } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -42,31 +42,19 @@ export const Plan: FC<any> = () => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableHighlight
-          underlayColor={colors.lightGrey}
-          onPress={() => setToday(true)}
-          style={styles.button}
-        >
+        <TouchableOpacity onPress={() => setToday(true)} style={styles.button}>
           <View style={today ? styles.underline : null}>
             <Text style={styles.buttonText}>{"Today"}</Text>
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor={colors.lightGrey}
-          onPress={() => setToday(false)}
-          style={styles.button}
-        >
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setToday(false)} style={styles.button}>
           <View style={today ? null : styles.underline}>
             <Text style={styles.buttonText}>{"Tomorrow"}</Text>
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
       {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
-      <ActionAddEdit
-        modalVisible={modalVisible.show}
-        setModalVisible={setModalVisible}
-        newAction={true}
-      />
+      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </View>
   );
 };

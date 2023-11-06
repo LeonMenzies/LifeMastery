@@ -1,3 +1,4 @@
+import React, { FC, useEffect, useRef, useState } from "react";
 import {
   View,
   Modal as ModalReact,
@@ -8,8 +9,6 @@ import {
   Dimensions,
 } from "react-native";
 import { useRecoilValue } from "recoil";
-import { FC, useEffect, useRef } from "react";
-
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 import { IconButton } from "./IconButton";
@@ -24,55 +23,62 @@ export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
   const colors = useRecoilValue(themeAtom);
   const height = Dimensions.get("window").height;
   const width = Dimensions.get("window").width;
-
   const animatedHeight = useRef(new Animated.Value(0)).current;
-  const styles = styling(colors, height, width, animatedHeight);
+  const styles = styling(colors, height, width);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
-    Animated.timing(animatedHeight, {
-      toValue: visible ? height - 150 : 0,
-      duration: 400,
-      easing: Easing.ease,
-      useNativeDriver: false,
-    }).start();
+    if (visible) {
+      setShow(true);
+      Animated.timing(animatedHeight, {
+        toValue: 0,
+        duration: 400,
+        easing: Easing.ease,
+        useNativeDriver: false,
+      }).start(() => {});
+    } else {
+      Animated.timing(animatedHeight, {
+        toValue: height - 150,
+        duration: 400,
+        easing: Easing.ease,
+        useNativeDriver: false,
+      }).start(() => {
+        setShow(false);
+      });
+    }
   }, [visible]);
 
-  if (!visible) {
-    return <></>;
-  }
   const backgroundColor = animatedHeight.interpolate({
     inputRange: [0, height - 150],
-    outputRange: ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0,0.5)"], // Change these values to your desired colors
+    outputRange: ["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0)"],
   });
 
-  return (
-    <Animated.View style={[styles.container, { backgroundColor: backgroundColor }]}>
-      <TouchableOpacity style={styles.clickAway} activeOpacity={1} onPressOut={onRequestClose} />
-      <Animated.View
-        style={[
-          styles.modal,
-          {
-            transform: [
-              {
-                translateY: animatedHeight.interpolate({
-                  inputRange: [0, height - 150],
-                  outputRange: [height, 0],
-                }),
-              },
-            ],
-          },
-        ]}
-      >
-        <View style={styles.closeContainer}>
-          <IconButton color={colors.primary} icon={"close"} onPress={onRequestClose} />
-        </View>
-        {children}
+  if (show)
+    return (
+      <Animated.View style={[styles.container, { backgroundColor: backgroundColor }]}>
+        <TouchableOpacity style={styles.clickAway} activeOpacity={1} onPressOut={onRequestClose} />
+        <Animated.View
+          style={[
+            styles.modal,
+            {
+              transform: [
+                {
+                  translateY: animatedHeight,
+                },
+              ],
+            },
+          ]}
+        >
+          <View style={styles.closeContainer}>
+            <IconButton color={colors.primary} icon={"close"} onPress={onRequestClose} />
+          </View>
+          {children}
+        </Animated.View>
       </Animated.View>
-    </Animated.View>
-  );
+    );
 };
 
-const styling = (colors: ThemeT, height: number, width: number, animatedHeight: Animated.Value) =>
+const styling = (colors: ThemeT, height: number, width: number) =>
   StyleSheet.create({
     container: {
       position: "absolute",
@@ -88,7 +94,7 @@ const styling = (colors: ThemeT, height: number, width: number, animatedHeight: 
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       backgroundColor: colors.background,
-      height: height,
+      height: height - 150,
       zIndex: 20,
     },
     closeContainer: {

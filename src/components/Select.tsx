@@ -1,4 +1,4 @@
-import Icon from "react-native-vector-icons/AntDesign";
+import Icon from "react-native-vector-icons/SimpleLineIcons";
 import { FC, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
 import { useRecoilValue } from "recoil";
@@ -61,7 +61,11 @@ export const Select: FC<SelectT> = ({
         ) : (
           <Text style={styles.selectedText}>{value}</Text>
         )}
-        {visible ? <Icon name="caretdown" /> : <Icon name="caretleft" />}
+        {visible ? (
+          <Icon name="arrow-down" color={colors.grey} />
+        ) : (
+          <Icon name="arrow-left" color={colors.grey} />
+        )}
       </TouchableOpacity>
       {visible && (
         <View style={styles.dropDownContainer}>
@@ -80,8 +84,8 @@ export const Select: FC<SelectT> = ({
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      width: 300,
-      padding: 7,
+      width: "100%",
+      padding: 10,
       zIndex: 3,
     },
     outsideClick: {

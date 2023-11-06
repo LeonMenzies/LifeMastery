@@ -38,5 +38,6 @@ const styling = (colors: ThemeT) =>
     container: {
       height: 100,
       flexDirection: "row",
+      backgroundColor: colors.background,
     },
   });

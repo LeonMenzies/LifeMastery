@@ -31,7 +31,7 @@ export const NavigatorMenuItem: FC<NavigatorMenuItemT> = ({ title, icon, pageKey
           <Icon
             name={icon}
             size={24}
-            color={navigator == pageKey ? colors.secondary : colors.primary}
+            color={navigator == pageKey ? colors.primary : colors.textPrimary}
           />
         </View>
         <Text style={styles.title}>{title}</Text>

@@ -18,12 +18,14 @@ import { Modal } from "./Modal";
 import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
 
 type ActionAddEditT = {
-  modalVisible: boolean;
+  modalVisible: {
+    show: boolean;
+    newAction: boolean;
+  };
   setModalVisible: any;
-  newAction: boolean;
 };
 
-export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisible, newAction }) => {
+export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisible }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
@@ -77,7 +79,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       return;
     }
 
-    newAction
+    modalVisible.newAction
       ? addAction(
           setAlert,
           setActions,
@@ -87,7 +89,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
         )
       : updateAction(setAlert, setActions, actionItem);
 
-    newAction
+    modalVisible.newAction
       ? null
       : setModalVisible({
           show: false,
@@ -103,7 +105,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
 
   return (
     <Modal
-      visible={modalVisible}
+      visible={modalVisible.show}
       onRequestClose={() =>
         setModalVisible({
           show: false,
@@ -111,7 +113,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
         })
       }
     >
-      <View>
+      <View style={styles.container}>
         <Select
           title={"Area of Importance"}
           options={createOptions()}
@@ -147,9 +149,9 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
           values={[timeMinutes]}
           showLabel={false}
         />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button title={newAction ? "Add" : "Save"} onPress={handleAddTodo} />
+        <View style={styles.buttonContainer}>
+          <Button title={modalVisible.newAction ? "Add" : "Save"} onPress={handleAddTodo} />
+        </View>
       </View>
     </Modal>
   );
@@ -157,6 +159,10 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
 
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
+    container: {
+      width: "90%",
+      alignItems: "center",
+    },
     buttonContainer: {
       padding: 30,
       flexDirection: "row",

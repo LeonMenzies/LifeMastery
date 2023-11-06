@@ -4,12 +4,7 @@ import { PlanT } from "~types/Types";
 import { TOMORROW_PLAN } from "~utils/Constants";
 import { setPlanDateStringify } from "~utils/Helpers";
 
-export const getPlan = (
-  setAlert: Function,
-  setData: Function,
-  day: string,
-  setLoading: Function
-) => {
+export const getPlan = (setAlert: Function, setData: Function, day: string) => {
   try {
     AsyncStorage.getItem(day)
       .then((plan) => JSON.parse(plan))
@@ -17,17 +12,14 @@ export const getPlan = (
         if (plan !== null) {
           //Handle day switch
           if (plan.date == new Date().toISOString().split("T")[0]) {
-            setLoading(false);
             setData(plan);
           } else {
             AsyncStorage.getItem(TOMORROW_PLAN)
               .then((plan) => JSON.parse(plan))
               .then((plan: PlanT) => {
                 if (plan !== null && plan.date == new Date().toISOString().split("T")[0]) {
-                  setLoading(false);
                   setData(plan);
                 } else {
-                  setLoading(false);
                   setData({
                     key: "",
                     date: "",
@@ -40,7 +32,6 @@ export const getPlan = (
               });
           }
         } else {
-          setLoading(false);
           setData({
             key: "",
             date: "",

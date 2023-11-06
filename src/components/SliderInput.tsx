@@ -57,8 +57,8 @@ export const SliderInput: FC<SliderInputT> = ({
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      width: 300,
-      padding: 7,
+      width: "100%",
+      padding: 10,
       zIndex: 2,
     },
     title: {
