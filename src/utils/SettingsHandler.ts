@@ -13,8 +13,6 @@ export const getSettings = (setData: Function) => {
         if (settings === null) {
           setData(defaultSettings);
         } else {
-          console.log(settings);
-
           setData(settings);
         }
       });

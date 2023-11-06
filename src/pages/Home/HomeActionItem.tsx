@@ -54,6 +54,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       width: windowWidth - 50,
     },
     actionText: {
+      fontSize: 17,
       color: colors.textPrimary,
     },
     actionContainer: {

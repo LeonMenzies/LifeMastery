@@ -113,16 +113,20 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
 
         {actions.length > 0 ? (
           <View>
-            {actions.map((item: ActionItemT, index: number) => (
-              <PlanActionsListItem
-                key={index}
-                item={item}
-                setActions={setActions}
-                addAction={addActionKey}
-                removeAction={removeActionKey}
-                isInPlan={data.actionKeys.some((actionKey: string) => actionKey === item.key)}
-              />
-            ))}
+            {actions.map((item: ActionItemT, index: number) => {
+              const isInPlan = data.actionKeys.some((actionKey: string) => actionKey === item.key);
+              if (!item.isCompleted || isInPlan)
+                return (
+                  <PlanActionsListItem
+                    key={index}
+                    item={item}
+                    setActions={setActions}
+                    addAction={addActionKey}
+                    removeAction={removeActionKey}
+                    isInPlan={isInPlan}
+                  />
+                );
+            })}
 
             {data.finalized && (
               <View style={styles.centeredView}>
