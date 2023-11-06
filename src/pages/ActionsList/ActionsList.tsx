@@ -2,7 +2,7 @@ import "react-native-get-random-values";
 import React, { useEffect, FC, useState } from "react";
 import { View, StyleSheet, Text, Dimensions } from "react-native";
 
-import { getActions } from "~utils/ActionsHandler";
+import { deleteActions, getActions } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ActionsListItem } from "~pages/ActionsList/ActionsListItem";
@@ -86,7 +86,7 @@ export const ActionsList: FC<any> = () => {
             <Button
               title="Delete"
               onPress={() => {
-                // deleteAreaOfImportance(setAlert, setData, deleteItems);
+                deleteActions(setAlert, setActions, deleteItems);
                 setDeleteItem(false);
               }}
               disabled={deleteItems.length < 1}

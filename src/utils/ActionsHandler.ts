@@ -91,22 +91,23 @@ export const addAction = (setAlert, setData, action, timeEstimate, areaOfImporta
   }
 };
 
-export const deleteAction = (setAlert, setData, key) => {
+export const deleteActions = (
+  setAlert: (alert: string) => void,
+  setData: (actions: ActionItemT[]) => void,
+  keys: string[]
+) => {
   try {
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
       .then((actions) => {
-        const filteredActions = actions.filter((v) => v.key !== key);
+        const filteredActions = actions.filter((v: ActionItemT) => !keys.includes(v.key));
 
         if (filteredActions >= actions) {
           setAlert("Failed to delete action");
           return;
         }
         const actionsList = JSON.stringify(filteredActions);
-        AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => {
-          setAlert("Successfully deleted action");
-          setData(filteredActions);
-        });
+        AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => setData(filteredActions));
       });
   } catch (e) {
     setAlert("Failed to clear actions");

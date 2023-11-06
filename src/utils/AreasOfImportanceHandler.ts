@@ -73,9 +73,9 @@ export const deleteAreaOfImportance = (setAlert: Function, setData: Function, ke
         }
 
         const AreaOfImportanceList = JSON.stringify(filteredAreaOfImportance);
-        AsyncStorage.setItem(AOI_KEY, AreaOfImportanceList).then(() => {
-          setData(filteredAreaOfImportance);
-        });
+        AsyncStorage.setItem(AOI_KEY, AreaOfImportanceList).then(() =>
+          setData(filteredAreaOfImportance)
+        );
       });
   } catch (e) {
     setAlert("Failed to delete AOI");

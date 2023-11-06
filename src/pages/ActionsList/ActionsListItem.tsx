@@ -3,12 +3,9 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import SwipeableItem from "react-native-swipeable-item";
 import { FC } from "react";
 
-import { deleteAction } from "~utils/ActionsHandler";
-import { alertAtom } from "~recoil/alertAtom";
 import { createActionAtom } from "~recoil/createActionAtom";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
-import { actionsAtom } from "~recoil/actionsAtom";
 import { convertTime } from "~utils/Helpers";
 import { CheckBoxInput } from "~components/CheckBoxInput";
 
