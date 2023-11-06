@@ -1,13 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import {
-  View,
-  Modal as ModalReact,
-  StyleSheet,
-  TouchableOpacity,
-  Animated,
-  Easing,
-  Dimensions,
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, Animated, Easing, Dimensions } from "react-native";
 import { useRecoilValue } from "recoil";
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
@@ -23,8 +15,9 @@ export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
   const colors = useRecoilValue(themeAtom);
   const height = Dimensions.get("window").height;
   const width = Dimensions.get("window").width;
+  const [modalHeight, setModalHeight] = useState(0);
   const animatedHeight = useRef(new Animated.Value(0)).current;
-  const styles = styling(colors, height, width);
+  const styles = styling(colors, height, width, modalHeight);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -38,7 +31,7 @@ export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
       }).start(() => {});
     } else {
       Animated.timing(animatedHeight, {
-        toValue: height - 150,
+        toValue: height - modalHeight,
         duration: 400,
         easing: Easing.ease,
         useNativeDriver: false,
@@ -49,7 +42,7 @@ export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
   }, [visible]);
 
   const backgroundColor = animatedHeight.interpolate({
-    inputRange: [0, height - 150],
+    inputRange: [0, height - modalHeight],
     outputRange: ["rgba(0, 0, 0, 0.5)", "rgba(0, 0, 0, 0)"],
   });
 
@@ -72,21 +65,39 @@ export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
           <View style={styles.closeContainer}>
             <IconButton color={colors.primary} icon={"close"} onPress={onRequestClose} />
           </View>
-          {children}
+          {/* <View
+            onLayout={(event) => {
+              var { x, y, width, height } = event.nativeEvent.layout;
+              console.log(height);
+            }}
+            style={styles.innerContainer}
+          > */}
+          <View
+            onLayout={(event) => {
+              const { height } = event.nativeEvent.layout;
+              setModalHeight(height);
+            }}
+            style={styles.innerContainer}
+          >
+            {children}
+          </View>
         </Animated.View>
       </Animated.View>
     );
 };
 
-const styling = (colors: ThemeT, height: number, width: number) =>
+const styling = (colors: ThemeT, height: number, width: number, modalHeight: number) =>
   StyleSheet.create({
     container: {
       position: "absolute",
-      height: height,
       width: width,
     },
+    innerContainer: {
+      width: width,
+      alignItems: "center",
+    },
     clickAway: {
-      height: 150,
+      height: modalHeight,
     },
     modal: {
       alignItems: "center",
@@ -94,7 +105,7 @@ const styling = (colors: ThemeT, height: number, width: number) =>
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       backgroundColor: colors.background,
-      height: height - 150,
+      height: height - modalHeight,
       zIndex: 20,
     },
     closeContainer: {
