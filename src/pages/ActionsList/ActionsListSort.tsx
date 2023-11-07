@@ -9,55 +9,25 @@ import { ActionListSortButton } from "~pages/ActionsList/ActionListSortButton";
 import { ActionListCompleteButton } from "~pages/ActionsList/ActionListCompleteButton";
 
 type ActionsListSortT = {
-  actions: ActionItemT[];
-  setActions: any;
+  selected: {
+    selected: string;
+    desc: boolean;
+  };
+  setSelected: ({ selected, desc }: any) => void;
   showComplete: boolean;
   setShowComplete: (b: boolean) => void;
 };
 
 export const ActionsListSort: FC<ActionsListSortT> = ({
-  actions,
-  setActions,
+  selected,
   showComplete,
   setShowComplete,
+  setSelected,
 }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
-  const [selected, setSelected] = useState("Date");
   const [desc, setDesc] = useState(false);
   const sortTypes = ["Date", "Time", "AOI"];
-
-  const sortActionList = (sortType: string) => {
-    setActions(
-      actions.slice().sort((a: ActionItemT, b: ActionItemT) => {
-        let comparison = 0;
-        switch (sortType) {
-          case "Date":
-            comparison = new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime();
-            break;
-          case "AOI":
-            comparison = a.areaOfImportance.localeCompare(b.areaOfImportance);
-            break;
-          case "Time":
-            comparison = a.timeEstimate - b.timeEstimate;
-            break;
-          default:
-            comparison = 0;
-        }
-        setDesc(selected !== sortType ? true : !desc);
-        return desc ? comparison * -1 : comparison;
-      })
-    );
-    setSelected(sortType);
-  };
-
-  useEffect(() => {
-    setDesc(false);
-  }, [selected]);
-
-  useEffect(() => {
-    setDesc(false);
-  }, [showComplete]);
 
   return (
     <View style={styles.container}>
@@ -67,9 +37,9 @@ export const ActionsListSort: FC<ActionsListSortT> = ({
             key={string}
             text={string}
             borders={index !== 0}
-            selected={string === selected}
-            setSelected={sortActionList}
-            desc={desc}
+            selected={string === selected.selected}
+            setSelected={setSelected}
+            desc={selected.desc}
           />
         ))}
         <ActionListCompleteButton

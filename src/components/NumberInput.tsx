@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Text, StyleSheet, View, TouchableHighlight } from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { useRecoilValue } from "recoil";
 
 import { themeAtom } from "~recoil/themeAtom";
@@ -17,7 +17,7 @@ export const NumberInput: FC<NumberInputT> = ({ onChange, value, maxValue }) => 
 
   return (
     <View style={styles.container}>
-      <TouchableHighlight
+      <TouchableOpacity
         style={styles.button}
         onPress={() => {
           if (value > 1) {
@@ -26,9 +26,9 @@ export const NumberInput: FC<NumberInputT> = ({ onChange, value, maxValue }) => 
         }}
       >
         <Text style={styles.text}>{"-"}</Text>
-      </TouchableHighlight>
+      </TouchableOpacity>
       <Text style={styles.value}>{value}</Text>
-      <TouchableHighlight
+      <TouchableOpacity
         style={styles.button}
         onPress={() => {
           if (value < maxValue) {
@@ -37,7 +37,7 @@ export const NumberInput: FC<NumberInputT> = ({ onChange, value, maxValue }) => 
         }}
       >
         <Text style={styles.text}>{"+"}</Text>
-      </TouchableHighlight>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -45,22 +45,22 @@ export const NumberInput: FC<NumberInputT> = ({ onChange, value, maxValue }) => 
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      padding: 7,
+      margin: 8,
+      padding: 4,
       zIndex: 2,
       flexDirection: "row",
     },
     value: {
-      fontSize: 15,
-      color: colors.grey,
-      padding: 10,
+      fontSize: 22,
+      color: colors.textPrimary,
+      paddingHorizontal: 38,
+      paddingVertical: 10,
     },
     button: {
-      fontSize: 17,
-      padding: 10,
-      backgroundColor: colors.backgroundSecondary,
+      justifyContent: "center",
     },
     text: {
-      fontSize: 17,
+      fontSize: 30,
       color: colors.textPrimary,
     },
   });

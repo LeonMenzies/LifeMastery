@@ -64,22 +64,16 @@ const styling = (colors: ThemeT) =>
     modalView: {
       margin: 20,
       backgroundColor: colors.background,
-      padding: 35,
+      padding: 20,
+      borderRadius: 20,
       alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      elevation: 5,
     },
     buttonContainer: {
       padding: 10,
       flexDirection: "row",
     },
     modalTitle: {
-      fontSize: 20,
+      fontSize: 24,
       color: colors.textPrimary,
     },
   });

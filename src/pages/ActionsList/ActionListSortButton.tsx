@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import Icon from "react-native-vector-icons/AntDesign";
+import Icon from "react-native-vector-icons/SimpleLineIcons";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useRecoilValue } from "recoil";
 
@@ -11,7 +11,7 @@ type SortButtonT = {
   borders: boolean;
   selected: boolean;
   desc: boolean;
-  setSelected: (sortType: string) => void;
+  setSelected: ({ selected, desc }: any) => void;
 };
 
 export const ActionListSortButton: FC<SortButtonT> = ({
@@ -28,11 +28,19 @@ export const ActionListSortButton: FC<SortButtonT> = ({
     if (!selected) {
       return <></>;
     }
-    return desc ? <Icon name="caretup" /> : <Icon name="caretdown" />;
+    return desc ? <Icon name="arrow-down" /> : <Icon name="arrow-up" />;
   };
 
   return (
-    <TouchableOpacity style={styles.button} onPress={() => setSelected(text)}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() =>
+        setSelected({
+          selected: text,
+          desc: !desc,
+        })
+      }
+    >
       <View style={styles.container}>
         <Text style={styles.text}>{text}</Text>
         <Carrot />

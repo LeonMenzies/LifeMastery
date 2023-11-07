@@ -18,7 +18,6 @@ import { Button } from "~components/Button";
 export const ActionsList: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
-  const [showComplete, setShowComplete] = useState(false);
   const [actionModal, setActionModal] = useState<{ show: boolean; newAction: boolean }>({
     show: false,
     newAction: true,
@@ -27,6 +26,12 @@ export const ActionsList: FC<any> = () => {
   const [deleteItem, setDeleteItem] = useState(false);
   const [deleteItems, setDeleteItems] = useState<string[]>([]);
   const windowWidth = Dimensions.get("window").width;
+  const [desc, setDesc] = useState(false);
+  const [showComplete, setShowComplete] = useState(false);
+  const [selected, setSelected] = useState({
+    selected: "Time",
+    desc: true,
+  });
 
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors, windowWidth);
@@ -34,6 +39,28 @@ export const ActionsList: FC<any> = () => {
   useEffect(() => {
     getActions(setAlert, setActions);
   }, []);
+
+  const filterActions = () => {
+    return actions
+      .filter((action: ActionItemT) => (showComplete ? true : !action.isCompleted))
+      .sort((a: ActionItemT, b: ActionItemT) => {
+        let comparison = 0;
+        switch (selected.selected) {
+          case "Date":
+            comparison = new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime();
+            break;
+          case "AOI":
+            comparison = a.areaOfImportance.localeCompare(b.areaOfImportance);
+            break;
+          case "Time":
+            comparison = a.timeEstimate - b.timeEstimate;
+            break;
+          default:
+            comparison = 0;
+        }
+        return selected.desc ? comparison * -1 : comparison;
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -51,15 +78,15 @@ export const ActionsList: FC<any> = () => {
         <IconButton icon={"options"} color={colors.primary} onPress={() => setAoiModal(true)} />
       </View>
       <ActionsListSort
-        actions={actions}
-        setActions={setActions}
+        selected={selected}
+        setSelected={setSelected}
         showComplete={showComplete}
         setShowComplete={setShowComplete}
       />
       <View style={styles.actionsContainer}>
         <View>
           {actions.length > 0 ? (
-            actions.map((item: ActionItemT, index: number) => (
+            filterActions().map((item: ActionItemT, index: number) => (
               <ActionsListItem
                 item={item}
                 setModalVisible={setActionModal}
