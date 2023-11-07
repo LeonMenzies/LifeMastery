@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
 import React, { useEffect, FC, useState } from "react";
-import { View, StyleSheet, Text, Dimensions } from "react-native";
+import { View, StyleSheet, Text, Dimensions, ScrollView } from "react-native";
 
 import { deleteActions, getActions } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
@@ -84,7 +84,7 @@ export const ActionsList: FC<any> = () => {
         setShowComplete={setShowComplete}
       />
       <View style={styles.actionsContainer}>
-        <View>
+        <ScrollView>
           {actions.length > 0 ? (
             filterActions().map((item: ActionItemT, index: number) => (
               <ActionsListItem
@@ -100,7 +100,7 @@ export const ActionsList: FC<any> = () => {
           ) : (
             <Text style={{ color: colors.grey, marginTop: 50 }}>No Actions</Text>
           )}
-        </View>
+        </ScrollView>
         {deleteItem && (
           <View style={styles.buttonContainer}>
             <Button

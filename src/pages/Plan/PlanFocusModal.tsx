@@ -1,35 +1,30 @@
 import "react-native-get-random-values";
-import { useEffect, useState, FC } from "react";
-import { Modal, StyleSheet, View, Text } from "react-native";
+import { FC } from "react";
+import { Modal, StyleSheet, View } from "react-native";
 
 import { Button } from "~components/Button";
-import { NumberInput } from "~components/NumberInput";
 import { useRecoilValue } from "recoil";
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
+import { TextInput } from "~components/TextInput";
 
-type PlanSetPriorityT = {
-  actionTitle: string;
-  handleSetPriority: (v: number) => void;
+type PlanFocusModalT = {
   modalVisible: boolean;
-  setModalVisible: any;
-  handleCancel: any;
+  setModalVisible: Function;
+  handleFinalize: any;
+  updateFocus: any;
+  focusValue: string;
 };
 
-export const PlanSetPriority: FC<PlanSetPriorityT> = ({
-  actionTitle,
-  handleSetPriority,
+export const PlanFocusModal: FC<PlanFocusModalT> = ({
   modalVisible,
   setModalVisible,
-  handleCancel,
+  handleFinalize,
+  updateFocus,
+  focusValue,
 }) => {
-  const [priorityValue, setPriorityValue] = useState(1);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
-
-  useEffect(() => {
-    setPriorityValue(1);
-  }, []);
 
   return (
     <Modal
@@ -40,12 +35,18 @@ export const PlanSetPriority: FC<PlanSetPriorityT> = ({
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>{actionTitle}</Text>
-          <NumberInput onChange={setPriorityValue} value={priorityValue} maxValue={5} />
+          <TextInput
+            title={"My Key Focus For Today"}
+            onChangeText={updateFocus}
+            value={focusValue}
+            placeholder="Add focus..."
+            keyboardType="default"
+            maxLength={30}
+          />
 
           <View style={styles.buttonContainer}>
-            <Button title="Set" onPress={() => handleSetPriority(priorityValue)} />
-            <Button title="Cancel" onPress={handleCancel} />
+            <Button title="Cancel" onPress={() => setModalVisible(false)} />
+            <Button title="Save" onPress={handleFinalize} />
           </View>
         </View>
       </View>

@@ -16,6 +16,7 @@ import { settingsAtom } from "~recoil/settingsAtom";
 import { TODAY_PLAN } from "~utils/Constants";
 import { navigatorAtom } from "~recoil/navigatorAtom";
 import { getSettings, getTheme } from "~utils/SettingsHandler";
+import { Button } from "~components/Button";
 
 export const Home: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
@@ -30,12 +31,7 @@ export const Home: FC<any> = () => {
   const styles = styling(colors);
 
   useEffect(() => {
-    if (!plan.finalized) {
-      setAlert("You must finalize today first");
-      setNavigator("plan");
-    } else {
-      getAreasOfImportance(setAlert, setAreasOfImportance);
-    }
+    getAreasOfImportance(setAlert, setAreasOfImportance);
   }, [plan]);
 
   useEffect(() => {
@@ -73,17 +69,24 @@ export const Home: FC<any> = () => {
     <View style={styles.container}>
       <HomeHeader focus={plan.focus} percent={percent} />
 
-      <ScrollView>
-        {areasOfImportance.map((aoi: AreaOfImportanceItemT) => (
-          <HomeActionSection
-            key={aoi.key}
-            aoi={aoi}
-            data={actions}
-            setActions={setActions}
-            actionKeys={plan.actionKeys}
-          />
-        ))}
-      </ScrollView>
+      {plan.finalized ? (
+        <ScrollView>
+          {areasOfImportance.map((aoi: AreaOfImportanceItemT) => (
+            <HomeActionSection
+              key={aoi.key}
+              aoi={aoi}
+              data={actions}
+              setActions={setActions}
+              actionKeys={plan.actionKeys}
+            />
+          ))}
+        </ScrollView>
+      ) : (
+        <View style={{ marginTop: 100 }}>
+          <Text style={{ color: colors.grey, marginTop: 50 }}>No Plan Finalized For Today</Text>
+        </View>
+      )}
+
       {plan.complete && (
         <View style={styles.completeContainer}>
           <Text style={styles.completeText}>{"Day is Complete"}</Text>

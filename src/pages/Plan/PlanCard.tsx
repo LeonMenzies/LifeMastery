@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, ActivityIndicator, Dimensions } from "react-native";
+import { StyleSheet, View, Text, ActivityIndicator, Dimensions, ScrollView } from "react-native";
 import { useEffect, useState, FC } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -14,6 +14,7 @@ import { actionsAtom } from "~recoil/actionsAtom";
 import { TOMORROW_PLAN } from "~utils/Constants";
 import { convertTime } from "~utils/Helpers";
 import { navigatorAtom } from "~recoil/navigatorAtom";
+import { PlanFocusModal } from "./PlanFocusModal";
 
 type PlanCardT = {
   day: string;
@@ -24,6 +25,8 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
   const [data, setData] = useRecoilState(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
   const [text, setText] = useState("");
+  const [finalizeModal, setFinalizeModal] = useState(false);
+
   const colors = useRecoilValue(themeAtom);
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(colors, windowWidth);
@@ -101,18 +104,9 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.focusContainer}>
-        <TextInput
-          title={"My Key Focus For Today"}
-          onChangeText={updateFocus}
-          value={text}
-          placeholder="Add focus..."
-          keyboardType="default"
-          maxLength={30}
-        />
-
+      <View style={{ marginTop: 19, height: "80%" }}>
         {actions.length > 0 ? (
-          <View>
+          <ScrollView scrollEnabled={!data.finalized}>
             {actions.map((item: ActionItemT, index: number) => {
               const isInPlan = data.actionKeys.some((actionKey: string) => actionKey === item.key);
               if (!item.isCompleted || isInPlan)
@@ -135,7 +129,7 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
                 </View>
               </View>
             )}
-          </View>
+          </ScrollView>
         ) : (
           <Text style={{ color: colors.grey, marginTop: 50 }}>No Actions</Text>
         )}
@@ -148,11 +142,18 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
           <Button title="Save" onPress={handleSave} disabled={data.finalized} />
           <Button
             title="Finalize"
-            onPress={handleFinalize}
+            onPress={() => setFinalizeModal(true)}
             disabled={data.finalized || day === TOMORROW_PLAN}
           />
         </View>
       </View>
+      <PlanFocusModal
+        modalVisible={finalizeModal}
+        setModalVisible={setFinalizeModal}
+        handleFinalize={handleFinalize}
+        updateFocus={updateFocus}
+        focusValue={data.focus}
+      />
     </View>
   );
 };
