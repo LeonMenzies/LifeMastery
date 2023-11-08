@@ -11,6 +11,7 @@ import { actionsAtom } from "~recoil/actionsAtom";
 import { TODAY_PLAN, TOMORROW_PLAN } from "~utils/Constants";
 import { IconButton } from "~components/IconButton";
 import { ActionAddEdit } from "~components/ActionAddEdit";
+import { PlanDayButton } from "./PlanDayButton";
 
 export const Plan: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
@@ -42,6 +43,9 @@ export const Plan: FC<any> = () => {
         />
       </View>
       <View style={styles.buttonContainer}>
+        <PlanDayButton title={"today"} onPress={() => setToday(true)} selected={today} />
+        <PlanDayButton title={"today"} onPress={() => setToday(false)} selected={!today} />
+        {/* 
         <TouchableOpacity onPress={() => setToday(true)} style={styles.button}>
           <View style={today ? styles.underline : null}>
             <Text style={styles.buttonText}>{"Today"}</Text>
@@ -51,7 +55,7 @@ export const Plan: FC<any> = () => {
           <View style={today ? null : styles.underline}>
             <Text style={styles.buttonText}>{"Tomorrow"}</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
       <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
@@ -76,21 +80,5 @@ const styling = (colors: ThemeT, today: boolean) =>
       borderWidth: 2,
       flexDirection: "row",
       width: "80%",
-    },
-    button: {
-      width: "50%",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    underline: {
-      width: "100%",
-      backgroundColor: colors.primary,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    buttonText: {
-      paddingHorizontal: 10,
-      paddingVertical: 3,
-      fontSize: 17,
     },
   });
