@@ -40,7 +40,8 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
   useEffect(() => {
     setTimeHours(Math.floor(actionItem.timeEstimate / 60));
     setTimeMinutes(actionItem.timeEstimate % 60);
-  }, [modalVisible]);
+    setActionItem({ ...actionItem, areaOfImportance: createOptions()[0].value });
+  }, [modalVisible, actions]);
 
   useEffect(() => {
     const minutes = timeHours * 60 + timeMinutes;
@@ -69,10 +70,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       return;
     }
 
-    if (
-      !actionItem.areaOfImportance ||
-      actionItem.areaOfImportance === "No AOI found, please add from the AOI tab"
-    ) {
+    if (!actionItem.areaOfImportance || actionItem.areaOfImportance === "No AOI found") {
       setAlert("Area of Importance is required");
       return;
     }
@@ -99,7 +97,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
   const createOptions = () =>
     areasOfImportance && areasOfImportance.length > 0
       ? areasOfImportance.map((item) => ({ label: item.AOI, value: item.AOI }))
-      : [{ label: "No AOI found, please add from the AOI tab", value: "" }];
+      : [{ label: "No AOI found", value: "" }];
 
   return (
     <Modal

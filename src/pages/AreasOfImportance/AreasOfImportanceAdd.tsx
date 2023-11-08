@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
 import { useState, FC } from "react";
-import { View, StyleSheet, KeyboardAvoidingView, ScrollView } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Dimensions } from "react-native";
 import { useSetRecoilState } from "recoil";
 
 import { addAreaOfImportance } from "~utils/AreasOfImportanceHandler";
@@ -11,7 +11,8 @@ import { Button } from "~components/Button";
 
 export const AreasOfImportanceAdd: FC<any> = () => {
   const [areaOfImportance, setAreaOfImportance] = useState("");
-  const styles = styling();
+  const windowWidth = Dimensions.get("window").width;
+  const styles = styling(windowWidth);
   const setAlert = useSetRecoilState(alertAtom);
   const setData = useSetRecoilState(areasOfImportanceAtom);
 
@@ -42,10 +43,11 @@ export const AreasOfImportanceAdd: FC<any> = () => {
   );
 };
 
-const styling = () =>
+const styling = (windowWidth: number) =>
   StyleSheet.create({
     container: {
       alignItems: "center",
+      width: windowWidth - 50,
     },
     buttonContainer: {
       padding: 10,

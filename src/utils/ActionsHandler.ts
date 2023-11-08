@@ -2,8 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
 
 import { ActionItemT } from "~types/Types";
-
-const ACTION_KEY = "action-list";
+import { ACTION_KEY } from "./Constants";
 
 export const updateAction = (setAlert: Function, setData: Function, action: ActionItemT) => {
   try {

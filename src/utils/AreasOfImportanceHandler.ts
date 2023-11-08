@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
-import { AreaOfImportanceItemT } from "~types/Types";
+import { ActionItemT, AreaOfImportanceItemT } from "~types/Types";
 
 import { getAOIColor } from "~utils/Helpers";
+import { ACTION_KEY } from "./Constants";
 
 const AOI_KEY = "aol-list";
 
@@ -58,14 +59,34 @@ export const addAreaOfImportance = (setAlert: any, setData: any, AOI: string) =>
   }
 };
 
-export const deleteAreaOfImportance = (setAlert: Function, setData: Function, keys: string[]) => {
+export const deleteAreaOfImportance = (
+  setAlert: Function,
+  setData: Function,
+  setActions: Function,
+  keys: string[]
+) => {
   try {
     AsyncStorage.getItem(AOI_KEY)
       .then((areaOfImportanceRaw) => JSON.parse(areaOfImportanceRaw))
       .then((areaOfImportance) => {
-        const filteredAreaOfImportance = areaOfImportance.filter(
-          (v: AreaOfImportanceItemT) => !keys.includes(v.key)
-        );
+        const filteredAreaOfImportance = areaOfImportance.filter((v: AreaOfImportanceItemT) => {
+          if (keys.includes(v.key)) {
+            AsyncStorage.getItem(ACTION_KEY)
+              .then((actionsRaw) => JSON.parse(actionsRaw))
+              .then((actions: ActionItemT[]) => {
+                const filteredActions = actions.filter(
+                  (action: ActionItemT) => action.areaOfImportance != v.AOI
+                );
+                const actionsList = JSON.stringify(filteredActions);
+                AsyncStorage.setItem(ACTION_KEY, actionsList).then(() =>
+                  setActions(filteredActions)
+                );
+              });
+            return false;
+          } else {
+            return true;
+          }
+        });
 
         if (filteredAreaOfImportance >= areaOfImportance) {
           setAlert("Failed to delete AOI");

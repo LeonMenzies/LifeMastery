@@ -61,7 +61,7 @@ const styling = (colors: ThemeT) =>
       fontSize: 20,
       padding: 12,
       color: colors.textPrimary,
-      backgroundColor: "rgba(255, 255, 255, 0.03)",
+      backgroundColor: "rgba(0, 0, 0, 0.1)",
       borderRadius: 8,
       marginHorizontal: 8,
     },

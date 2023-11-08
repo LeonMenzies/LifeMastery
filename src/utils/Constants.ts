@@ -28,3 +28,4 @@ export const COLORS = [
 export const TODAY_PLAN = "today-plan";
 export const TOMORROW_PLAN = "tomorrow-plan";
 export const SETTINGS = "settings";
+export const ACTION_KEY = "action-list";

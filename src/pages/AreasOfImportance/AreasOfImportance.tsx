@@ -12,6 +12,7 @@ import { themeAtom } from "~recoil/themeAtom";
 import { AreaOfImportanceItemT, ThemeT } from "~types/Types";
 import { Button } from "~components/Button";
 import { Modal } from "~components/Modal";
+import { actionsAtom } from "~recoil/actionsAtom";
 
 type AreasOfImportanceT = {
   modalVisible: boolean;
@@ -20,6 +21,8 @@ type AreasOfImportanceT = {
 
 export const AreasOfImportance: FC<AreasOfImportanceT> = ({ modalVisible, setModalVisible }) => {
   const [data, setData] = useRecoilState(areasOfImportanceAtom);
+  const setActions = useSetRecoilState(actionsAtom);
+
   const [deleteItem, setDeleteItem] = useState(false);
   const [deleteItems, setDeleteItems] = useState<string[]>([]);
 
@@ -62,7 +65,7 @@ export const AreasOfImportance: FC<AreasOfImportanceT> = ({ modalVisible, setMod
             <Button
               title="Delete"
               onPress={() => {
-                deleteAreaOfImportance(setAlert, setData, deleteItems);
+                deleteAreaOfImportance(setAlert, setData, setActions, deleteItems);
                 setDeleteItem(false);
               }}
               disabled={deleteItems.length < 1}

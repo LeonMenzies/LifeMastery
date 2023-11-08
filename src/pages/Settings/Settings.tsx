@@ -12,8 +12,6 @@ import { SettingsThemeSelect } from "~pages/Settings/SettingsThemeSelect";
 import { SettingsCompleteSelect } from "~pages/Settings/SettingsCompleteSelect";
 import { planAtom } from "~recoil/planAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
-import { getSettings } from "~utils/SettingsHandler";
-import { settingsAtom } from "~recoil/settingsAtom";
 
 export const Settings: FC<any> = () => {
   const TODAY_PLAN = "today-plan";
@@ -58,7 +56,7 @@ const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
       alignItems: "center",
-      marginTop: 60,
+      marginTop: 100,
     },
     itemContainer: {
       width: "80%",
