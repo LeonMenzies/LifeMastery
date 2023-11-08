@@ -26,7 +26,6 @@ export const ActionsListSort: FC<ActionsListSortT> = ({
 }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
-  const [desc, setDesc] = useState(false);
   const sortTypes = ["Date", "Time", "AOI"];
 
   return (

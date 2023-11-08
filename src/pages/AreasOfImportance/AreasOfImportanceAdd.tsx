@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
 import { useState, FC } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, KeyboardAvoidingView, ScrollView } from "react-native";
 import { useSetRecoilState } from "recoil";
 
 import { addAreaOfImportance } from "~utils/AreasOfImportanceHandler";
@@ -26,7 +26,7 @@ export const AreasOfImportanceAdd: FC<any> = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <TextInput
         title={"Area of Importance"}
         onChangeText={setAreaOfImportance}
@@ -38,7 +38,7 @@ export const AreasOfImportanceAdd: FC<any> = () => {
       <View style={styles.buttonContainer}>
         <Button title="Add" onPress={handleAddTodo} />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

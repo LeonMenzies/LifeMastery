@@ -50,7 +50,7 @@ export const ActionsList: FC<any> = () => {
             comparison = new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime();
             break;
           case "AOI":
-            comparison = a.areaOfImportance.localeCompare(b.areaOfImportance);
+            comparison = b.areaOfImportance.localeCompare(a.areaOfImportance);
             break;
           case "Time":
             comparison = a.timeEstimate - b.timeEstimate;

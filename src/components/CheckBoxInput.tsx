@@ -25,8 +25,8 @@ const styling = (color: string, completed: boolean, colors: ThemeT) =>
       backgroundColor: completed ? color : null,
       borderColor: "grey",
       borderWidth: 1,
-      width: 20,
-      height: 20,
-      margin: 5,
+      width: 24,
+      height: 24,
+      margin: 8,
     },
   });

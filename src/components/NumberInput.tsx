@@ -53,11 +53,12 @@ const styling = (colors: ThemeT) =>
     value: {
       fontSize: 22,
       color: colors.textPrimary,
-      paddingHorizontal: 38,
+      paddingHorizontal: 20,
       paddingVertical: 10,
     },
     button: {
       justifyContent: "center",
+      paddingHorizontal: 20,
     },
     text: {
       fontSize: 30,
