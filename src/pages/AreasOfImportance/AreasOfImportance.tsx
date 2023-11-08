@@ -78,10 +78,7 @@ export const AreasOfImportance: FC<AreasOfImportanceT> = ({ modalVisible, setMod
 
 const styling = (colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
-    container: {
-      justifyContent: "space-between",
-      alignItems: "center",
-    },
+    container: {},
     buttonContainer: {
       flexDirection: "row",
       justifyContent: "center",

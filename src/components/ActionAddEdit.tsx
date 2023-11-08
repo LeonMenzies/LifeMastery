@@ -17,6 +17,7 @@ import { SliderInput } from "./SliderInput";
 import { Modal } from "./Modal";
 import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
 import { Picker } from "./Picker";
+import { TextInput } from "./TextInput";
 
 type ActionAddEditT = {
   modalVisible: {
@@ -55,10 +56,6 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       ...originalAction,
       ...updates,
     });
-  };
-
-  const createAutoCompleteText = () => {
-    return actions.map((action: ActionItemT) => action.action);
   };
 
   const handleAddTodo = () => {
@@ -115,14 +112,13 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       }
     >
       <View style={styles.container}>
-        <TextInputAutoComplete
+        <TextInput
           title={"Action"}
           onChangeText={(e) => updateActionItem(actionItem, { action: e })}
           value={actionItem.action}
           placeholder="Add value..."
           keyboardType="default"
           maxLength={30}
-          autoCompleteText={createAutoCompleteText()}
         />
         <Picker
           title={"Area of Importance"}

@@ -36,7 +36,7 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
   const onChange = (text: string) => {
     onChangeText(text);
 
-    if (text.length > 1 && false) {
+    if (text.length > 1) {
       setVisible(true);
 
       const sortedStrings = autoComplete
@@ -84,8 +84,9 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
 
     return (
       <TouchableOpacity key={uniqueKey} style={styles.itemButton} onPress={() => onItemPress(text)}>
-        <Text style={styles.itemButtonText}>{sliceString(text)}</Text>
-        <View style={styles.divider} />
+        <View style={styles.itemButton}>
+          <Text style={styles.itemButtonText}>{sliceString(text)}</Text>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -134,25 +135,23 @@ const styling = (colors: ThemeT) =>
     },
     dropDownContainer: {
       margin: 7,
-      top: 50,
+      top: 80,
       position: "absolute",
       backgroundColor: colors.background,
       width: "100%",
-      zIndex: 4,
+      zIndex: 20000,
     },
     dropDown: {
-      zIndex: 2,
+      zIndex: 20,
     },
     itemButton: {
       width: "100%",
+      zIndex: 20,
     },
     itemButtonText: {
       padding: 4,
       color: colors.textPrimary,
-    },
-    divider: {
-      borderBottomColor: colors.textPrimary,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      padding: 1,
+      fontSize: 20,
+      zIndex: 20,
     },
   });

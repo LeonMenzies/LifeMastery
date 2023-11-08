@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, KeyboardAvoidingView } from "react-native";
 import { TextInput as Input } from "react-native";
 import { useRecoilValue } from "recoil";
 
@@ -29,7 +29,7 @@ export const TextInput: FC<TextInputT> = ({
   const styles = styling(colors);
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <Input
         style={styles.input}
@@ -41,26 +41,28 @@ export const TextInput: FC<TextInputT> = ({
         editable={disabled}
         selectTextOnFocus={disabled}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      width: 300,
-      padding: 7,
+      padding: 10,
       zIndex: 2,
+      width: "100%",
     },
     title: {
       fontSize: 15,
       color: colors.grey,
+      paddingVertical: 8,
     },
     input: {
-      fontSize: 17,
-      padding: 5,
+      fontSize: 20,
+      padding: 12,
       color: colors.textPrimary,
-      borderBottomColor: colors.textPrimary,
-      borderBottomWidth: StyleSheet.hairlineWidth,
+      backgroundColor: "rgba(255, 255, 255, 0.03)",
+      borderRadius: 8,
+      marginHorizontal: 8,
     },
   });

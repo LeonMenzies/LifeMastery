@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { SafeAreaView, StyleSheet, View, Dimensions } from "react-native";
+import { TouchableWithoutFeedback, Keyboard, StyleSheet, View, Dimensions } from "react-native";
 import Toast from "react-native-root-toast";
 
 import { themeAtom } from "~recoil/themeAtom";
@@ -75,10 +75,12 @@ export const Navigator: FC<NavigatorT> = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.component}>{pageMap[navigator].component}</View>
-      <NavigatorMenu pageMap={pageMap} />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View style={styles.component}>{pageMap[navigator].component}</View>
+        <NavigatorMenu pageMap={pageMap} />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
