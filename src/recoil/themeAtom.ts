@@ -12,8 +12,8 @@ export const lightTheme: ThemeT = {
   white: "#ffffff",
   lightGrey: "#e5e5e5",
   grey: "#828282",
-  error: "#900000",
-  success: "#009000",
+  error: "#d40000",
+  success: "#00ba00",
 };
 
 export const darkTheme: ThemeT = {
@@ -27,8 +27,8 @@ export const darkTheme: ThemeT = {
   white: "#ffffff",
   lightGrey: "#dadada",
   grey: "#b1b1b1",
-  error: "#cc0000",
-  success: "#00bb00",
+  error: "#d40000",
+  success: "#00ba00",
 };
 
 export const themeAtom = atom<ThemeT>({

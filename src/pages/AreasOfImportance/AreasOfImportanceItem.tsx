@@ -68,9 +68,9 @@ const styling = (color: string, colors: ThemeT, windowWidth: number) =>
       backgroundColor: color,
       borderColor: color,
       borderWidth: 1,
-      width: 20,
-      height: 20,
-      margin: 5,
+      width: 24,
+      height: 24,
+      margin: 8,
     },
     aoiText: {
       fontSize: 20,
