@@ -68,6 +68,7 @@ const styling = (colors: ThemeT) =>
     headerContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
+      paddingVertical: 8,
     },
     input: {
       fontSize: 17,

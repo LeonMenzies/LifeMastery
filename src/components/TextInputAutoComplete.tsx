@@ -122,13 +122,15 @@ const styling = (colors: ThemeT) =>
     title: {
       fontSize: 15,
       color: colors.grey,
+      paddingVertical: 8,
     },
     input: {
-      fontSize: 17,
-      padding: 5,
+      fontSize: 20,
+      padding: 12,
       color: colors.textPrimary,
-      borderBottomColor: colors.textPrimary,
-      borderBottomWidth: StyleSheet.hairlineWidth,
+      backgroundColor: "rgba(255, 255, 255, 0.03)",
+      borderRadius: 8,
+      marginHorizontal: 8,
     },
     dropDownContainer: {
       margin: 7,
