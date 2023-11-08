@@ -68,6 +68,7 @@ const styling = (colors: ThemeT) =>
       padding: 20,
       borderRadius: 20,
       alignItems: "center",
+      width: "80%",
     },
     buttonContainer: {
       padding: 10,

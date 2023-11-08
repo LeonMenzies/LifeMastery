@@ -67,20 +67,22 @@ export const Home: FC<any> = () => {
 
   return (
     <View style={styles.container}>
-      <HomeHeader focus={plan.focus} percent={percent} />
-
       {plan.finalized ? (
-        <ScrollView>
-          {areasOfImportance.map((aoi: AreaOfImportanceItemT) => (
-            <HomeActionSection
-              key={aoi.key}
-              aoi={aoi}
-              data={actions}
-              setActions={setActions}
-              actionKeys={plan.actionKeys}
-            />
-          ))}
-        </ScrollView>
+        <View>
+          <HomeHeader focus={plan.focus} percent={percent} />
+
+          <ScrollView>
+            {areasOfImportance.map((aoi: AreaOfImportanceItemT) => (
+              <HomeActionSection
+                key={aoi.key}
+                aoi={aoi}
+                data={actions}
+                setActions={setActions}
+                actionKeys={plan.actionKeys}
+              />
+            ))}
+          </ScrollView>
+        </View>
       ) : (
         <View style={{ marginTop: 100 }}>
           <Text style={{ color: colors.grey, marginTop: 50 }}>No Plan Finalized For Today</Text>

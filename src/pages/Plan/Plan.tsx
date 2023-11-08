@@ -71,28 +71,26 @@ const styling = (colors: ThemeT, today: boolean) =>
       paddingLeft: 10,
     },
     buttonContainer: {
+      borderRadius: 5,
+      borderColor: colors.primary,
+      borderWidth: 2,
       flexDirection: "row",
-      width: "100%",
+      width: "80%",
     },
     button: {
       width: "50%",
       alignItems: "center",
       justifyContent: "center",
     },
-    buttonTomorrow: {
-      width: "50%",
+    underline: {
+      width: "100%",
+      backgroundColor: colors.primary,
       alignItems: "center",
       justifyContent: "center",
     },
-    underline: {
-      borderBottomColor: colors.textPrimary,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      marginBottom: 5,
-    },
     buttonText: {
-      fontSize: 15,
       paddingHorizontal: 10,
       paddingVertical: 3,
-      color: colors.textPrimary,
+      fontSize: 17,
     },
   });

@@ -38,10 +38,15 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
   const styles = styling(colors);
 
   useEffect(() => {
+    if (modalVisible.newAction) {
+      setActionItem({ ...actionItem, areaOfImportance: createOptions()[0].value, action: "" });
+    }
+  }, [modalVisible]);
+
+  useEffect(() => {
     setTimeHours(Math.floor(actionItem.timeEstimate / 60));
     setTimeMinutes(actionItem.timeEstimate % 60);
-    setActionItem({ ...actionItem, areaOfImportance: createOptions()[0].value });
-  }, [modalVisible, actions]);
+  }, [modalVisible]);
 
   useEffect(() => {
     const minutes = timeHours * 60 + timeMinutes;
