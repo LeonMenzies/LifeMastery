@@ -139,7 +139,7 @@ const styling = (colors: ThemeT) =>
       position: "absolute",
       backgroundColor: colors.background,
       width: "100%",
-      zIndex: 20000,
+      zIndex: 20,
     },
     dropDown: {
       zIndex: 20,
