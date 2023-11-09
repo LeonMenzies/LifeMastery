@@ -65,7 +65,7 @@ export const addAction = (setAlert, setData, action, timeEstimate, areaOfImporta
     timeEstimate: timeEstimate,
     priority: 0,
     areaOfImportance: areaOfImportance,
-    dateAdded: new Date().toISOString().split("T")[0],
+    dateAdded: new Date().toLocaleDateString(),
   };
 
   try {

@@ -38,8 +38,6 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
     if (text.length > 2) {
       setVisible(true);
 
-      const minimumScore = 4;
-
       const sortedStrings = autoCompleteText
         .map((str) => ({
           string: str,
@@ -47,8 +45,7 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
         }))
         .sort((a, b) => a.score - b.score);
 
-      const filteredStrings = sortedStrings.filter((item) => item.score < minimumScore);
-      const topSuggestions = filteredStrings.slice(0, 3).map((item) => item.string);
+      const topSuggestions = sortedStrings.slice(0, 3).map((item) => item.string);
 
       setAutoComplete(topSuggestions);
     } else {

@@ -14,7 +14,6 @@ import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
 import { TODAY_PLAN } from "~utils/Constants";
-import { navigatorAtom } from "~recoil/navigatorAtom";
 import { getTheme } from "~utils/SettingsHandler";
 
 export const Home: FC<any> = () => {
@@ -23,9 +22,8 @@ export const Home: FC<any> = () => {
   const [actions, setActions] = useRecoilState(actionsAtom);
   const [areasOfImportance, setAreasOfImportance] = useState([]);
   const [percent, setPercent] = useState(0);
-  const setNavigator = useSetRecoilState(navigatorAtom);
   const setTheme = useSetRecoilState(themeAtom);
-  const [settings, setSettings] = useRecoilState(settingsAtom);
+  const settings = useRecoilValue(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 

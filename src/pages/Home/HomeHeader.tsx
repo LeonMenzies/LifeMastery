@@ -22,9 +22,6 @@ export const HomeHeader: FC<HomeHeaderT> = ({ focus, percent }) => {
     day: "numeric" as const,
   };
 
-  const dateFormatter = new Intl.DateTimeFormat("en-US", options);
-  const formattedDate = dateFormatter.format(new Date());
-
   return (
     <View style={styles.container}>
       <Text style={styles.focusText}>Key Focus: {focus}</Text>
