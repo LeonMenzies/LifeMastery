@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "TimeMastery",
+    "slug": "timemastery",
+    "description": "TimeMastery",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/TimeMastery.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./src/assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/4136696b-9084-4d16-8478-5c1c7716810e"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.leonmenzies.timemastery"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": ""
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4136696b-9084-4d16-8478-5c1c7716810e"
+      }
+    },
+    "owner": "leonmenzies",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
+  }
+}
