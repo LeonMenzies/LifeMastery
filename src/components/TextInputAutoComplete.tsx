@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { TextInput as Input } from "react-native";
 import { useRecoilValue } from "recoil";
-import { v4 as uuidv4 } from "uuid";
 
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
@@ -36,15 +35,15 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
   const onChange = (text: string) => {
     onChangeText(text);
 
-    if (text.length > 1) {
+    if (text.length > 2) {
       setVisible(true);
 
       const sortedStrings = autoComplete
         .map((str) => ({
           string: str,
-          score: calculateSimilarity(text, str),
+          score: levenshteinDistance(text, str),
         }))
-        .sort((a, b) => b.score - a.score);
+        .sort((a, b) => a.score - b.score);
 
       setAutoComplete(sortedStrings.slice(0, 3).map((item) => item.string));
     } else {
@@ -52,63 +51,95 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
     }
   };
 
-  const calculateSimilarity = (str1: string, str2: string) => {
-    const lowerStr1 = str1.toLowerCase();
-    const lowerStr2 = str2.toLowerCase();
-    const length = lowerStr1.length < lowerStr2.length ? lowerStr1.length : lowerStr2.length;
+  function levenshteinDistance(str1: string, str2: string): number {
+    const m = str1.length;
+    const n = str2.length;
 
-    let matchingChars = 0;
-
-    for (let i = 0; i < length; i++) {
-      if (lowerStr2.includes(lowerStr1[i])) {
-        matchingChars++;
-      }
+    // Create a 2D array to store the distances
+    const dp: number[][] = [];
+    for (let i = 0; i <= m; i++) {
+      dp[i] = new Array(n + 1).fill(0);
     }
 
-    const similarity = (matchingChars / length) * 100;
+    // Initialize the first row and column
+    for (let i = 0; i <= m; i++) {
+      dp[i][0] = i;
+    }
+    for (let j = 0; j <= n; j++) {
+      dp[0][j] = j;
+    }
 
-    return similarity;
-  };
+    // Fill in the rest of the array
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+        dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+      }
+    }
+    return dp[m][n];
+  }
 
   const onItemPress = (text: string): void => {
     onChangeText(text);
     setVisible(false);
   };
 
-  const sliceString = (text: string) => {
-    return text.length > 30 ? `${text.slice(0, 30)}...` : text;
-  };
-
-  const renderItem = (text: string) => {
-    const uniqueKey = uuidv4();
+  const renderItem = (text: string, index: number, value: string) => {
+    const characters = text.split("").slice(0, 30);
 
     return (
-      <TouchableOpacity key={uniqueKey} style={styles.itemButton} onPress={() => onItemPress(text)}>
-        <View style={styles.itemButton}>
-          <Text style={styles.itemButtonText}>{sliceString(text)}</Text>
+      <TouchableOpacity key={index} style={styles.itemButton} onPress={() => onItemPress(text)}>
+        <View style={styles.itemButtonText}>
+          {characters.map((char: string, index: number) => (
+            <Text style={{ color: value[index] == char ? colors.textPrimary : colors.grey }}>
+              {char}
+            </Text>
+          ))}
         </View>
+        <View style={styles.divider} />
       </TouchableOpacity>
     );
   };
 
+  // const renderItem = (text: string, index: number, value: string) => {
+  //   const characters = text.split(""); // Split the text into an array of characters
+  //   return (
+  //     <View style={styles.itemContainer}>
+  //       {characters.map((character, charIndex) => (
+  //         <TouchableOpacity
+  //           key={charIndex}
+  //           style={styles.itemButton}
+  //           onPress={() => onItemPress(character)}
+  //         >
+  //           <Text style={styles.itemButtonText}>{character}</Text>
+  //           {charIndex < characters.length - 1 && <View style={styles.divider} />}
+  //         </TouchableOpacity>
+  //       ))}
+  //     </View>
+  //   );
+  // };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      <Input
-        style={styles.input}
-        onChangeText={onChange}
-        value={value}
-        placeholder={placeholder}
-        keyboardType={keyboardType}
-        maxLength={maxLength}
-        editable={disabled}
-        selectTextOnFocus={disabled}
-      />
-      {visible && (
-        <View style={styles.dropDownContainer}>
-          {autoComplete.map((text: string) => renderItem(text))}
-        </View>
-      )}
+      <View style={styles.inputContainer}>
+        <Input
+          style={styles.input}
+          onChangeText={onChange}
+          value={value}
+          placeholder={placeholder}
+          keyboardType={keyboardType}
+          maxLength={maxLength}
+          editable={disabled}
+          selectTextOnFocus={disabled}
+          onBlur={() => setVisible(false)}
+        />
+        {visible && (
+          <View style={styles.dropDownContainer}>
+            {autoComplete.map((text: string, index: number) => renderItem(text, index, value))}
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -127,31 +158,28 @@ const styling = (colors: ThemeT) =>
     },
     input: {
       fontSize: 20,
-      padding: 12,
       color: colors.textPrimary,
-      backgroundColor: "rgba(255, 255, 255, 0.03)",
-      borderRadius: 8,
-      marginHorizontal: 8,
     },
     dropDownContainer: {
-      margin: 7,
-      top: 80,
-      position: "absolute",
-      backgroundColor: colors.background,
-      width: "100%",
-      zIndex: 20,
+      paddingVertical: 6,
     },
-    dropDown: {
-      zIndex: 20,
+    inputContainer: {
+      backgroundColor: "rgba(0, 0, 0, 0.1)",
+      borderRadius: 8,
+      marginHorizontal: 8,
+      padding: 12,
     },
     itemButton: {
       width: "100%",
       zIndex: 20,
     },
     itemButtonText: {
-      padding: 4,
-      color: colors.textPrimary,
-      fontSize: 20,
-      zIndex: 20,
+      flexDirection: "row",
+      paddingVertical: 4,
+    },
+    divider: {
+      borderBottomColor: colors.grey,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      paddingVertical: 2,
     },
   });

@@ -20,7 +20,7 @@ export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions 
   const setAlert = useSetRecoilState(alertAtom);
   const windowWidth = Dimensions.get("window").width;
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors, windowWidth);
+  const styles = styling(colors, windowWidth, action.isCompleted);
   const plan = useRecoilValue(planAtom);
 
   return (
@@ -44,7 +44,7 @@ export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions 
   );
 };
 
-const styling = (colors: ThemeT, windowWidth: number) =>
+const styling = (colors: ThemeT, windowWidth: number, complete: boolean) =>
   StyleSheet.create({
     container: {
       padding: 2,
@@ -55,7 +55,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     },
     actionText: {
       fontSize: 17,
-      color: colors.textPrimary,
+      color: complete ? colors.grey : colors.textPrimary,
     },
     actionContainer: {
       flexDirection: "row",

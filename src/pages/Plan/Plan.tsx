@@ -1,4 +1,11 @@
-import { StyleSheet, View, TouchableHighlight, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableHighlight,
+  Text,
+  TouchableOpacity,
+  PanResponder,
+} from "react-native";
 import { useEffect, useState, FC } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -12,6 +19,7 @@ import { TODAY_PLAN, TOMORROW_PLAN } from "~utils/Constants";
 import { IconButton } from "~components/IconButton";
 import { ActionAddEdit } from "~components/ActionAddEdit";
 import { PlanDayButton } from "./PlanDayButton";
+import React from "react";
 
 export const Plan: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
@@ -24,12 +32,26 @@ export const Plan: FC<any> = () => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors, today);
 
+  const panResponder = React.useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (e, gestureState) => {
+        if (gestureState.dx > 50) {
+          setToday(true);
+        } else if (gestureState.dx < -50) {
+          setToday(false);
+        }
+      },
+    })
+  ).current;
+
   useEffect(() => {
     getActions(setAlert, setActions);
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...panResponder.panHandlers}>
       <View style={styles.addContainer}>
         <IconButton
           icon={"plus"}
@@ -45,17 +67,6 @@ export const Plan: FC<any> = () => {
       <View style={styles.buttonContainer}>
         <PlanDayButton title={"today"} onPress={() => setToday(true)} selected={today} />
         <PlanDayButton title={"today"} onPress={() => setToday(false)} selected={!today} />
-        {/* 
-        <TouchableOpacity onPress={() => setToday(true)} style={styles.button}>
-          <View style={today ? styles.underline : null}>
-            <Text style={styles.buttonText}>{"Today"}</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setToday(false)} style={styles.button}>
-          <View style={today ? null : styles.underline}>
-            <Text style={styles.buttonText}>{"Tomorrow"}</Text>
-          </View>
-        </TouchableOpacity> */}
       </View>
       {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
       <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />

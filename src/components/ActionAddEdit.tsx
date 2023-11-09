@@ -104,6 +104,10 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       ? areasOfImportance.map((item) => ({ label: item.AOI, value: item.AOI }))
       : [{ label: "No AOI found", value: "" }];
 
+  const createAutoCompleteText = () => {
+    return actions.map((action: ActionItemT) => action.action);
+  };
+
   return (
     <Modal
       visible={modalVisible.show}
@@ -115,13 +119,14 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       }
     >
       <View style={styles.container}>
-        <TextInput
+        <TextInputAutoComplete
           title={"Action"}
           onChangeText={(e) => updateActionItem(actionItem, { action: e })}
           value={actionItem.action}
           placeholder="Add value..."
           keyboardType="default"
           maxLength={30}
+          autoCompleteText={createAutoCompleteText()}
         />
         <Picker
           title={"Area of Importance"}
