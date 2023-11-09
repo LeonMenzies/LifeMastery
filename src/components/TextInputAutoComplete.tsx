@@ -30,7 +30,7 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
   const [visible, setVisible] = useState(false);
-  const [autoComplete, setAutoComplete] = useState(autoCompleteText);
+  const [autoComplete, setAutoComplete] = useState([]);
 
   const onChange = (text: string) => {
     onChangeText(text);
@@ -38,14 +38,19 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
     if (text.length > 2) {
       setVisible(true);
 
-      const sortedStrings = autoComplete
+      const minimumScore = 4;
+
+      const sortedStrings = autoCompleteText
         .map((str) => ({
           string: str,
           score: levenshteinDistance(text, str),
         }))
         .sort((a, b) => a.score - b.score);
 
-      setAutoComplete(sortedStrings.slice(0, 3).map((item) => item.string));
+      const filteredStrings = sortedStrings.filter((item) => item.score < minimumScore);
+      const topSuggestions = filteredStrings.slice(0, 3).map((item) => item.string);
+
+      setAutoComplete(topSuggestions);
     } else {
       setVisible(false);
     }
@@ -100,24 +105,6 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
       </TouchableOpacity>
     );
   };
-
-  // const renderItem = (text: string, index: number, value: string) => {
-  //   const characters = text.split(""); // Split the text into an array of characters
-  //   return (
-  //     <View style={styles.itemContainer}>
-  //       {characters.map((character, charIndex) => (
-  //         <TouchableOpacity
-  //           key={charIndex}
-  //           style={styles.itemButton}
-  //           onPress={() => onItemPress(character)}
-  //         >
-  //           <Text style={styles.itemButtonText}>{character}</Text>
-  //           {charIndex < characters.length - 1 && <View style={styles.divider} />}
-  //         </TouchableOpacity>
-  //       ))}
-  //     </View>
-  //   );
-  // };
 
   return (
     <View style={styles.container}>

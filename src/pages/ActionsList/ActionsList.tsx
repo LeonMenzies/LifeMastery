@@ -26,7 +26,6 @@ export const ActionsList: FC<any> = () => {
   const [deleteItem, setDeleteItem] = useState(false);
   const [deleteItems, setDeleteItems] = useState<string[]>([]);
   const windowWidth = Dimensions.get("window").width;
-  const [desc, setDesc] = useState(false);
   const [showComplete, setShowComplete] = useState(false);
   const [selected, setSelected] = useState({
     selected: "Time",
@@ -47,7 +46,7 @@ export const ActionsList: FC<any> = () => {
         let comparison = 0;
         switch (selected.selected) {
           case "Date":
-            comparison = new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime();
+            comparison = new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime();
             break;
           case "AOI":
             comparison = b.areaOfImportance.localeCompare(a.areaOfImportance);
