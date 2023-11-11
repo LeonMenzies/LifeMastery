@@ -26,16 +26,12 @@ export const NavigatorMenuItem: FC<NavigatorMenuItemT> = ({ title, icon, pageKey
         setNavigator(pageKey);
       }}
     >
-      <View style={styles.innerContainer}>
-        <View style={styles.icon}>
-          <Icon
-            name={icon}
-            size={24}
-            color={navigator == pageKey ? colors.primary : colors.textPrimary}
-          />
-        </View>
-        <Text style={styles.title}>{title}</Text>
-      </View>
+      <Icon
+        name={icon}
+        size={24}
+        color={navigator == pageKey ? colors.primary : colors.textPrimary}
+      />
+      <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -43,21 +39,13 @@ export const NavigatorMenuItem: FC<NavigatorMenuItemT> = ({ title, icon, pageKey
 const styling = (colors: ThemeT, width: number) =>
   StyleSheet.create({
     container: {
-      width: width,
-    },
-    innerContainer: {
       alignItems: "center",
-      flexDirection: "column",
-      backgroundColor: colors.background,
-      borderRadius: 15,
-      padding: 4,
-      margin: 8,
+      justifyContent: "center",
+      width: width,
+      borderRadius: 20,
     },
     title: {
       color: colors.textPrimary,
       fontSize: 12,
-    },
-    icon: {
-      alignItems: "center",
     },
   });

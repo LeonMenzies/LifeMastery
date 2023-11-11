@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { TextInput as Input } from "react-native";
 import { useRecoilValue } from "recoil";
+import { settingsAtom } from "~recoil/settingsAtom";
 
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
@@ -31,11 +32,12 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
   const styles = styling(colors);
   const [visible, setVisible] = useState(false);
   const [autoComplete, setAutoComplete] = useState([]);
+  const settings = useRecoilValue(settingsAtom);
 
   const onChange = (text: string) => {
     onChangeText(text);
 
-    if (text.length > 2) {
+    if (text.length > 2 && !settings.autoComplete) {
       setVisible(true);
 
       const sortedStrings = autoCompleteText
@@ -93,7 +95,10 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
       <TouchableOpacity key={index} style={styles.itemButton} onPress={() => onItemPress(text)}>
         <View style={styles.itemButtonText}>
           {characters.map((char: string, index: number) => (
-            <Text style={{ color: value[index] == char ? colors.textPrimary : colors.grey }}>
+            <Text
+              style={{ color: value[index] == char ? colors.textPrimary : colors.grey }}
+              key={index}
+            >
               {char}
             </Text>
           ))}

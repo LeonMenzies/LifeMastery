@@ -15,6 +15,7 @@ type PlanActionsListItemT = {
   addAction: (k: string) => void;
   removeAction: (k: string) => void;
   isInPlan: boolean;
+  finalized: boolean;
 };
 
 export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
@@ -23,6 +24,7 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
   addAction,
   removeAction,
   isInPlan,
+  finalized,
 }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useState(false);
@@ -47,12 +49,15 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
       <TouchableOpacity
         onLongPress={() => {}}
         onPress={() => {
-          if (isInPlan) {
+          if (finalized) {
+            return;
+          } else if (isInPlan) {
             handleCancel();
           } else {
             setModalVisible(true);
           }
         }}
+        activeOpacity={finalized ? 1 : 0.4}
       >
         <View style={styles.actionHeading}>
           <View style={styles.actionTitleContainer}>
@@ -80,10 +85,9 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
 const styling = (colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.background,
-      paddingTop: 5,
-      paddingBottom: 5,
-      width: windowWidth - 50,
+      paddingHorizontal: 20,
+      paddingVertical: 5,
+      width: windowWidth,
     },
     actionHeading: {
       flexDirection: "row",
@@ -94,7 +98,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       justifyContent: "space-between",
     },
     actionTitle: {
-      fontSize: 17,
+      fontSize: 18,
       color: colors.textPrimary,
     },
     actionTitleContainer: {
@@ -102,7 +106,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       gap: 4,
     },
     actionDate: {
-      fontSize: 13,
+      fontSize: 14,
       color: colors.grey,
     },
     inPlan: {

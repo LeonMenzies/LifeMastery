@@ -11,11 +11,10 @@ type SliderInputT = {
   min: number;
   max: number;
   markerColor: string;
-  onChange: (values: SliderValue[]) => void;
-  values: any;
+  onChange: (value: number) => void;
+  value: number;
   showLabel: boolean;
   increment: number;
-  disabled?: boolean;
 };
 
 export const SliderInput: FC<SliderInputT> = ({
@@ -24,28 +23,44 @@ export const SliderInput: FC<SliderInputT> = ({
   max,
   markerColor,
   onChange,
-  values,
+  value,
   showLabel,
   increment,
-  disabled,
 }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
+
+  const generateNumbers = (): number[] => {
+    return Array.from(
+      { length: Math.floor((max - min) / increment) + 1 },
+      (_, index) => min + index * increment
+    );
+  };
+
+  const setValue = (values: SliderValue[]) => {
+    let value = Number(values[0]);
+    console.log(typeof values);
+
+    onChange(
+      generateNumbers().reduce((closest, current) =>
+        Math.abs(current - value) < Math.abs(closest - value) ? current : closest
+      )
+    );
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.title}>{values[0]}</Text>
+        <Text style={styles.title}>{value}</Text>
       </View>
 
       <Slider
         min={min}
         max={max}
-        increment={increment}
         markerColor={markerColor}
-        onChange={onChange}
-        values={values}
+        onChange={setValue}
+        values={[value]}
         showLabel={showLabel}
         selectedTrackStyle={{ borderBlockColor: colors.primary }}
       />

@@ -31,7 +31,7 @@ const styling = (selected: boolean, colors: ThemeT) =>
       backgroundColor: selected ? colors.primary : null,
     },
     title: {
-      padding: 6,
+      padding: 5,
       fontSize: 17,
       color: selected ? colors.textSecondary : colors.textPrimary,
     },

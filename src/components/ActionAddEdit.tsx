@@ -37,7 +37,12 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
 
   useEffect(() => {
     if (modalVisible.newAction) {
-      setActionItem({ ...actionItem, areaOfImportance: createOptions()[0].value, action: "" });
+      setActionItem({
+        ...actionItem,
+        areaOfImportance: createOptions()[0].value,
+        action: "",
+        timeEstimate: 0,
+      });
     }
   }, [modalVisible]);
 
@@ -94,7 +99,14 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
           show: false,
           newAction: true,
         });
-    setActionItem(emptyAction);
+    setActionItem({
+      ...actionItem,
+      areaOfImportance: createOptions()[0].value,
+      action: "",
+      timeEstimate: 0,
+    });
+    setTimeHours(0);
+    setTimeMinutes(0);
   };
 
   const createOptions = () =>
@@ -138,8 +150,8 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
           max={12}
           increment={1}
           markerColor={colors.primary}
-          onChange={(values: number[]) => setTimeHours(values[0])}
-          values={[timeHours]}
+          onChange={(value: number) => setTimeHours(value)}
+          value={timeHours}
           showLabel={false}
         />
         <SliderInput
@@ -148,8 +160,8 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
           max={55}
           increment={5}
           markerColor={colors.primary}
-          onChange={(values: number[]) => setTimeMinutes(values[0])}
-          values={[timeMinutes]}
+          onChange={(value: number) => setTimeMinutes(value)}
+          value={timeMinutes}
           showLabel={false}
         />
         <View style={styles.buttonContainer}>

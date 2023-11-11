@@ -16,7 +16,11 @@ export const Button: FC<ButtonT> = ({ title, onPress, disabled = false }) => {
   const styles = styling(disabled, colors);
 
   return (
-    <TouchableOpacity style={styles.button} onPress={disabled ? undefined : onPress}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={disabled ? undefined : onPress}
+      activeOpacity={disabled ? 1 : 0.4}
+    >
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );
@@ -28,15 +32,14 @@ const styling = (disabled: boolean, colors: ThemeT) =>
       padding: 10,
       margin: 7,
       zIndex: 2,
-      // backgroundColor: disabled ? colors.lightGrey : colors.lightGrey,
       minWidth: 100,
       alignItems: "center",
       borderRadius: 14,
       borderWidth: 2,
-      borderColor: colors.primary,
+      borderColor: disabled ? colors.grey : colors.primary,
     },
     title: {
       fontSize: 15,
-      color: colors.textPrimary,
+      color: disabled ? colors.grey : colors.textPrimary,
     },
   });

@@ -132,7 +132,6 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       alignItems: "center",
     },
     addContainer: {
-      marginTop: 50,
       width: "100%",
       paddingHorizontal: 10,
       flexDirection: "row",

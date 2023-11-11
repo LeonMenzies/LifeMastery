@@ -26,6 +26,7 @@ export type PlanT = {
 export type SettingsT = {
   timePercent: boolean;
   lightMode: boolean;
+  autoComplete: boolean;
 };
 
 export type ThemeT = {

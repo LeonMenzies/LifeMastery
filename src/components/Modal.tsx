@@ -66,7 +66,6 @@ export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
           <View style={styles.closeContainer}>
             <IconButton color={colors.primary} icon={"close"} onPress={onRequestClose} />
           </View>
-
           <View
             onLayout={(event) => {
               const { height } = event.nativeEvent.layout;
@@ -102,12 +101,11 @@ const styling = (colors: ThemeT, height: number, width: number, modalHeight: num
       borderTopRightRadius: 20,
       backgroundColor: colors.background,
       zIndex: 20,
-      height: height - modalHeight + 400,
+      height: height - modalHeight + 600,
     },
     closeContainer: {
       width: "100%",
       alignItems: "flex-end",
-      paddingBottom: 10,
     },
     closeButton: {
       borderRadius: 50,

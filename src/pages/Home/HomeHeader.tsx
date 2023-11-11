@@ -37,7 +37,6 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       alignItems: "center",
       paddingTop: 8,
       margin: 10,
-      marginTop: 60,
     },
     focusText: {
       fontSize: 18,

@@ -38,6 +38,8 @@ const styling = (colors: ThemeT) =>
     container: {
       height: 100,
       flexDirection: "row",
+      justifyContent: "space-evenly",
       backgroundColor: colors.background,
+      alignItems: "center",
     },
   });

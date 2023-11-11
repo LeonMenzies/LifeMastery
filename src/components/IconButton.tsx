@@ -18,7 +18,11 @@ export const IconButton: FC<IconButtonT> = ({ icon, onPress, color, disabled = f
   const styles = styling(disabled, colors);
 
   return (
-    <TouchableOpacity style={styles.button} onPress={disabled ? undefined : onPress}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={disabled ? undefined : onPress}
+      activeOpacity={disabled ? 1 : 0.4}
+    >
       <Icon name={icon} size={20} color={disabled ? colors.lightGrey : color} />
     </TouchableOpacity>
   );

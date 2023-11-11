@@ -98,7 +98,6 @@ export const Home: FC<any> = () => {
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      height: "100%",
       alignItems: "center",
     },
     completeContainer: {

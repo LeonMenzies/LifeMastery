@@ -1,6 +1,13 @@
 import { FC, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { TouchableWithoutFeedback, Keyboard, StyleSheet, View, Dimensions } from "react-native";
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  StyleSheet,
+  View,
+  Dimensions,
+  SafeAreaView,
+} from "react-native";
 import Toast from "react-native-root-toast";
 
 import { themeAtom } from "~recoil/themeAtom";
@@ -86,11 +93,11 @@ export const Navigator: FC<NavigatorT> = () => {
 const styling = (colors: ThemeT, height: number) =>
   StyleSheet.create({
     container: {
-      flexDirection: "column",
-      flex: 1,
       backgroundColor: colors.background,
     },
     component: {
       height: height - 100,
+      backgroundColor: colors.background,
+      paddingTop: 50,
     },
   });

@@ -1,17 +1,18 @@
-import { View, StyleSheet, Text } from "react-native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { FC } from "react";
+import { View, StyleSheet } from "react-native";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { FC, useEffect } from "react";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { darkTheme, lightTheme, themeAtom } from "~recoil/themeAtom";
 import { clearActions } from "~utils/ActionsHandler";
 import { alertAtom } from "~recoil/alertAtom";
 import { clearPlan } from "~utils/PlanHandler";
-import { ThemeT } from "~types/Types";
-import { Button } from "~components/Button";
-import { SettingsThemeSelect } from "~pages/Settings/SettingsThemeSelect";
-import { SettingsCompleteSelect } from "~pages/Settings/SettingsCompleteSelect";
+import { SettingsT, ThemeT } from "~types/Types";
 import { planAtom } from "~recoil/planAtom";
 import { actionsAtom } from "~recoil/actionsAtom";
+import { SettingsSelectItem } from "./SettingsSelectItem";
+import { settingsAtom } from "~recoil/settingsAtom";
+import { getSettings, saveSettings } from "~utils/SettingsHandler";
+import { SettingsButtonItem } from "~pages/Settings/SettingsButtonItem";
 
 export const Settings: FC<any> = () => {
   const TODAY_PLAN = "today-plan";
@@ -19,33 +20,70 @@ export const Settings: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
   const setPlan = useSetRecoilState(planAtom);
   const setActions = useSetRecoilState(actionsAtom);
+  const [settings, setSettings] = useRecoilState(settingsAtom);
+  const setTheme = useSetRecoilState(themeAtom);
 
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
-  const SettingsItem = ({ title, callBack, buttonTitle = "Clear" }) => {
-    return (
-      <View style={styles.itemContainer}>
-        <View style={styles.itemInnerContainer}>
-          <Text style={styles.itemText}>{title}</Text>
-          <Button title={buttonTitle} onPress={callBack} />
-        </View>
-        <View style={styles.divider} />
-      </View>
-    );
+  useEffect(() => {
+    getSettings(setSettings);
+  }, [settings]);
+
+  const onChange = (settingName: string, value: boolean) => {
+    let newSettings: SettingsT;
+
+    switch (settingName) {
+      case "lightMode":
+        newSettings = { ...settings, lightMode: value };
+        setTheme(value ? lightTheme : darkTheme);
+        break;
+
+      case "timePercent":
+        newSettings = { ...settings, timePercent: value };
+        break;
+
+      case "autoComplete":
+        newSettings = { ...settings, autoComplete: value };
+        break;
+      default:
+        newSettings = settings;
+    }
+
+    setSettings(newSettings);
+    saveSettings(newSettings);
   };
 
   return (
     <View style={styles.container}>
-      <SettingsThemeSelect />
-      <SettingsCompleteSelect />
-      <SettingsItem title="Clear Actions" callBack={() => clearActions(setAlert, setActions)} />
-      <SettingsItem
-        title="Clear Todays Plan"
+      <SettingsSelectItem
+        title={settings.lightMode ? "Light Mode" : "Dark Mode"}
+        callBack={(e) => onChange("lightMode", e)}
+        value={settings.lightMode}
+      />
+      <SettingsSelectItem
+        title={settings.timePercent ? "Time Complete" : "Tasks Complete"}
+        callBack={(e) => onChange("timePercent", e)}
+        value={settings.timePercent}
+      />
+      <SettingsSelectItem
+        title={"Action Auto Complete"}
+        callBack={(e) => onChange("autoComplete", e)}
+        value={settings.autoComplete}
+      />
+      <SettingsButtonItem
+        title={"Clear Action"}
+        buttonTitle={"Clear"}
+        callBack={() => clearActions(setAlert, setActions)}
+      />
+      <SettingsButtonItem
+        title={"Clear Todays Plan"}
+        buttonTitle={"Clear"}
         callBack={() => clearPlan(setAlert, setPlan, TODAY_PLAN)}
       />
-      <SettingsItem
-        title="Clear Tomorrows Plan"
+      <SettingsButtonItem
+        title={"Clear Tomorrows Plan"}
+        buttonTitle={"Clear"}
         callBack={() => clearPlan(setAlert, setPlan, TOMORROW_PLAN)}
       />
     </View>
@@ -56,23 +94,7 @@ const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
       alignItems: "center",
-      marginTop: 100,
-    },
-    itemContainer: {
-      width: "80%",
-    },
-    itemInnerContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      padding: 3,
-    },
-    itemText: {
-      fontSize: 17,
-      color: colors.textPrimary,
-    },
-    divider: {
-      borderBottomColor: colors.textPrimary,
-      borderBottomWidth: StyleSheet.hairlineWidth,
+      marginTop: 50,
+      padding: 20,
     },
   });

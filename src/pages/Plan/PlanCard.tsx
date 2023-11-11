@@ -27,8 +27,9 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
   const [finalizeModal, setFinalizeModal] = useState(false);
 
   const colors = useRecoilValue(themeAtom);
-  const windowWidth = Dimensions.get("window").width;
-  const styles = styling(colors, windowWidth);
+  const width = Dimensions.get("window").width;
+  const height = Dimensions.get("window").height;
+  const styles = styling(colors, width, height);
   const setNavigator = useSetRecoilState(navigatorAtom);
 
   useEffect(() => {
@@ -103,7 +104,7 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 19, height: "80%" }}>
+      <View style={{ marginTop: 20 }}>
         {actions.length > 0 ? (
           <ScrollView scrollEnabled={!data.finalized}>
             {actions.map((item: ActionItemT, index: number) => {
@@ -117,35 +118,39 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
                     addAction={addActionKey}
                     removeAction={removeActionKey}
                     isInPlan={isInPlan}
+                    finalized={data.finalized}
                   />
                 );
             })}
-
-            {data.finalized && (
-              <View style={styles.centeredView}>
-                <View style={styles.finalizedContainer}>
-                  <Text style={styles.finalizedText}>{"Day is Finalized"}</Text>
-                </View>
-              </View>
-            )}
           </ScrollView>
         ) : (
           <Text style={{ color: colors.grey, marginTop: 50 }}>No Actions</Text>
         )}
       </View>
-      <View>
+      <View style={{ backgroundColor: null }}>
         <View style={styles.totalTimeContainer}>
           <Text style={styles.totalTimeText}>Total: {convertTime(checkPlanLength())}</Text>
         </View>
         <View style={styles.buttonContainer}>
-          <Button title="Save" onPress={handleSave} disabled={data.finalized} />
+          <Button
+            title="Save"
+            onPress={handleSave}
+            disabled={data.finalized || data.actionKeys.length == 0}
+          />
           <Button
             title="Finalize"
             onPress={() => setFinalizeModal(true)}
-            disabled={data.finalized || day === TOMORROW_PLAN}
+            disabled={data.finalized || day === TOMORROW_PLAN || data.actionKeys.length == 0}
           />
         </View>
       </View>
+      {data.finalized && (
+        <View style={styles.centeredView}>
+          <View style={styles.finalizedContainer}>
+            <Text style={styles.finalizedText}>{"Day is Finalized"}</Text>
+          </View>
+        </View>
+      )}
       <PlanFocusModal
         modalVisible={finalizeModal}
         setModalVisible={setFinalizeModal}
@@ -157,22 +162,15 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
   );
 };
 
-const styling = (colors: ThemeT, windowWidth: number) =>
+const styling = (colors: ThemeT, width: number, height: number) =>
   StyleSheet.create({
     container: {
       justifyContent: "space-between",
-      alignItems: "center",
-      flex: 1,
-    },
-    focusContainer: {
-      padding: 10,
-      margin: 10,
-      alignItems: "center",
+      height: height - 250,
     },
     buttonContainer: {
       flexDirection: "row",
       justifyContent: "center",
-      width: windowWidth - 50,
     },
     centeredView: {
       flex: 1,
@@ -194,6 +192,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       color: colors.error,
     },
     totalTimeContainer: {
+      paddingRight: 10,
       alignItems: "flex-end",
     },
     totalTimeText: {

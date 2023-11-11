@@ -43,7 +43,7 @@ export const Plan: FC<any> = () => {
   }, []);
 
   return (
-    <View style={styles.container} {...panResponder.panHandlers}>
+    <View style={styles.container}>
       <View style={styles.addContainer}>
         <IconButton
           icon={"plus"}
@@ -57,10 +57,12 @@ export const Plan: FC<any> = () => {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <PlanDayButton title={"today"} onPress={() => setToday(true)} selected={today} />
-        <PlanDayButton title={"today"} onPress={() => setToday(false)} selected={!today} />
+        <PlanDayButton title={"Today"} onPress={() => setToday(true)} selected={today} />
+        <PlanDayButton title={"Tomorrow"} onPress={() => setToday(false)} selected={!today} />
       </View>
-      {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
+      <View {...panResponder.panHandlers}>
+        {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
+      </View>
       <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </View>
   );
@@ -70,12 +72,10 @@ const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
       alignItems: "center",
-      flex: 1,
     },
     addContainer: {
-      marginTop: 50,
-      width: "100%",
       paddingLeft: 10,
+      width: "100%",
     },
     buttonContainer: {
       borderRadius: 5,
