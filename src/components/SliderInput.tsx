@@ -39,8 +39,6 @@ export const SliderInput: FC<SliderInputT> = ({
 
   const setValue = (values: SliderValue[]) => {
     let value = Number(values[0]);
-    console.log(typeof values);
-
     onChange(
       generateNumbers().reduce((closest, current) =>
         Math.abs(current - value) < Math.abs(closest - value) ? current : closest
