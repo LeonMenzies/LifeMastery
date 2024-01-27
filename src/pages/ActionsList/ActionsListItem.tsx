@@ -88,8 +88,7 @@ export const ActionsListItem: FC<ActionsListItemT> = ({
 const styling = (colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
-      paddingTop: 5,
-      paddingBottom: 5,
+      padding: 10,
       width: windowWidth - 50,
     },
     actionHeading: {

@@ -85,9 +85,8 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
 const styling = (colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: 20,
-      paddingVertical: 5,
-      width: windowWidth,
+      padding: 10,
+      width: windowWidth - 50,
     },
     actionHeading: {
       flexDirection: "row",

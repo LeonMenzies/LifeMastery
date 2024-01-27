@@ -130,6 +130,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
       alignItems: "center",
+      height: "100%",
     },
     addContainer: {
       width: "100%",
@@ -144,6 +145,5 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     },
     actionsContainer: {
       justifyContent: "space-between",
-      height: "80%",
     },
   });

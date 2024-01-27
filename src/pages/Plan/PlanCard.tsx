@@ -104,10 +104,10 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 20 }}>
-        {actions.length > 0 ? (
-          <ScrollView scrollEnabled={!data.finalized}>
-            {actions.map((item: ActionItemT, index: number) => {
+      <View style={styles.plainItemsContainer}>
+        <ScrollView>
+          {actions.length > 0 ? (
+            actions.map((item: ActionItemT, index: number) => {
               const isInPlan = data.actionKeys.some((actionKey: string) => actionKey === item.key);
               if (!item.isCompleted || isInPlan)
                 return (
@@ -121,27 +121,28 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
                     finalized={data.finalized}
                   />
                 );
-            })}
-          </ScrollView>
-        ) : (
-          <Text style={{ color: colors.grey, marginTop: 50 }}>No Actions</Text>
-        )}
-      </View>
-      <View style={{ backgroundColor: null }}>
-        <View style={styles.totalTimeContainer}>
-          <Text style={styles.totalTimeText}>Total: {convertTime(checkPlanLength())}</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Save"
-            onPress={handleSave}
-            disabled={data.finalized || data.actionKeys.length == 0}
-          />
-          <Button
-            title="Finalize"
-            onPress={() => setFinalizeModal(true)}
-            disabled={data.finalized || day === TOMORROW_PLAN || data.actionKeys.length == 0}
-          />
+            })
+          ) : (
+            <Text style={{ color: colors.grey, marginTop: 50 }}>No Actions</Text>
+          )}
+        </ScrollView>
+
+        <View>
+          <View style={styles.totalTimeContainer}>
+            <Text style={styles.totalTimeText}>Total: {convertTime(checkPlanLength())}</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Save"
+              onPress={handleSave}
+              disabled={data.finalized || data.actionKeys.length == 0}
+            />
+            <Button
+              title="Finalize"
+              onPress={() => setFinalizeModal(true)}
+              disabled={data.finalized || day === TOMORROW_PLAN || data.actionKeys.length == 0}
+            />
+          </View>
         </View>
       </View>
       {data.finalized && (
@@ -165,8 +166,11 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
 const styling = (colors: ThemeT, width: number, height: number) =>
   StyleSheet.create({
     container: {
-      justifyContent: "space-between",
-      height: height - 250,
+      height: "100%",
+    },
+    plainItemsContainer: {
+      marginTop: 20,
+      height: "80%",
     },
     buttonContainer: {
       flexDirection: "row",
