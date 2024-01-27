@@ -1,5 +1,5 @@
-import { StyleSheet, View, PanResponder } from "react-native";
-import { useEffect, useState, FC, useRef } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { useEffect, useState, FC } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 import { alertAtom } from "~recoil/alertAtom";
@@ -21,22 +21,9 @@ export const Plan: FC<any> = () => {
     newAction: true,
   });
   const setActions = useSetRecoilState(actionsAtom);
+  const windowWidth = Dimensions.get("window").width;
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors);
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: (e, gestureState) => {
-        if (gestureState.dx > 50) {
-          setToday(true);
-        } else if (gestureState.dx < -50) {
-          setToday(false);
-        }
-      },
-    })
-  ).current;
+  const styles = styling(colors, windowWidth);
 
   useEffect(() => {
     getActions(setAlert, setActions);
@@ -60,7 +47,7 @@ export const Plan: FC<any> = () => {
         <PlanDayButton title={"Today"} onPress={() => setToday(true)} selected={today} />
         <PlanDayButton title={"Tomorrow"} onPress={() => setToday(false)} selected={!today} />
       </View>
-      <View {...panResponder.panHandlers}>
+      <View style={styles.currentDayContainer}>
         {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
       </View>
       <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
@@ -68,20 +55,25 @@ export const Plan: FC<any> = () => {
   );
 };
 
-const styling = (colors: ThemeT) =>
+const styling = (colors: ThemeT, windowWidth: number) =>
   StyleSheet.create({
     container: {
       alignItems: "center",
+      height: "100%",
     },
     addContainer: {
       paddingLeft: 10,
       width: "100%",
+    },
+    currentDayContainer: {
+      flex: 1,
     },
     buttonContainer: {
       borderRadius: 5,
       borderColor: colors.primary,
       borderWidth: 2,
       flexDirection: "row",
-      width: "80%",
+      marginVertical: 5,
+      width: windowWidth - 50,
     },
   });

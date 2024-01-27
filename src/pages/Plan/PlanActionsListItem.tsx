@@ -45,20 +45,20 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onLongPress={() => {}}
-        onPress={() => {
-          if (finalized) {
-            return;
-          } else if (isInPlan) {
-            handleCancel();
-          } else {
-            setModalVisible(true);
-          }
-        }}
-        activeOpacity={finalized ? 1 : 0.4}
-      >
+    <TouchableOpacity
+      onLongPress={() => {}}
+      onPress={() => {
+        if (finalized) {
+          return;
+        } else if (isInPlan) {
+          handleCancel();
+        } else {
+          setModalVisible(true);
+        }
+      }}
+      activeOpacity={finalized ? 1 : 0.4}
+    >
+      <View style={styles.container}>
         <View style={styles.actionHeading}>
           <View style={styles.actionTitleContainer}>
             {isInPlan && <View style={styles.inPlan} />}
@@ -77,8 +77,8 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
           handleSetPriority={handleSetPriority}
           handleCancel={handleCancel}
         />
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 

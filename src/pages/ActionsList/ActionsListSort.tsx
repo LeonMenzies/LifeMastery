@@ -56,13 +56,12 @@ const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
       alignItems: "center",
-      margin: 10,
+      marginVertical: 5,
     },
     buttonContainer: {
       borderRadius: 5,
       borderColor: colors.primary,
       borderWidth: 2,
-      marginBottom: 10,
       flexDirection: "row",
     },
   });

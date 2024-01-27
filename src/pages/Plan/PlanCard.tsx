@@ -167,11 +167,12 @@ const styling = (colors: ThemeT, width: number, height: number) =>
   StyleSheet.create({
     container: {
       height: "100%",
+      alignItems: "center",
     },
     plainItemsContainer: {
-      marginTop: 20,
-      height: "80%",
+      flex: 1,
     },
+
     buttonContainer: {
       flexDirection: "row",
       justifyContent: "center",

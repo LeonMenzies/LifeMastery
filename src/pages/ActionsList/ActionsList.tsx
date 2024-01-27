@@ -144,6 +144,6 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       width: windowWidth - 50,
     },
     actionsContainer: {
-      justifyContent: "space-between",
+      flex: 1,
     },
   });
