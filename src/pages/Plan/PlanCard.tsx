@@ -127,7 +127,7 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
           )}
         </ScrollView>
 
-        <View>
+        <View style={styles.bottomContainer}>
           <View style={styles.totalTimeContainer}>
             <Text style={styles.totalTimeText}>Total: {convertTime(checkPlanLength())}</Text>
           </View>
@@ -171,8 +171,11 @@ const styling = (colors: ThemeT, width: number, height: number) =>
     },
     plainItemsContainer: {
       flex: 1,
+      alignItems: "center",
     },
-
+    bottomContainer: {
+      width: width - 50,
+    },
     buttonContainer: {
       flexDirection: "row",
       justifyContent: "center",
