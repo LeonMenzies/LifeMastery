@@ -15,16 +15,20 @@ export const HomeHeader: FC<HomeHeaderT> = ({ focus, percent }) => {
   const colors = useRecoilValue(themeAtom);
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(colors, windowWidth);
+  const date = new Date();
 
   const options = {
     weekday: "long" as const,
     month: "short" as const,
     day: "numeric" as const,
   };
+  const formattedDate = date.toLocaleDateString("en-US", options);
 
   return (
     <View style={styles.container}>
       <Text style={styles.focusText}>Key Focus: {focus}</Text>
+      <Text>{formattedDate}</Text>
+
       {percent > 0 && <HomeProgressBar percent={percent} />}
     </View>
   );
