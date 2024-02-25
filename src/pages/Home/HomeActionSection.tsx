@@ -6,6 +6,7 @@ import { HomeActionItem } from "~pages/Home/HomeActionItem";
 import { AreaOfImportanceItemT } from "~types/Types";
 import { useRecoilValue } from "recoil";
 import { themeAtom } from "~recoil/themeAtom";
+import { convertTime } from "~utils/Helpers";
 
 type HomeActionSectionT = {
   aoi: AreaOfImportanceItemT;
@@ -14,33 +15,29 @@ type HomeActionSectionT = {
   setActions: any;
 };
 
-export const HomeActionSection: FC<HomeActionSectionT> = ({
-  aoi,
-  data,
-  setActions,
-  actionKeys,
-}) => {
+export const HomeActionSection: FC<HomeActionSectionT> = ({ aoi, data, setActions, actionKeys }) => {
   const windowWidth = Dimensions.get("window").width;
   const colors = useRecoilValue(themeAtom);
   const styles = styling(aoi.Color, windowWidth, colors);
+  let actionSectionTotalTime = 0;
 
   const filteredData: ActionItemT[] = data
     .filter((action: ActionItemT) => {
-      return action.areaOfImportance === aoi.AOI && actionKeys.includes(action.key);
+      const included = action.areaOfImportance === aoi.AOI && actionKeys.includes(action.key);
+      if (included) actionSectionTotalTime += action.timeEstimate;
+      return included;
     })
     .sort((a, b) => a.priority - b.priority);
 
   if (filteredData.length > 0)
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>{aoi.AOI}</Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.title}>{aoi.AOI}</Text>
+          <Text>{convertTime(actionSectionTotalTime)}</Text>
+        </View>
         {filteredData.map((action: ActionItemT) => (
-          <HomeActionItem
-            key={action.key}
-            action={action}
-            color={aoi.Color}
-            setActions={setActions}
-          />
+          <HomeActionItem key={action.key} action={action} color={aoi.Color} setActions={setActions} />
         ))}
         <View style={styles.divider} />
       </View>
@@ -52,6 +49,12 @@ const styling = (color: string, windowWidth: number, colors: ThemeT) =>
     container: {
       marginHorizontal: 10,
       width: windowWidth - 50,
+    },
+    headerContainer: {
+      padding: 2,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
     },
     title: {
       fontSize: 20,

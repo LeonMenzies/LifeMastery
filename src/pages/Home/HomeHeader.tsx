@@ -5,13 +5,15 @@ import { useRecoilValue } from "recoil";
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 import { HomeProgressBar } from "~pages/Home/HomeProgressBar";
+import { convertTime } from "~utils/Helpers";
 
 type HomeHeaderT = {
   focus: string;
   percent: number;
+  totalTime: number;
 };
 
-export const HomeHeader: FC<HomeHeaderT> = ({ focus, percent }) => {
+export const HomeHeader: FC<HomeHeaderT> = ({ focus, percent, totalTime }) => {
   const colors = useRecoilValue(themeAtom);
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(colors, windowWidth);
@@ -27,6 +29,7 @@ export const HomeHeader: FC<HomeHeaderT> = ({ focus, percent }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.focusText}>Key Focus: {focus}</Text>
+      <Text>Total Time: {convertTime(totalTime)}</Text>
       <Text>{formattedDate}</Text>
 
       {percent > 0 && <HomeProgressBar percent={percent} />}

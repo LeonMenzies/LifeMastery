@@ -26,6 +26,7 @@ export const Home: FC<any> = () => {
   const settings = useRecoilValue(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
+  const totalTime: number = actions.reduce((total: number, action: ActionItemT) => total + Number(action.timeEstimate), 0);
 
   useEffect(() => {
     getAreasOfImportance(setAlert, setAreasOfImportance);
@@ -52,9 +53,7 @@ export const Home: FC<any> = () => {
       }
     });
 
-    const calculatedPercent = settings.timePercent
-      ? (completeTime / totalTime) * 100
-      : (completeTasks / plan.actionKeys.length) * 100;
+    const calculatedPercent = settings.timePercent ? (completeTime / totalTime) * 100 : (completeTasks / plan.actionKeys.length) * 100;
 
     if (calculatedPercent == 100) {
       updatePlan(setAlert, setPlan, { ...plan, complete: true }, TODAY_PLAN);
@@ -66,17 +65,11 @@ export const Home: FC<any> = () => {
     <View style={styles.container}>
       {plan.finalized ? (
         <View>
-          <HomeHeader focus={plan.focus} percent={percent} />
+          <HomeHeader focus={plan.focus} percent={percent} totalTime={totalTime} />
 
           <ScrollView>
             {areasOfImportance.map((aoi: AreaOfImportanceItemT) => (
-              <HomeActionSection
-                key={aoi.key}
-                aoi={aoi}
-                data={actions}
-                setActions={setActions}
-                actionKeys={plan.actionKeys}
-              />
+              <HomeActionSection key={aoi.key} aoi={aoi} data={actions} setActions={setActions} actionKeys={plan.actionKeys} />
             ))}
           </ScrollView>
         </View>
