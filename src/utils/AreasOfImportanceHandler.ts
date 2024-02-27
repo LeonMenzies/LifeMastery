@@ -30,11 +30,7 @@ export const addAreaOfImportance = (setAlert: any, setData: any, AOI: string) =>
           areaOfImportance = [];
         }
 
-        if (
-          areaOfImportance.some(
-            (obj: AreaOfImportanceItemT) => obj.AOI.toLowerCase() === AOI.toLowerCase()
-          )
-        ) {
+        if (areaOfImportance.some((obj: AreaOfImportanceItemT) => obj.AOI.toLowerCase() === AOI.toLowerCase())) {
           setAlert("Areas of importance must be unique");
           return;
         }
@@ -59,12 +55,7 @@ export const addAreaOfImportance = (setAlert: any, setData: any, AOI: string) =>
   }
 };
 
-export const deleteAreaOfImportance = (
-  setAlert: Function,
-  setData: Function,
-  setActions: Function,
-  keys: string[]
-) => {
+export const deleteAreaOfImportance = (setAlert: Function, setData: Function, setActions: Function, keys: string[]) => {
   try {
     AsyncStorage.getItem(AOI_KEY)
       .then((areaOfImportanceRaw) => JSON.parse(areaOfImportanceRaw))
@@ -74,13 +65,14 @@ export const deleteAreaOfImportance = (
             AsyncStorage.getItem(ACTION_KEY)
               .then((actionsRaw) => JSON.parse(actionsRaw))
               .then((actions: ActionItemT[]) => {
-                const filteredActions = actions.filter(
-                  (action: ActionItemT) => action.areaOfImportance != v.AOI
-                );
-                const actionsList = JSON.stringify(filteredActions);
-                AsyncStorage.setItem(ACTION_KEY, actionsList).then(() =>
-                  setActions(filteredActions)
-                );
+                const updatedActions = actions.map((action: ActionItemT) => {
+                  if (action.areaOfImportance === v.AOI) {
+                    return { ...action, areaOfImportance: "" };
+                  }
+                  return action;
+                });
+                const actionsList = JSON.stringify(updatedActions);
+                AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => setActions(updatedActions));
               });
             return false;
           } else {
@@ -94,9 +86,7 @@ export const deleteAreaOfImportance = (
         }
 
         const AreaOfImportanceList = JSON.stringify(filteredAreaOfImportance);
-        AsyncStorage.setItem(AOI_KEY, AreaOfImportanceList).then(() =>
-          setData(filteredAreaOfImportance)
-        );
+        AsyncStorage.setItem(AOI_KEY, AreaOfImportanceList).then(() => setData(filteredAreaOfImportance));
       });
   } catch (e) {
     setAlert("Failed to delete AOI");

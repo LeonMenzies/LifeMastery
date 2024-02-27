@@ -17,21 +17,9 @@ type ActionsListItemT = {
   setDeleteItems: Function;
 };
 
-export const ActionsListItem: FC<ActionsListItemT> = ({
-  item,
-  setModalVisible,
-  deleteItem,
-  setDeleteItem,
-  deleteItems,
-  setDeleteItems,
-}) => {
+export const ActionsListItem: FC<ActionsListItemT> = ({ item, setModalVisible, deleteItem, setDeleteItem, deleteItems, setDeleteItems }) => {
   function toggleItemInArray() {
-    if (deleteItem)
-      setDeleteItems(
-        deleteItems.includes(item.key)
-          ? deleteItems.filter((val) => val !== item.key)
-          : [...deleteItems, item.key]
-      );
+    if (deleteItem) setDeleteItems(deleteItems.includes(item.key) ? deleteItems.filter((val) => val !== item.key) : [...deleteItems, item.key]);
   }
 
   const setAction = useSetRecoilState(createActionAtom);
@@ -41,9 +29,12 @@ export const ActionsListItem: FC<ActionsListItemT> = ({
 
   return (
     <TouchableOpacity
-      onLongPress={() => setDeleteItem(true)}
+      onLongPress={() => {
+        setDeleteItem(true);
+        setDeleteItems([item.key]);
+      }}
       onPress={() => {
-        if (!deleteItem) {
+        if (!deleteItem && !item.isCompleted) {
           setModalVisible({
             show: true,
             newAction: false,
@@ -51,7 +42,7 @@ export const ActionsListItem: FC<ActionsListItemT> = ({
           setAction(item);
         }
       }}
-      activeOpacity={deleteItem ? 1 : 0.2}
+      activeOpacity={deleteItem || item.isCompleted ? 1 : 0.2}
     >
       <View style={styles.container}>
         <View style={styles.actionHeading}>
@@ -61,12 +52,7 @@ export const ActionsListItem: FC<ActionsListItemT> = ({
             <Text style={styles.actionTitle}>{item.action}</Text>
           </View>
           {deleteItem ? (
-            <CheckBoxInput
-              onPress={toggleItemInArray}
-              completed={deleteItems.includes(item.key)}
-              color={colors.error}
-              disabled={false}
-            />
+            <CheckBoxInput onPress={toggleItemInArray} completed={deleteItems.includes(item.key)} color={colors.error} disabled={false} />
           ) : (
             <Text style={styles.actionTitle}>{convertTime(item.timeEstimate)}</Text>
           )}

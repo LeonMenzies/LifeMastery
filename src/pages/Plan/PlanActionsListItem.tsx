@@ -18,14 +18,7 @@ type PlanActionsListItemT = {
   finalized: boolean;
 };
 
-export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
-  item,
-  setActions,
-  addAction,
-  removeAction,
-  isInPlan,
-  finalized,
-}) => {
+export const PlanActionsListItem: FC<PlanActionsListItemT> = ({ item, setActions, addAction, removeAction, isInPlan, finalized }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [modalVisible, setModalVisible] = useState(false);
   const windowWidth = Dimensions.get("window").width;
@@ -52,6 +45,8 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
           return;
         } else if (isInPlan) {
           handleCancel();
+        } else if (item.areaOfImportance === "") {
+          setAlert("Please add an area of importance to this action");
         } else {
           setModalVisible(true);
         }
@@ -70,13 +65,7 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({
           <Text style={styles.actionDate}>{item.dateAdded}</Text>
           <Text style={styles.actionDate}>{convertTime(item.timeEstimate)}</Text>
         </View>
-        <PlanSetPriority
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          actionTitle={item.action}
-          handleSetPriority={handleSetPriority}
-          handleCancel={handleCancel}
-        />
+        <PlanSetPriority modalVisible={modalVisible} setModalVisible={setModalVisible} actionTitle={item.action} handleSetPriority={handleSetPriority} handleCancel={handleCancel} />
       </View>
     </TouchableOpacity>
   );

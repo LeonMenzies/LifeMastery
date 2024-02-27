@@ -16,13 +16,7 @@ type PlanSetPriorityT = {
   handleCancel: any;
 };
 
-export const PlanSetPriority: FC<PlanSetPriorityT> = ({
-  actionTitle,
-  handleSetPriority,
-  modalVisible,
-  setModalVisible,
-  handleCancel,
-}) => {
+export const PlanSetPriority: FC<PlanSetPriorityT> = ({ actionTitle, handleSetPriority, modalVisible, setModalVisible, handleCancel }) => {
   const [priorityValue, setPriorityValue] = useState(1);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
@@ -32,15 +26,11 @@ export const PlanSetPriority: FC<PlanSetPriorityT> = ({
   }, []);
 
   return (
-    <Modal
-      animationType="fade"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}
-    >
+    <Modal animationType="fade" transparent={true} visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>{actionTitle}</Text>
+          <Text style={styles.modalTitle}>Set Priority</Text>
+
           <NumberInput onChange={setPriorityValue} value={priorityValue} maxValue={5} />
 
           <View style={styles.buttonContainer}>
@@ -69,12 +59,12 @@ const styling = (colors: ThemeT) =>
       alignItems: "center",
     },
     buttonContainer: {
-      padding: 10,
+      padding: 2,
       flexDirection: "row",
       gap: 14,
     },
     modalTitle: {
-      fontSize: 24,
+      fontSize: 20,
       color: colors.textPrimary,
     },
   });

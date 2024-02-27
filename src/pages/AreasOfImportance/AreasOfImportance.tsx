@@ -42,14 +42,7 @@ export const AreasOfImportance: FC<AreasOfImportanceT> = ({ modalVisible, setMod
         <View>
           <View>
             {data.map((item: AreaOfImportanceItemT, index: number) => (
-              <AreasOfImportanceItem
-                key={index}
-                item={item}
-                deleteItem={deleteItem}
-                setDeleteItem={setDeleteItem}
-                deleteItems={deleteItems}
-                setDeleteItems={setDeleteItems}
-              />
+              <AreasOfImportanceItem key={index} item={item} deleteItem={deleteItem} setDeleteItem={setDeleteItem} deleteItems={deleteItems} setDeleteItems={setDeleteItems} />
             ))}
           </View>
         </View>
@@ -86,5 +79,6 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       flexDirection: "row",
       justifyContent: "center",
       width: windowWidth - 50,
+      padding: 10,
     },
   });

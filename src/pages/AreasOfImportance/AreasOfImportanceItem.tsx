@@ -14,40 +14,26 @@ type AreasOfImportanceItemT = {
   setDeleteItems: Function;
 };
 
-export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({
-  item,
-  deleteItem,
-  setDeleteItem,
-  deleteItems,
-  setDeleteItems,
-}) => {
+export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item, deleteItem, setDeleteItem, deleteItems, setDeleteItems }) => {
   const colors = useRecoilValue(themeAtom);
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(item.Color, colors, windowWidth);
 
   function toggleItemInArray() {
-    if (deleteItem)
-      setDeleteItems(
-        deleteItems.includes(item.key)
-          ? deleteItems.filter((val) => val !== item.key)
-          : [...deleteItems, item.key]
-      );
+    if (deleteItem) setDeleteItems(deleteItems.includes(item.key) ? deleteItems.filter((val) => val !== item.key) : [...deleteItems, item.key]);
   }
 
   return (
-    <TouchableOpacity activeOpacity={1} onLongPress={() => setDeleteItem(true)}>
+    <TouchableOpacity
+      activeOpacity={1}
+      onLongPress={() => {
+        setDeleteItem(true);
+        setDeleteItems([item.key]);
+      }}
+    >
       <View style={styles.container}>
         <Text style={styles.aoiText}>{item.AOI}</Text>
-        {deleteItem ? (
-          <CheckBoxInput
-            onPress={toggleItemInArray}
-            completed={deleteItems.includes(item.key)}
-            color={colors.error}
-            disabled={false}
-          />
-        ) : (
-          <View style={styles.aoiColor} />
-        )}
+        {deleteItem ? <CheckBoxInput onPress={toggleItemInArray} completed={deleteItems.includes(item.key)} color={colors.error} disabled={false} /> : <View style={styles.aoiColor} />}
       </View>
     </TouchableOpacity>
   );
