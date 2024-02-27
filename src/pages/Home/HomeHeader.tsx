@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
 import { useRecoilValue } from "recoil";
-
 import { themeAtom } from "~recoil/themeAtom";
 import { ThemeT } from "~types/Types";
 import { HomeProgressBar } from "~pages/Home/HomeProgressBar";

@@ -34,7 +34,7 @@ export const HomeActionSection: FC<HomeActionSectionT> = ({ aoi, data, setAction
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>{aoi.AOI}</Text>
-          <Text>{convertTime(actionSectionTotalTime)}</Text>
+          <Text style={styles.timeText}>{convertTime(actionSectionTotalTime)}</Text>
         </View>
         {filteredData.map((action: ActionItemT) => (
           <HomeActionItem key={action.key} action={action} color={aoi.Color} setActions={setActions} />
@@ -61,6 +61,9 @@ const styling = (color: string, windowWidth: number, colors: ThemeT) =>
       fontSize: 20,
       fontWeight: "600",
       color: color,
+    },
+    timeText: {
+      color: colors.textPrimary,
     },
     divider: {
       borderBottomColor: colors.textPrimary,

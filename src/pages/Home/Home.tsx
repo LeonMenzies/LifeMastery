@@ -1,20 +1,21 @@
-import { StyleSheet, ScrollView, View, Text } from "react-native";
-import { useEffect, useState, FC } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useState, FC } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-
+import DraggableFlatList from "react-native-draggable-flatlist";
 import { HomeHeader } from "~pages/Home/HomeHeader";
 import { actionsAtom } from "~recoil/actionsAtom";
 import { alertAtom } from "~recoil/alertAtom";
 import { getActions } from "~utils/ActionsHandler";
-import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
+import { getAreasOfImportance, setAreasOfImportanceOrder } from "~utils/AreasOfImportanceHandler";
 import { HomeActionSection } from "~pages/Home/HomeActionSection";
-import { AreaOfImportanceItemT, PlanT, ThemeT, ActionItemT } from "~types/Types";
+import { PlanT, ThemeT, ActionItemT } from "~types/Types";
 import { getPlan, updatePlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
 import { TODAY_PLAN } from "~utils/Constants";
 import { getTheme } from "~utils/SettingsHandler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export const Home: FC<any> = () => {
   const setAlert = useSetRecoilState(alertAtom);
@@ -68,29 +69,43 @@ export const Home: FC<any> = () => {
   }, [actions]);
 
   return (
-    <View style={styles.container}>
-      {plan.finalized ? (
-        <View>
-          <HomeHeader focus={plan.focus} percent={percent} totalTime={totalTime} />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        {plan.finalized ? (
+          <View>
+            <HomeHeader focus={plan.focus} percent={percent} totalTime={totalTime} />
+            <DraggableFlatList
+              data={areasOfImportance}
+              keyExtractor={(item) => `draggable-item-${item.key}`}
+              renderItem={({ item, drag, isActive }) => (
+                <TouchableOpacity
+                  activeOpacity={1}
+                  style={{
+                    backgroundColor: isActive ? "rgba(0, 0, 0, 0.1)" : item.backgroundColor,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  onLongPress={drag}
+                >
+                  <HomeActionSection key={item.key} aoi={item} data={actions} setActions={setActions} actionKeys={plan.actionKeys} />
+                </TouchableOpacity>
+              )}
+              onDragEnd={({ data }) => setAreasOfImportanceOrder(setAlert, setAreasOfImportance, data)}
+            />
+          </View>
+        ) : (
+          <View style={{ marginTop: 100 }}>
+            <Text style={{ color: colors.grey, marginTop: 50 }}>No Plan Finalized For Today</Text>
+          </View>
+        )}
 
-          <ScrollView>
-            {areasOfImportance.map((aoi: AreaOfImportanceItemT) => (
-              <HomeActionSection key={aoi.key} aoi={aoi} data={actions} setActions={setActions} actionKeys={plan.actionKeys} />
-            ))}
-          </ScrollView>
-        </View>
-      ) : (
-        <View style={{ marginTop: 100 }}>
-          <Text style={{ color: colors.grey, marginTop: 50 }}>No Plan Finalized For Today</Text>
-        </View>
-      )}
-
-      {plan.complete && (
-        <View style={styles.completeContainer}>
-          <Text style={styles.completeText}>{"Day is Complete"}</Text>
-        </View>
-      )}
-    </View>
+        {plan.complete && (
+          <View style={styles.completeContainer}>
+            <Text style={styles.completeText}>{"Day is Complete"}</Text>
+          </View>
+        )}
+      </View>
+    </GestureHandlerRootView>
   );
 };
 

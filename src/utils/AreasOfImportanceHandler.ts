@@ -19,6 +19,16 @@ export const getAreasOfImportance = (setAlert, setData) => {
   }
 };
 
+export const setAreasOfImportanceOrder = (setAlert, setData, areasOfImportance) => {
+  try {
+    const areaOfImportanceList = JSON.stringify(areasOfImportance);
+    AsyncStorage.setItem(AOI_KEY, areaOfImportanceList);
+    setData(areasOfImportance);
+  } catch (e) {
+    setAlert("Failed to set AOI");
+  }
+};
+
 export const addAreaOfImportance = (setAlert: any, setData: any, AOI: string) => {
   const key = uuidv4();
 
