@@ -33,7 +33,7 @@ export const HomeHeader: FC<HomeHeaderT> = ({ focus, percent, totalTime }) => {
         <Text style={styles.smallText}>Total Time: {convertTime(totalTime)}</Text>
         <Text style={styles.smallText}>{formattedDate}</Text>
       </View>
-      {percent > 0 && <HomeProgressBar percent={percent} />}
+      <HomeProgressBar percent={percent} />
     </View>
   );
 };

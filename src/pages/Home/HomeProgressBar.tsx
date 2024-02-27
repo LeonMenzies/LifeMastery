@@ -12,11 +12,8 @@ type HomeProgressBarT = {
 export const HomeProgressBar: FC<HomeProgressBarT> = ({ percent }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
-
-  // Create an animated value
   const animatedValue = useRef(new Animated.Value(0)).current;
 
-  // Update the animated value when the percent prop changes
   useEffect(() => {
     Animated.timing(animatedValue, {
       toValue: percent,
@@ -25,7 +22,6 @@ export const HomeProgressBar: FC<HomeProgressBarT> = ({ percent }) => {
     }).start();
   }, [percent]);
 
-  // Calculate the width as a percentage
   const width = animatedValue.interpolate({
     inputRange: [0, 100],
     outputRange: ["0%", "100%"],
