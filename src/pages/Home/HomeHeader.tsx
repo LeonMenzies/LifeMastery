@@ -30,8 +30,8 @@ export const HomeHeader: FC<HomeHeaderT> = ({ focus, percent, totalTime }) => {
     <View style={styles.container}>
       <View style={styles.innerContainer}>
         <Text style={styles.focusText}>Key Focus: {focus}</Text>
-        <Text>Total Time: {convertTime(totalTime)}</Text>
-        <Text>{formattedDate}</Text>
+        <Text style={styles.smallText}>Total Time: {convertTime(totalTime)}</Text>
+        <Text style={styles.smallText}>{formattedDate}</Text>
       </View>
       {percent > 0 && <HomeProgressBar percent={percent} />}
     </View>
@@ -52,7 +52,10 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     focusText: {
       fontSize: 24,
       padding: 10,
-      color: colors.textPrimary,
       fontWeight: "bold",
+      color: colors.textPrimary,
+    },
+    smallText: {
+      color: colors.textPrimary,
     },
   });
