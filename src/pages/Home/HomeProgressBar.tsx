@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from "react";
-import { StyleSheet, View, Animated } from "react-native";
+import { StyleSheet, View, Animated, Text } from "react-native";
 import { useRecoilValue } from "recoil";
 
 import { themeAtom } from "~recoil/themeAtom";
@@ -33,7 +33,9 @@ export const HomeProgressBar: FC<HomeProgressBarT> = ({ percent }) => {
 
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.percent, { width }]} />
+      <Animated.View style={[styles.percent, { width }]}>
+        <Text style={styles.text}>{`${Math.round(percent)}%`}</Text>
+      </Animated.View>
     </View>
   );
 };
@@ -41,11 +43,20 @@ export const HomeProgressBar: FC<HomeProgressBarT> = ({ percent }) => {
 const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
-      height: 6,
+      height: 20,
       width: "100%",
+      backgroundColor: colors.secondary,
+      borderRadius: 10,
+      overflow: "hidden",
     },
     percent: {
       height: "100%",
-      backgroundColor: colors.secondary,
+      backgroundColor: colors.primary,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    text: {
+      color: "white",
+      fontWeight: "bold",
     },
   });
