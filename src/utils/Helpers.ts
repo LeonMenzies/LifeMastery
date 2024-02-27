@@ -22,5 +22,5 @@ export const setPlanDateStringify = (plan: PlanT, day: string): string => {
   if (day === TOMORROW_PLAN) {
     today.setDate(today.getDate() + 1);
   }
-  return JSON.stringify({ ...plan, date: today.toISOString().split("T")[0] });
+  return JSON.stringify({ ...plan, date: today.toLocaleDateString() });
 };

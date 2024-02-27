@@ -11,13 +11,13 @@ export const getPlan = (setAlert: Function, setData: Function, day: string) => {
       .then((plan: PlanT) => {
         if (plan !== null) {
           //Handle day switch
-          if (plan.date == new Date().toISOString().split("T")[0]) {
+          if (plan.date == new Date().toLocaleDateString()) {
             setData(plan);
           } else {
             AsyncStorage.getItem(TOMORROW_PLAN)
               .then((plan) => JSON.parse(plan))
               .then((plan: PlanT) => {
-                if (plan !== null && plan.date == new Date().toISOString().split("T")[0]) {
+                if (plan !== null && plan.date == new Date().toLocaleDateString()) {
                   setData(plan);
                 } else {
                   setData({

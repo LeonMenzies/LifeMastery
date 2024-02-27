@@ -26,7 +26,13 @@ export const Home: FC<any> = () => {
   const settings = useRecoilValue(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
-  const totalTime: number = actions.reduce((total: number, action: ActionItemT) => total + Number(action.timeEstimate), 0);
+  const totalTime: number = actions.reduce((total: number, action: ActionItemT) => {
+    let toAdd = 0;
+    if (plan.actionKeys.includes(action.key)) {
+      toAdd = Number(action.timeEstimate);
+    }
+    return total + toAdd;
+  }, 0);
 
   useEffect(() => {
     getAreasOfImportance(setAlert, setAreasOfImportance);

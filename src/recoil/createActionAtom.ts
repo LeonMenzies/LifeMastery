@@ -8,7 +8,7 @@ export const emptyAction = {
   timeEstimate: 0,
   priority: 0,
   areaOfImportance: "",
-  dateAdded: new Date().toISOString().split("T")[0],
+  dateAdded: new Date().toLocaleDateString(),
 } as ActionItemT;
 
 export const createActionAtom = atom({

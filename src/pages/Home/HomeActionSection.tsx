@@ -48,6 +48,7 @@ const styling = (color: string, windowWidth: number, colors: ThemeT) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 10,
+      marginVertical: 5,
       width: windowWidth - 50,
     },
     headerContainer: {
