@@ -11,7 +11,7 @@ type HomeProgressBarT = {
 
 export const HomeProgressBar: FC<HomeProgressBarT> = ({ percent }) => {
   const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors);
+  const styles = styling(colors, percent == 100);
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -30,13 +30,13 @@ export const HomeProgressBar: FC<HomeProgressBarT> = ({ percent }) => {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.percent, { width }]}>
-        <Text style={styles.text}>{`${Math.round(percent)}%`}</Text>
+        <Text style={styles.text}>{`${percent == 100 ? "Congratulations!" : ""} ${Math.round(percent)}%`}</Text>
       </Animated.View>
     </View>
   );
 };
 
-const styling = (colors: ThemeT) =>
+const styling = (colors: ThemeT, complete: boolean) =>
   StyleSheet.create({
     container: {
       height: 20,
@@ -47,7 +47,7 @@ const styling = (colors: ThemeT) =>
     },
     percent: {
       height: "100%",
-      backgroundColor: colors.primary,
+      backgroundColor: complete ? colors.success : colors.primary,
       justifyContent: "center",
       alignItems: "center",
     },
