@@ -65,7 +65,6 @@ export const updatePlan = (setAlert: Function, setData: Function, plan: PlanT, d
           const tmp: PlanT = { ...plan };
 
           tmp.date = plan.date;
-          tmp.focus = plan.focus;
           tmp.finalized = plan.finalized;
           tmp.complete = plan.complete;
           tmp.actionKeys = plan.actionKeys;

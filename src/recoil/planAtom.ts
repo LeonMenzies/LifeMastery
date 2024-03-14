@@ -5,7 +5,6 @@ export const planAtom = atom({
   default: {
     key: "",
     date: "",
-    focus: "",
     finalized: false,
     complete: false,
     actionKeys: [] as string[],

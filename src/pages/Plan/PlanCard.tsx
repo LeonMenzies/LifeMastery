@@ -23,8 +23,6 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
   const setAlert = useSetRecoilState(alertAtom);
   const [data, setData] = useRecoilState(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
-  const [text, setText] = useState("");
-  const [finalizeModal, setFinalizeModal] = useState(false);
 
   const colors = useRecoilValue(themeAtom);
   const width = Dimensions.get("window").width;
@@ -35,10 +33,6 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
   useEffect(() => {
     getPlan(setAlert, setData, day);
   }, [day]);
-
-  useEffect(() => {
-    setText(data.focus);
-  }, [data]);
 
   const updateFocus = (newFocus: string) => {
     setData((prevData) => ({
@@ -90,12 +84,13 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
       return;
     }
 
-    if (!text) {
-      setAlert("Focus is required");
-      return;
-    }
     setData({ ...data, finalized: true });
     finalizePlan(setAlert, { ...data, finalized: true }, setHome, day);
+  };
+
+  const handleEdit = () => {
+    setData({ ...data, finalized: false });
+    finalizePlan(setAlert, { ...data, finalized: false }, () => {}, day);
   };
 
   const setHome = () => {
@@ -110,17 +105,7 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
             actions.map((item: ActionItemT, index: number) => {
               const isInPlan = data.actionKeys.some((actionKey: string) => actionKey === item.key);
               if (!item.isCompleted || isInPlan)
-                return (
-                  <PlanActionsListItem
-                    key={index}
-                    item={item}
-                    setActions={setActions}
-                    addAction={addActionKey}
-                    removeAction={removeActionKey}
-                    isInPlan={isInPlan}
-                    finalized={data.finalized}
-                  />
-                );
+                return <PlanActionsListItem key={index} item={item} setActions={setActions} addAction={addActionKey} removeAction={removeActionKey} isInPlan={isInPlan} finalized={data.finalized} />;
             })
           ) : (
             <Text style={{ color: colors.grey, marginTop: 50 }}>No Actions</Text>
@@ -132,16 +117,13 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
             <Text style={styles.totalTimeText}>Total: {convertTime(checkPlanLength())}</Text>
           </View>
           <View style={styles.buttonContainer}>
-            <Button
-              title="Save"
-              onPress={handleSave}
-              disabled={data.finalized || data.actionKeys.length == 0}
-            />
-            <Button
-              title="Finalize"
-              onPress={() => setFinalizeModal(true)}
-              disabled={data.finalized || day === TOMORROW_PLAN || data.actionKeys.length == 0}
-            />
+            {data.finalized ? (
+              <Button title="Edit" onPress={handleEdit} disabled={false} />
+            ) : day === TOMORROW_PLAN ? (
+              <Button title="Save" onPress={handleSave} disabled={data.finalized || data.actionKeys.length == 0} />
+            ) : (
+              <Button title="Finalize" onPress={handleFinalize} disabled={data.finalized || day === TOMORROW_PLAN || data.actionKeys.length == 0} />
+            )}
           </View>
         </View>
       </View>
@@ -152,13 +134,6 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
           </View>
         </View>
       )}
-      <PlanFocusModal
-        modalVisible={finalizeModal}
-        setModalVisible={setFinalizeModal}
-        handleFinalize={handleFinalize}
-        updateFocus={updateFocus}
-        focusValue={data.focus}
-      />
     </View>
   );
 };
@@ -175,6 +150,7 @@ const styling = (colors: ThemeT, width: number, height: number) =>
     },
     bottomContainer: {
       width: width - 50,
+      zIndex: 20,
     },
     buttonContainer: {
       flexDirection: "row",
@@ -182,11 +158,10 @@ const styling = (colors: ThemeT, width: number, height: number) =>
     },
     centeredView: {
       flex: 1,
-      height: "100%",
-      width: "100%",
       top: "20%",
       alignItems: "center",
       position: "absolute",
+      zIndex: 1,
     },
     finalizedContainer: {
       transform: [{ rotate: "30deg" }],

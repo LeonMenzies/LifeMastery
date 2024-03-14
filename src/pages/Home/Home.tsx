@@ -60,20 +60,24 @@ export const Home: FC<any> = () => {
       }
     });
 
-    const calculatedPercent = settings.timePercent ? (completeTime / totalTime) * 100 : (completeTasks / plan.actionKeys.length) * 100;
+    const denominator = settings.timePercent ? totalTime : plan.actionKeys.length;
+    const numerator = settings.timePercent ? completeTime : completeTasks;
 
-    if (calculatedPercent == 100) {
-      updatePlan(setAlert, setPlan, { ...plan, complete: true }, TODAY_PLAN);
-    }
+    const calculatedPercent = denominator !== 0 && !isNaN(denominator) ? (numerator / denominator) * 100 : 0;
+
+    // Not using this logic for now
+    // if (calculatedPercent == 100) {
+    //   updatePlan(setAlert, setPlan, { ...plan, complete: true }, TODAY_PLAN);
+    // }
     setPercent(calculatedPercent);
   }, [actions]);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <HomeHeader percent={percent} totalTime={totalTime} />
+      <GestureHandlerRootView style={{ flex: 1, marginTop: 20 }}>
         {plan.finalized ? (
           <View>
-            <HomeHeader focus={plan.focus} percent={percent} totalTime={totalTime} />
             <DraggableFlatList
               data={areasOfImportance}
               keyExtractor={(item) => `draggable-item-${item.key}`}
@@ -104,8 +108,8 @@ export const Home: FC<any> = () => {
             <Text style={styles.completeText}>{"Day is Complete"}</Text>
           </View>
         )}
-      </View>
-    </GestureHandlerRootView>
+      </GestureHandlerRootView>
+    </View>
   );
 };
 
@@ -113,6 +117,7 @@ const styling = (colors: ThemeT) =>
   StyleSheet.create({
     container: {
       alignItems: "center",
+      height: "100%",
     },
     completeContainer: {
       borderRadius: 5,

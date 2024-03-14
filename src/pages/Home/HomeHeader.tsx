@@ -7,12 +7,11 @@ import { HomeProgressBar } from "~pages/Home/HomeProgressBar";
 import { convertTime } from "~utils/Helpers";
 
 type HomeHeaderT = {
-  focus: string;
   percent: number;
   totalTime: number;
 };
 
-export const HomeHeader: FC<HomeHeaderT> = ({ focus, percent, totalTime }) => {
+export const HomeHeader: FC<HomeHeaderT> = ({ percent, totalTime }) => {
   const colors = useRecoilValue(themeAtom);
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(colors, windowWidth);
@@ -28,7 +27,6 @@ export const HomeHeader: FC<HomeHeaderT> = ({ focus, percent, totalTime }) => {
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <Text style={styles.focusText}>Key Focus: {focus}</Text>
         <Text style={styles.smallText}>Total Time: {convertTime(totalTime)}</Text>
         <Text style={styles.smallText}>{formattedDate}</Text>
       </View>
@@ -43,6 +41,7 @@ const styling = (colors: ThemeT, windowWidth: number) =>
       width: windowWidth - 50,
       alignItems: "center",
       margin: 10,
+      height: 50,
     },
     innerContainer: {
       alignItems: "center",

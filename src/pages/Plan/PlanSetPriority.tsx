@@ -31,7 +31,7 @@ export const PlanSetPriority: FC<PlanSetPriorityT> = ({ actionTitle, handleSetPr
         <View style={styles.modalView}>
           <Text style={styles.modalTitle}>Set Priority</Text>
 
-          <NumberInput onChange={setPriorityValue} value={priorityValue} maxValue={5} />
+          <NumberInput onChange={setPriorityValue} value={priorityValue} maxValue={9} />
 
           <View style={styles.buttonContainer}>
             <Button title="Set" onPress={() => handleSetPriority(priorityValue)} />
