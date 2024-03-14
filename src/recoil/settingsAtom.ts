@@ -5,6 +5,7 @@ export const defaultSettings = {
   timePercent: true,
   lightMode: true,
   autoComplete: false,
+  maxPlanTime: 16,
 };
 
 export const settingsAtom = atom<SettingsT>({

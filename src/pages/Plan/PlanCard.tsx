@@ -13,7 +13,7 @@ import { actionsAtom } from "~recoil/actionsAtom";
 import { TOMORROW_PLAN } from "~utils/Constants";
 import { convertTime } from "~utils/Helpers";
 import { navigatorAtom } from "~recoil/navigatorAtom";
-import { PlanFocusModal } from "~pages/Plan/PlanFocusModal";
+import { settingsAtom } from "~recoil/settingsAtom";
 
 type PlanCardT = {
   day: string;
@@ -24,6 +24,7 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
   const [data, setData] = useRecoilState(planAtom);
   const [actions, setActions] = useRecoilState(actionsAtom);
 
+  const settings = useRecoilValue(settingsAtom);
   const colors = useRecoilValue(themeAtom);
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
@@ -75,7 +76,7 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
       return;
     }
 
-    if (checkPlanLength() > 16 * 60) {
+    if (checkPlanLength() > settings.maxPlanTime * 60) {
       setAlert("There isn't enough time in the day for all those actions, lets try again");
       setData((prevData) => ({
         ...prevData,

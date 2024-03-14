@@ -26,6 +26,7 @@ export type SettingsT = {
   timePercent: boolean;
   lightMode: boolean;
   autoComplete: boolean;
+  maxPlanTime: number;
 };
 
 export type ThemeT = {
