@@ -14,6 +14,7 @@ export const updateAction = (setAlert: Function, setData: Function, action: Acti
           tmp.forEach((element) => {
             if (element.key === action.key) {
               element.action = action.action;
+              element.repeat = action.repeat;
               element.isCompleted = action.isCompleted;
               element.timeEstimate = action.timeEstimate;
               element.priority = action.priority;
@@ -56,7 +57,7 @@ export const getActions = (setAlert: any, setData: any, incompleteActions = fals
   }
 };
 
-export const addAction = (setAlert, setData, action, timeEstimate, areaOfImportance) => {
+export const addAction = (setAlert, setData, action, timeEstimate, areaOfImportance, repeat) => {
   const key = uuidv4();
   const newAction = {
     key: key,
@@ -64,6 +65,7 @@ export const addAction = (setAlert, setData, action, timeEstimate, areaOfImporta
     isCompleted: false,
     timeEstimate: timeEstimate,
     priority: 0,
+    repeat: repeat,
     areaOfImportance: areaOfImportance,
     dateAdded: new Date().toLocaleDateString(),
   };

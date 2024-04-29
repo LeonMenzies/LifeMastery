@@ -46,10 +46,10 @@ export const Navigator: FC<NavigatorT> = () => {
   }, [alert]);
 
   const alertColors = {
-    info: "#37a2ffd1",
-    error: "#e43100c9",
-    success: "#1cbe00c8",
-    warning: "#ff8c00cb",
+    info: "#37a2ff",
+    error: "#db2f00",
+    success: "#1cbe00",
+    warning: "#ff8c00",
   };
 
   const getAlertColor = () => {

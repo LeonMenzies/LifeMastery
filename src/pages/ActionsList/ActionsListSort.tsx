@@ -18,12 +18,7 @@ type ActionsListSortT = {
   setShowComplete: (b: boolean) => void;
 };
 
-export const ActionsListSort: FC<ActionsListSortT> = ({
-  selected,
-  showComplete,
-  setShowComplete,
-  setSelected,
-}) => {
+export const ActionsListSort: FC<ActionsListSortT> = ({ selected, showComplete, setShowComplete, setSelected }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
   const sortTypes = ["Date", "Time", "AOI"];
@@ -32,21 +27,9 @@ export const ActionsListSort: FC<ActionsListSortT> = ({
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         {sortTypes.map((string: string, index: number) => (
-          <ActionListSortButton
-            key={string}
-            text={string}
-            borders={index !== 0}
-            selected={string === selected.selected}
-            setSelected={setSelected}
-            desc={selected.desc}
-          />
+          <ActionListSortButton key={string} text={string} borders={index !== 0} selected={string === selected.selected} setSelected={setSelected} desc={selected.desc} />
         ))}
-        <ActionListCompleteButton
-          text={"Complete"}
-          borders={true}
-          selected={showComplete}
-          onPress={() => setShowComplete(!showComplete)}
-        />
+        <ActionListCompleteButton text={"Complete"} borders={true} selected={showComplete} onPress={() => setShowComplete(!showComplete)} />
       </View>
     </View>
   );

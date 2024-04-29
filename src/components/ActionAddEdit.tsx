@@ -16,6 +16,7 @@ import { SliderInput } from "./SliderInput";
 import { Modal } from "./Modal";
 import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
 import { Picker } from "./Picker";
+import { RepeatSelector } from "./RepeatSelector";
 
 type ActionAddEditT = {
   modalVisible: {
@@ -32,6 +33,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
   const [actionItem, setActionItem] = useRecoilState<ActionItemT>(createActionAtom);
   const [timeHours, setTimeHours] = useState(0);
   const [timeMinutes, setTimeMinutes] = useState(0);
+
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
 
@@ -83,7 +85,9 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       return;
     }
 
-    modalVisible.newAction ? addAction(setAlert, setActions, actionItem.action, actionItem.timeEstimate, actionItem.areaOfImportance) : updateAction(setAlert, setActions, actionItem);
+    modalVisible.newAction
+      ? addAction(setAlert, setActions, actionItem.action, actionItem.timeEstimate, actionItem.areaOfImportance, actionItem.repeat)
+      : updateAction(setAlert, setActions, actionItem);
 
     modalVisible.newAction
       ? null
@@ -128,6 +132,21 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
           autoCompleteText={createAutoCompleteText()}
         />
         <Picker title={"Area of Importance"} options={createOptions()} value={actionItem.areaOfImportance} onChange={(e) => updateActionItem(actionItem, { areaOfImportance: e })} />
+        <RepeatSelector
+          title={"Repeat"}
+          repeatDays={
+            actionItem.repeat ?? {
+              mon: false,
+              tue: false,
+              wed: false,
+              thu: false,
+              fri: false,
+              sat: false,
+              sun: false,
+            }
+          }
+          onChange={(e) => updateActionItem(actionItem, { repeat: e })}
+        />
         <SliderInput title={"Hours"} min={0} max={12} increment={1} markerColor={colors.primary} onChange={(value: number) => setTimeHours(value)} value={timeHours} showLabel={false} />
         <SliderInput title={"Minutes"} min={0} max={55} increment={5} markerColor={colors.primary} onChange={(value: number) => setTimeMinutes(value)} value={timeMinutes} showLabel={false} />
         <View style={styles.buttonContainer}>

@@ -8,6 +8,15 @@ export const emptyAction = {
   timeEstimate: 0,
   priority: 0,
   areaOfImportance: "",
+  repeat: {
+    mon: false,
+    tue: false,
+    wed: false,
+    thu: false,
+    fri: false,
+    sat: false,
+    sun: false,
+  },
   dateAdded: new Date().toLocaleDateString(),
 } as ActionItemT;
 
