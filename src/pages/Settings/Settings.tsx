@@ -14,6 +14,7 @@ import { settingsAtom } from "~recoil/settingsAtom";
 import { getSettings, saveSettings } from "~utils/SettingsHandler";
 import { SettingsButtonItem } from "~pages/Settings/SettingsButtonItem";
 import { SettingsSliderItem } from "./SettingsSliderItem";
+import { Button } from "~components/Button";
 
 export const Settings: FC<any> = () => {
   const TODAY_PLAN = "today-plan";
@@ -65,6 +66,10 @@ export const Settings: FC<any> = () => {
       <SettingsButtonItem title={"Clear Action"} buttonTitle={"Clear"} callBack={() => clearActions(setAlert, setActions)} />
       <SettingsButtonItem title={"Clear Todays Plan"} buttonTitle={"Clear"} callBack={() => clearPlan(setAlert, setPlan, TODAY_PLAN)} />
       <SettingsButtonItem title={"Clear Tomorrows Plan"} buttonTitle={"Clear"} callBack={() => clearPlan(setAlert, setPlan, TOMORROW_PLAN)} />
+      <Button title={"info"} onPress={() => setAlert({ message: "info", type: "info" })} />
+      <Button title={"error"} onPress={() => setAlert({ message: "error", type: "error" })} />
+      <Button title={"success"} onPress={() => setAlert({ message: "success", type: "success" })} />
+      <Button title={"warning"} onPress={() => setAlert({ message: "warning", type: "warning" })} />
     </View>
   );
 };

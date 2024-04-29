@@ -19,7 +19,7 @@ export const AreasOfImportanceAdd: FC<any> = () => {
 
   const handleAddTodo = () => {
     if (!areaOfImportance) {
-      setAlert("Area of Importance is required");
+      setAlert({ message: "Area of Importance is required", type: "warning" });
       return;
     }
 

@@ -72,12 +72,12 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
 
   const handleFinalize = () => {
     if (data.actionKeys.length < 1) {
-      setAlert("You must add at least one action to your plan");
+      setAlert({ message: "You must add at least one action to your plan", type: "warning" });
       return;
     }
 
     if (checkPlanLength() > settings.maxPlanTime * 60) {
-      setAlert("There isn't enough time in the day for all those actions, lets try again");
+      setAlert({ message: "There isn't enough time in the day for all those actions, lets try again", type: "error" });
       setData((prevData) => ({
         ...prevData,
         actionKeys: [],

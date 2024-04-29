@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
 
-import { ActionItemT } from "~types/Types";
+import { ActionItemT, AlertT } from "~types/Types";
 import { ACTION_KEY } from "./Constants";
 
 export const updateAction = (setAlert: Function, setData: Function, action: ActionItemT) => {
@@ -27,7 +27,7 @@ export const updateAction = (setAlert: Function, setData: Function, action: Acti
         }
       });
   } catch (e) {
-    setAlert("Failed to update action");
+    setAlert({ message: "Failed to update action", type: "error" });
   }
 };
 
@@ -52,7 +52,7 @@ export const getActions = (setAlert: any, setData: any, incompleteActions = fals
         setData(filteredActions);
       });
   } catch (e) {
-    setAlert("Failed to get actions");
+    setAlert({ message: "Failed to get actions", type: "error" });
   }
 };
 
@@ -75,26 +75,21 @@ export const addAction = (setAlert, setData, action, timeEstimate, areaOfImporta
         if (actions === null) {
           actions = [];
         }
-        if (actions.length > 99) {
-          setAlert("You cannot have more than 99 actions");
-          return;
+        if (actions.length > 1000) {
+          actions.pop();
         }
         const actionsList = JSON.stringify([newAction, ...actions]);
         AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => {
-          setAlert("Successfully added action");
+          setAlert({ message: "Successfully added action", type: "success" });
           setData([newAction, ...actions]);
         });
       });
   } catch (e) {
-    setAlert("Failed to add action");
+    setAlert({ message: "Failed to add action", type: "error" });
   }
 };
 
-export const deleteActions = (
-  setAlert: (alert: string) => void,
-  setData: (actions: ActionItemT[]) => void,
-  keys: string[]
-) => {
+export const deleteActions = (setAlert: (alert: AlertT) => void, setData: (actions: ActionItemT[]) => void, keys: string[]) => {
   try {
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
@@ -102,24 +97,24 @@ export const deleteActions = (
         const filteredActions = actions.filter((v: ActionItemT) => !keys.includes(v.key));
 
         if (filteredActions >= actions) {
-          setAlert("Failed to delete action");
+          setAlert({ message: "Failed to delete action", type: "error" });
           return;
         }
         const actionsList = JSON.stringify(filteredActions);
         AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => setData(filteredActions));
       });
   } catch (e) {
-    setAlert("Failed to clear actions");
+    setAlert({ message: "Failed to delete actions", type: "error" });
   }
 };
 
-export const clearActions = (setAlert, setData) => {
+export const clearActions = (setAlert: (alert: AlertT) => void, setData) => {
   try {
     AsyncStorage.setItem(ACTION_KEY, JSON.stringify([])).then(() => {
       setData([]);
-      setAlert("Successfully cleared actions");
+      setAlert({ message: "Successfully cleared actions", type: "success" });
     });
   } catch (e) {
-    setAlert("Failed to clear actions");
+    setAlert({ message: "Failed to clear actions", type: "error" });
   }
 };

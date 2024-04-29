@@ -69,29 +69,21 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
 
   const handleAddTodo = () => {
     if (!actionItem.action) {
-      setAlert("Action is required");
+      setAlert({ message: "Action is required", type: "warning" });
       return;
     }
 
     if (actionItem.timeEstimate > 9 * 60) {
-      setAlert("Time estimate cannot be over 9 hours");
+      setAlert({ message: "Time estimate cannot be over 9 hours", type: "error" });
       return;
     }
 
     if (!actionItem.areaOfImportance || actionItem.areaOfImportance === "No AOI found") {
-      setAlert("Area of Importance is required");
+      setAlert({ message: "Area of Importance is required", type: "warning" });
       return;
     }
 
-    modalVisible.newAction
-      ? addAction(
-          setAlert,
-          setActions,
-          actionItem.action,
-          actionItem.timeEstimate,
-          actionItem.areaOfImportance
-        )
-      : updateAction(setAlert, setActions, actionItem);
+    modalVisible.newAction ? addAction(setAlert, setActions, actionItem.action, actionItem.timeEstimate, actionItem.areaOfImportance) : updateAction(setAlert, setActions, actionItem);
 
     modalVisible.newAction
       ? null
@@ -109,10 +101,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
     setTimeMinutes(0);
   };
 
-  const createOptions = () =>
-    areasOfImportance && areasOfImportance.length > 0
-      ? areasOfImportance.map((item) => ({ label: item.AOI, value: item.AOI }))
-      : [{ label: "No AOI found", value: "" }];
+  const createOptions = () => (areasOfImportance && areasOfImportance.length > 0 ? areasOfImportance.map((item) => ({ label: item.AOI, value: item.AOI })) : [{ label: "No AOI found", value: "" }]);
 
   const createAutoCompleteText = () => {
     return actions.map((action: ActionItemT) => action.action);
@@ -138,32 +127,9 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
           maxLength={30}
           autoCompleteText={createAutoCompleteText()}
         />
-        <Picker
-          title={"Area of Importance"}
-          options={createOptions()}
-          value={actionItem.areaOfImportance}
-          onChange={(e) => updateActionItem(actionItem, { areaOfImportance: e })}
-        />
-        <SliderInput
-          title={"Hours"}
-          min={0}
-          max={12}
-          increment={1}
-          markerColor={colors.primary}
-          onChange={(value: number) => setTimeHours(value)}
-          value={timeHours}
-          showLabel={false}
-        />
-        <SliderInput
-          title={"Minutes"}
-          min={0}
-          max={55}
-          increment={5}
-          markerColor={colors.primary}
-          onChange={(value: number) => setTimeMinutes(value)}
-          value={timeMinutes}
-          showLabel={false}
-        />
+        <Picker title={"Area of Importance"} options={createOptions()} value={actionItem.areaOfImportance} onChange={(e) => updateActionItem(actionItem, { areaOfImportance: e })} />
+        <SliderInput title={"Hours"} min={0} max={12} increment={1} markerColor={colors.primary} onChange={(value: number) => setTimeHours(value)} value={timeHours} showLabel={false} />
+        <SliderInput title={"Minutes"} min={0} max={55} increment={5} markerColor={colors.primary} onChange={(value: number) => setTimeMinutes(value)} value={timeMinutes} showLabel={false} />
         <View style={styles.buttonContainer}>
           <Button title={modalVisible.newAction ? "Add" : "Save"} onPress={handleAddTodo} />
         </View>

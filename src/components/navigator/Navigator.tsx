@@ -10,7 +10,7 @@ import { Plan } from "~pages/Plan/Plan";
 import { Home } from "~pages/Home/Home";
 import { ActionsList } from "~pages/ActionsList/ActionsList";
 import { Settings } from "~pages/Settings/Settings";
-import { alertAtom } from "~recoil/alertAtom";
+import { alertAtom, defaultAlert } from "~recoil/alertAtom";
 import { navigatorAtom } from "~recoil/navigatorAtom";
 
 type NavigatorT = {};
@@ -34,21 +34,27 @@ export const Navigator: FC<NavigatorT> = () => {
   const navigator = useRecoilValue(navigatorAtom);
 
   useEffect(() => {
-    if (alert !== "") {
-      let toast = Toast.show(alert, {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.TOP,
-        hideOnPress: true,
-        shadow: true,
-        animation: true,
-      });
-
-      setTimeout(function hideToast() {
-        Toast.hide(toast);
-        setAlert("");
-      }, 2000);
+    let timerId: NodeJS.Timeout;
+    if (alert.message !== "") {
+      timerId = setTimeout(() => setAlert(defaultAlert), 2000);
     }
+    return () => {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+    };
   }, [alert]);
+
+  const alertColors = {
+    info: "#37a2ffd1",
+    error: "#e43100c9",
+    success: "#1cbe00c8",
+    warning: "#ff8c00cb",
+  };
+
+  const getAlertColor = () => {
+    return alertColors[alert.type] || "#000";
+  };
 
   const pageMap: PageItems = {
     home: {
@@ -76,6 +82,9 @@ export const Navigator: FC<NavigatorT> = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
+        <Toast visible={alert.message !== ""} position={Toast.positions.TOP} shadow={true} animation={true} hideOnPress={true} backgroundColor={getAlertColor()} duration={Toast.durations.LONG}>
+          {alert.message}
+        </Toast>
         <View style={styles.component}>{pageMap[navigator].component}</View>
         <NavigatorMenu pageMap={pageMap} />
       </View>

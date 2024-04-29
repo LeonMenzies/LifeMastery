@@ -43,16 +43,16 @@ export const getPlan = (setAlert: Function, setData: Function, day: string) => {
         }
       });
   } catch (e) {
-    setAlert("Failed to get plan");
+    setAlert({ message: "Failed to get plan", type: "error" });
   }
 };
 
 export const savePlan = (setAlert: Function, plan: PlanT, day: string) => {
   try {
     const planJson = setPlanDateStringify(plan, day);
-    AsyncStorage.setItem(day, planJson).then(() => setAlert("Successfully Saved Plan"));
+    AsyncStorage.setItem(day, planJson).then(() => setAlert({ message: "Successfully Saved Plan", type: "success" }));
   } catch (e) {
-    setAlert("Failed to set plan");
+    setAlert({ message: "Failed to set plan", type: "error" });
   }
 };
 
@@ -85,7 +85,7 @@ export const updatePlan = (setAlert: Function, setData: Function, plan: PlanT, d
     const planJson = JSON.stringify(plan);
     AsyncStorage.setItem(day, planJson);
   } catch (e) {
-    setAlert("Failed to set plan");
+    setAlert({ message: "Failed to set plan", type: "error" });
   }
 };
 
@@ -93,11 +93,11 @@ export const finalizePlan = (setAlert: Function, plan: PlanT, callBack: any, day
   try {
     const planJson = setPlanDateStringify(plan, day);
     AsyncStorage.setItem(day, planJson).then(() => {
-      setAlert("Successfully Finalized Plan");
+      setAlert({ message: "Successfully Finalized Plan", type: "success" });
       callBack();
     });
   } catch (e) {
-    setAlert("Failed to set plan");
+    setAlert({ message: "Failed to set plan", type: "error" });
   }
 };
 
@@ -114,9 +114,9 @@ export const clearPlan = (setAlert: Function, setData: Function, day: string) =>
 
     AsyncStorage.setItem(day, JSON.stringify(defaultPlan)).then(() => {
       setData(defaultPlan);
-      setAlert("Successfully cleared plan");
+      setAlert({ message: "Successfully cleared plan", type: "success" });
     });
   } catch (e) {
-    setAlert("Failed to clear plan");
+    setAlert({ message: "Failed to clear plan", type: "error" });
   }
 };

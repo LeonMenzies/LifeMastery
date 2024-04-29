@@ -6,12 +6,18 @@ export type ActionItemT = {
   priority: number;
   areaOfImportance: string;
   dateAdded: string;
+  repeat: boolean[];
 };
 
 export type AreaOfImportanceItemT = {
   key: string;
   AOI: string;
   Color: string;
+};
+
+export type AlertT = {
+  message: string;
+  type: "info" | "error" | "success" | "warning";
 };
 
 export type PlanT = {

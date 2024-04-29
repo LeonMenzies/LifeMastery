@@ -15,7 +15,7 @@ export const getAreasOfImportance = (setAlert, setData) => {
         if (areaOfImportance !== null) setData(areaOfImportance);
       });
   } catch (e) {
-    setAlert("Failed to get AOI");
+    setAlert({ message: "Failed to get AOI", type: "error" });
   }
 };
 
@@ -25,7 +25,7 @@ export const setAreasOfImportanceOrder = (setAlert, setData, areasOfImportance) 
     AsyncStorage.setItem(AOI_KEY, areaOfImportanceList);
     setData(areasOfImportance);
   } catch (e) {
-    setAlert("Failed to set AOI");
+    setAlert({ message: "Failed to set AOI", type: "error" });
   }
 };
 
@@ -41,7 +41,7 @@ export const addAreaOfImportance = (setAlert: any, setData: any, AOI: string) =>
         }
 
         if (areaOfImportance.some((obj: AreaOfImportanceItemT) => obj.AOI.toLowerCase() === AOI.toLowerCase())) {
-          setAlert("Areas of importance must be unique");
+          setAlert({ message: "reas of importance must be unique", type: "warning" });
           return;
         }
 
@@ -52,7 +52,7 @@ export const addAreaOfImportance = (setAlert: any, setData: any, AOI: string) =>
         };
 
         if (areaOfImportance.length >= 9) {
-          setAlert("You cannot have more than 9 Areas Of Importance");
+          setAlert({ message: "You cannot have more than 9 Areas Of Importance", type: "warning" });
           return;
         }
         const areaOfImportanceList = JSON.stringify([newAreaOfImportance, ...areaOfImportance]);
@@ -61,7 +61,7 @@ export const addAreaOfImportance = (setAlert: any, setData: any, AOI: string) =>
         });
       });
   } catch (e) {
-    setAlert("Failed to add Area Of Importance");
+    setAlert({ message: "ailed to add Area Of Importance", type: "error" });
   }
 };
 
@@ -91,7 +91,7 @@ export const deleteAreaOfImportance = (setAlert: Function, setData: Function, se
         });
 
         if (filteredAreaOfImportance >= areaOfImportance) {
-          setAlert("Failed to delete AOI");
+          setAlert({ message: "Failed to delete AOI", type: "error" });
           return;
         }
 
@@ -99,6 +99,6 @@ export const deleteAreaOfImportance = (setAlert: Function, setData: Function, se
         AsyncStorage.setItem(AOI_KEY, AreaOfImportanceList).then(() => setData(filteredAreaOfImportance));
       });
   } catch (e) {
-    setAlert("Failed to delete AOI");
+    setAlert({ message: "Failed to delete AOI", type: "error" });
   }
 };

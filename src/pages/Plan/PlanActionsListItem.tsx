@@ -46,7 +46,7 @@ export const PlanActionsListItem: FC<PlanActionsListItemT> = ({ item, setActions
         } else if (isInPlan) {
           handleCancel();
         } else if (item.areaOfImportance === "") {
-          setAlert("Please add an area of importance to this action");
+          setAlert({ message: "Please add an area of importance to this action", type: "warning" });
         } else {
           setModalVisible(true);
         }
