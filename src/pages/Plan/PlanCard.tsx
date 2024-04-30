@@ -35,13 +35,6 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
     getPlan(setAlert, setData, day);
   }, [day]);
 
-  const updateFocus = (newFocus: string) => {
-    setData((prevData) => ({
-      ...prevData,
-      focus: newFocus,
-    }));
-  };
-
   const addActionKey = (actionKey: string) => {
     setData((prevData) => ({
       ...prevData,

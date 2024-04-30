@@ -17,6 +17,7 @@ import { Modal } from "./Modal";
 import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
 import { Picker } from "./Picker";
 import { RepeatSelector } from "./RepeatSelector";
+import { RepeatInput } from "./RepeatInput";
 
 type ActionAddEditT = {
   modalVisible: {
@@ -132,23 +133,9 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
           autoCompleteText={createAutoCompleteText()}
         />
         <Picker title={"Area of Importance"} options={createOptions()} value={actionItem.areaOfImportance} onChange={(e) => updateActionItem(actionItem, { areaOfImportance: e })} />
-        <RepeatSelector
-          title={"Repeat"}
-          repeatDays={
-            actionItem.repeat ?? {
-              mon: false,
-              tue: false,
-              wed: false,
-              thu: false,
-              fri: false,
-              sat: false,
-              sun: false,
-            }
-          }
-          onChange={(e) => updateActionItem(actionItem, { repeat: e })}
-        />
         <SliderInput title={"Hours"} min={0} max={12} increment={1} markerColor={colors.primary} onChange={(value: number) => setTimeHours(value)} value={timeHours} showLabel={false} />
         <SliderInput title={"Minutes"} min={0} max={55} increment={5} markerColor={colors.primary} onChange={(value: number) => setTimeMinutes(value)} value={timeMinutes} showLabel={false} />
+        <RepeatInput title={"Repeat"} value={actionItem.repeat} onValueChange={(e) => updateActionItem(actionItem, { repeat: e })} />
         <View style={styles.buttonContainer}>
           <Button title={modalVisible.newAction ? "Add" : "Save"} onPress={handleAddTodo} />
         </View>
@@ -164,7 +151,7 @@ const styling = (colors: ThemeT) =>
       alignItems: "center",
     },
     buttonContainer: {
-      padding: 30,
+      paddingBottom: 20,
       flexDirection: "row",
     },
   });

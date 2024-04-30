@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ActionItemT, AlertT } from "~types/Types";
 import { ACTION_KEY } from "./Constants";
 
-export const updateAction = (setAlert: Function, setData: Function, action: ActionItemT) => {
+export const updateAction = (setAlert: Function, setData: Function, action: ActionItemT, callback: () => void = null) => {
   try {
     AsyncStorage.getItem(ACTION_KEY)
       .then((actionsRaw) => JSON.parse(actionsRaw))
@@ -24,6 +24,7 @@ export const updateAction = (setAlert: Function, setData: Function, action: Acti
           const actionsList = JSON.stringify(tmp);
           AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => {
             setData(tmp);
+            if (callback) callback();
           });
         }
       });
@@ -57,7 +58,7 @@ export const getActions = (setAlert: any, setData: any, incompleteActions = fals
   }
 };
 
-export const addAction = (setAlert, setData, action, timeEstimate, areaOfImportance, repeat) => {
+export const addAction = (setAlert, setData, action, timeEstimate, areaOfImportance, repeat, showSuccess = true) => {
   const key = uuidv4();
   const newAction = {
     key: key,
@@ -81,9 +82,10 @@ export const addAction = (setAlert, setData, action, timeEstimate, areaOfImporta
           actions.pop();
         }
         const actionsList = JSON.stringify([newAction, ...actions]);
+
         AsyncStorage.setItem(ACTION_KEY, actionsList).then(() => {
-          setAlert({ message: "Successfully added action", type: "success" });
-          setData([newAction, ...actions]);
+          if (showSuccess) setAlert({ message: "Successfully added action", type: "success" });
+          if (setData) setData([newAction, ...actions]);
         });
       });
   } catch (e) {

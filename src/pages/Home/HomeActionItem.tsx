@@ -3,7 +3,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FC } from "react";
 
 import { alertAtom } from "~recoil/alertAtom";
-import { updateAction } from "~utils/ActionsHandler";
+import { addAction, updateAction } from "~utils/ActionsHandler";
 import { CheckBoxInput } from "~components/CheckBoxInput";
 import { ActionItemT, ThemeT } from "~types/Types";
 import { themeAtom } from "~recoil/themeAtom";
@@ -23,13 +23,23 @@ export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions 
   const styles = styling(colors, windowWidth, action.isCompleted);
   const plan = useRecoilValue(planAtom);
 
+  const callback = () => {
+    if (action.repeat) {
+      addAction(setAlert, null, action.action, action.timeEstimate, action.areaOfImportance, action.repeat, false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.actionContainer}>
         <CheckBoxInput
-          onPress={() =>
-            updateAction(setAlert, setActions, { ...action, isCompleted: !action.isCompleted })
-          }
+          onPress={() => {
+            if (action.repeat && action.isCompleted) {
+              return;
+            }
+
+            updateAction(setAlert, setActions, { ...action, isCompleted: !action.isCompleted }, callback);
+          }}
           completed={action.isCompleted}
           color={color}
           disabled={plan.complete}

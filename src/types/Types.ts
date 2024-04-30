@@ -6,15 +6,7 @@ export type ActionItemT = {
   priority: number;
   areaOfImportance: string;
   dateAdded: string;
-  repeat: {
-    mon: boolean;
-    tue: boolean;
-    wed: boolean;
-    thu: boolean;
-    fri: boolean;
-    sat: boolean;
-    sun: boolean;
-  };
+  repeat: boolean;
 };
 
 export type AreaOfImportanceItemT = {
