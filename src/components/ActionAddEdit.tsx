@@ -45,6 +45,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
         areaOfImportance: createOptions()[0].value,
         action: "",
         timeEstimate: 0,
+        repeat: false,
       });
     }
   }, [modalVisible]);
@@ -101,6 +102,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
       areaOfImportance: createOptions()[0].value,
       action: "",
       timeEstimate: 0,
+      repeat: false,
     });
     setTimeHours(0);
     setTimeMinutes(0);
