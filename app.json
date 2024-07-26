@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "LifeMastery",
-    "slug": "lifemastery",
-    "description": "LifeMastery",
+    "name": "TimeMastery",
+    "slug": "timemastery",
+    "description": "TimeMastery",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/LifeMastery.png",
+    "icon": "./src/assets/TimeMastery.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/splash.png",
@@ -19,7 +19,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.leonmenzies.lifemastery"
+      "bundleIdentifier": "com.leonmenzies.timemastery"
     },
     "android": {
       "adaptiveIcon": {
