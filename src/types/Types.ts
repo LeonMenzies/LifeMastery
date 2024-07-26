@@ -38,6 +38,7 @@ export type SettingsT = {
 export type ThemeT = {
   primary: string;
   secondary: string;
+  accent: string;
   background: string;
   backgroundSecondary: string;
   textPrimary: string;

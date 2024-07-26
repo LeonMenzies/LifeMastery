@@ -129,7 +129,7 @@ export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisibl
           title={"Action"}
           onChangeText={(e) => updateActionItem(actionItem, { action: e })}
           value={actionItem.action}
-          placeholder="Add value..."
+          placeholder="Add Action..."
           keyboardType="default"
           maxLength={30}
           autoCompleteText={createAutoCompleteText()}

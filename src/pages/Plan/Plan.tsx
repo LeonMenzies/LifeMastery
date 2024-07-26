@@ -34,7 +34,7 @@ export const Plan: FC<any> = () => {
       <View style={styles.addContainer}>
         <IconButton
           icon={"plus"}
-          color={colors.primary}
+          color={colors.accent}
           onPress={() =>
             setModalVisible({
               show: true,
@@ -47,9 +47,7 @@ export const Plan: FC<any> = () => {
         <PlanDayButton title={"Today"} onPress={() => setToday(true)} selected={today} />
         <PlanDayButton title={"Tomorrow"} onPress={() => setToday(false)} selected={!today} />
       </View>
-      <View style={styles.currentDayContainer}>
-        {today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}
-      </View>
+      <View style={styles.currentDayContainer}>{today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}</View>
       <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </View>
   );

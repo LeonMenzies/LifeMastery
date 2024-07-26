@@ -18,16 +18,7 @@ type TextInputAutoCompleteT = {
   disabled?: boolean;
 };
 
-export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
-  title,
-  value,
-  onChangeText,
-  placeholder,
-  maxLength,
-  keyboardType,
-  disabled,
-  autoCompleteText,
-}) => {
+export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({ title, value, onChangeText, placeholder, maxLength, keyboardType, disabled, autoCompleteText }) => {
   const colors = useRecoilValue(themeAtom);
   const styles = styling(colors);
   const [visible, setVisible] = useState(false);
@@ -37,7 +28,7 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
   const onChange = (text: string) => {
     onChangeText(text);
 
-    if (text.length > 2 && !settings.autoComplete) {
+    if (text.length > 2 && settings.autoComplete) {
       setVisible(true);
 
       const sortedStrings = autoCompleteText
@@ -95,10 +86,7 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
       <TouchableOpacity key={index} style={styles.itemButton} onPress={() => onItemPress(text)}>
         <View style={styles.itemButtonText}>
           {characters.map((char: string, index: number) => (
-            <Text
-              style={{ color: value[index] == char ? colors.textPrimary : colors.grey }}
-              key={index}
-            >
+            <Text style={{ color: value[index] == char ? colors.textPrimary : colors.grey }} key={index}>
               {char}
             </Text>
           ))}
@@ -123,11 +111,7 @@ export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({
           selectTextOnFocus={disabled}
           onBlur={() => setVisible(false)}
         />
-        {visible && (
-          <View style={styles.dropDownContainer}>
-            {autoComplete.map((text: string, index: number) => renderItem(text, index, value))}
-          </View>
-        )}
+        {visible && <View style={styles.dropDownContainer}>{autoComplete.map((text: string, index: number) => renderItem(text, index, value))}</View>}
       </View>
     </View>
   );

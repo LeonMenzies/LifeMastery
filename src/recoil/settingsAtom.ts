@@ -4,7 +4,7 @@ import { SettingsT } from "~types/Types";
 export const defaultSettings = {
   timePercent: true,
   lightMode: true,
-  autoComplete: false,
+  autoComplete: true,
   maxPlanTime: 16,
 };
 

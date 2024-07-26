@@ -64,7 +64,7 @@ export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
           ]}
         >
           <View style={styles.closeContainer}>
-            <IconButton color={colors.primary} icon={"close"} onPress={onRequestClose} />
+            <IconButton color={colors.accent} icon={"close"} onPress={onRequestClose} />
           </View>
           <View
             onLayout={(event) => {

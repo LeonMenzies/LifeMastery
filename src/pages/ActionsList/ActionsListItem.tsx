@@ -48,6 +48,7 @@ export const ActionsListItem: FC<ActionsListItemT> = ({ item, setModalVisible, d
         <View style={styles.actionHeading}>
           <View style={styles.actionTitleContainer}>
             {item.isCompleted && <View style={styles.inPlan} />}
+            {item.repeat && <View style={styles.isRepeat} />}
 
             <Text style={styles.actionTitle}>{item.action}</Text>
           </View>
@@ -95,6 +96,10 @@ const styling = (colors: ThemeT, windowWidth: number) =>
     actionDate: {
       fontSize: 13,
       color: colors.grey,
+    },
+    isRepeat: {
+      backgroundColor: colors.accent,
+      width: 3,
     },
     underlayText: {
       color: colors.white,

@@ -28,7 +28,7 @@ export const ActionsList: FC<any> = () => {
   const windowWidth = Dimensions.get("window").width;
   const [showComplete, setShowComplete] = useState(false);
   const [selected, setSelected] = useState({
-    selected: "Time",
+    selected: "Date",
     desc: true,
   });
 
@@ -66,7 +66,7 @@ export const ActionsList: FC<any> = () => {
       <View style={styles.addContainer}>
         <IconButton
           icon={"plus"}
-          color={colors.primary}
+          color={colors.accent}
           onPress={() =>
             setActionModal({
               show: true,
@@ -74,14 +74,9 @@ export const ActionsList: FC<any> = () => {
             })
           }
         />
-        <IconButton icon={"options"} color={colors.primary} onPress={() => setAoiModal(true)} />
+        <IconButton icon={"options"} color={colors.accent} onPress={() => setAoiModal(true)} />
       </View>
-      <ActionsListSort
-        selected={selected}
-        setSelected={setSelected}
-        showComplete={showComplete}
-        setShowComplete={setShowComplete}
-      />
+      <ActionsListSort selected={selected} setSelected={setSelected} showComplete={showComplete} setShowComplete={setShowComplete} />
       <View style={styles.actionsContainer}>
         <ScrollView>
           {actions.length > 0 ? (

@@ -4,6 +4,7 @@ import { ThemeT } from "~types/Types";
 export const lightTheme: ThemeT = {
   primary: "#FFC10C",
   secondary: "#ffe79e",
+  accent: "#0026D0",
   background: "#FFFFFF",
   backgroundSecondary: "#e6e6e6",
   textPrimary: "#000000",
@@ -19,6 +20,7 @@ export const lightTheme: ThemeT = {
 export const darkTheme: ThemeT = {
   primary: "#FFC10C",
   secondary: "#ffe79e",
+  accent: "#ffe79e",
   background: "#1c243a",
   backgroundSecondary: "#535353",
   textPrimary: "#ffffff",
