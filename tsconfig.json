@@ -4,12 +4,18 @@
     "jsx": "react-jsx",
     "paths": {
       "~assets/*": ["assets/*"],
-      "~components/*": ["components/*"],
-      "~pages/*": ["pages/*"],
-      "~recoil/*": ["recoil/*"],
-      "~types/*": ["types/*"],
-      "~utils/*": ["utils/*"]
+      "~components/*": ["src/components/*"],
+      "~pages/*": ["src/pages/*"],
+      "~recoil/*": ["src/recoil/*"],
+      "~types/*": ["src/types/*"],
+      "~utils/*": ["src/utils/*"]
     },
   },
   "extends": "expo/tsconfig.base",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }

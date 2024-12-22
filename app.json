@@ -1,40 +1,59 @@
 {
   "expo": {
-    "name": "TimeMastery",
-    "slug": "timemastery",
-    "description": "TimeMastery",
+    "name": "LifeMastery",
+    "slug": "LifeMastery",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/TimeMastery.png",
-    "userInterfaceStyle": "light",
+    "icon": "./src/assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./src/assets/splash.png",
+      "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/4136696b-9084-4d16-8478-5c1c7716810e"
-    },
-    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.leonmenzies.timemastery"
+      "bundleIdentifier": "com.leonmenzies.LifeMastery"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "manifest": {
+        "application": {
+          "android:extractNativeLibs": "true"
+        }
       }
     },
     "web": {
-      "favicon": ""
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
     },
     "extra": {
       "eas": {
-        "projectId": "4136696b-9084-4d16-8478-5c1c7716810e"
+        "projectId": "c661cead-b01d-49a6-94ba-1e01d55965ae"
+      },
+      "router": {
+        "origin": false
       }
     },
-    "owner": "leonmenzies",
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/c661cead-b01d-49a6-94ba-1e01d55965ae"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "runtimeVersion": {
       "policy": "appVersion"
     }
