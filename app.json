@@ -19,8 +19,8 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "output": "single",
+      "favicon": "./src/assets/images/favicon.png"
     },
     "plugins": [
       "expo-font",

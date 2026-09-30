@@ -3,19 +3,29 @@
     "jsx": "react-jsx",
     "strict": false,
     "paths": {
-      "~assets/*": ["./src/assets/*"],
-      "~components/*": ["./src/components/*"],
-      "~pages/*": ["./src/pages/*"],
-      "~store/*": ["./src/store/*"],
-      "~types/*": ["./src/types/*"],
-      "~utils/*": ["./src/utils/*"]
-    },
+      "~assets/*": [
+        "./src/assets/*"
+      ],
+      "~components/*": [
+        "./src/components/*"
+      ],
+      "~pages/*": [
+        "./src/pages/*"
+      ],
+      "~store/*": [
+        "./src/store/*"
+      ],
+      "~types/*": [
+        "./src/types/*"
+      ],
+      "~utils/*": [
+        "./src/utils/*"
+      ]
+    }
   },
   "extends": "expo/tsconfig.base",
   "include": [
     "**/*.ts",
-    "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "**/*.tsx"
   ]
 }
