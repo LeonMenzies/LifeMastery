@@ -42,6 +42,9 @@ Mobile only — never docker. Use `/deploy expo` (OTA, JS-only changes) or `/dep
 Build numbers are remote + auto-incremented (`eas.json`); production builds use channel `production`.
 `react-native-root-siblings` must stay on the same version `react-native-root-toast` depends on, or toasts won't render.
 
+## Roadmap
+A full design/flow makeover is planned but not started — see `docs/makeover-plan.md` (problems found, proposed redesign, phases, open decisions). Read it before any UI or data-model work.
+
 ## Do Not
 - Do not add backend calls or auth
 - Do not re-introduce Recoil (breaks on React 19) or add a second state library
