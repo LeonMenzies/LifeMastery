@@ -9,7 +9,7 @@ import { getActions } from "~utils/ActionsHandler";
 import { getAreasOfImportance, setAreasOfImportanceOrder } from "~utils/AreasOfImportanceHandler";
 import { HomeActionSection } from "~pages/Home/HomeActionSection";
 import { PlanT, ThemeT, ActionItemT } from "~types/Types";
-import { getPlan, updatePlan } from "~utils/PlanHandler";
+import { getPlan } from "~utils/PlanHandler";
 import { planAtom } from "~recoil/planAtom";
 import { themeAtom } from "~recoil/themeAtom";
 import { settingsAtom } from "~recoil/settingsAtom";
@@ -65,10 +65,6 @@ export const Home: FC<any> = () => {
 
     const calculatedPercent = denominator !== 0 && !isNaN(denominator) ? (numerator / denominator) * 100 : 0;
 
-    // Not using this logic for now
-    // if (calculatedPercent == 100) {
-    //   updatePlan(setAlert, setPlan, { ...plan, complete: true }, TODAY_PLAN);
-    // }
     setPercent(calculatedPercent);
   }, [actions]);
 

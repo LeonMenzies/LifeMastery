@@ -56,39 +56,6 @@ export const savePlan = (setAlert: Function, plan: PlanT, day: string) => {
   }
 };
 
-export const updatePlan = (setAlert: Function, setData: Function, plan: PlanT, day: string) => {
-  try {
-    AsyncStorage.getItem(day)
-      .then((plan) => JSON.parse(plan))
-      .then((plan) => {
-        if (plan !== null) {
-          const tmp: PlanT = { ...plan };
-
-          tmp.date = plan.date;
-          tmp.finalized = plan.finalized;
-          tmp.complete = plan.complete;
-          tmp.actionKeys = plan.actionKeys;
-
-          const planJson = JSON.stringify(tmp);
-          AsyncStorage.setItem(day, planJson).then(() => {
-            setData(tmp);
-          });
-
-          if (plan !== null) {
-            setData(plan);
-          } else {
-            setData({}); //TODO: return empty day
-          }
-        }
-      });
-
-    const planJson = JSON.stringify(plan);
-    AsyncStorage.setItem(day, planJson);
-  } catch (e) {
-    setAlert({ message: "Failed to set plan", type: "error" });
-  }
-};
-
 export const finalizePlan = (setAlert: Function, plan: PlanT, callBack: any, day: string) => {
   try {
     const planJson = setPlanDateStringify(plan, day);

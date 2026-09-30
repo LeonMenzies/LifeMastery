@@ -100,7 +100,7 @@ export const deleteActions = (setAlert: (alert: AlertT) => void, setData: (actio
       .then((actions) => {
         const filteredActions = actions.filter((v: ActionItemT) => !keys.includes(v.key));
 
-        if (filteredActions >= actions) {
+        if (filteredActions.length === actions.length) {
           setAlert({ message: "Failed to delete action", type: "error" });
           return;
         }
