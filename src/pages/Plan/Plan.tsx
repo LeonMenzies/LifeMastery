@@ -1,28 +1,27 @@
 import { Dimensions, StyleSheet, View } from "react-native";
 import { useEffect, useState, FC } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 
-import { alertAtom } from "~recoil/alertAtom";
+import { useAlertStore } from "~store/alertStore";
 import { ThemeT } from "~types/Types";
 import { getActions } from "~utils/ActionsHandler";
 import { PlanCard } from "~pages/Plan/PlanCard";
-import { themeAtom } from "~recoil/themeAtom";
-import { actionsAtom } from "~recoil/actionsAtom";
+import { useThemeStore } from "~store/themeStore";
+import { useActionsStore } from "~store/actionsStore";
 import { TODAY_PLAN, TOMORROW_PLAN } from "~utils/Constants";
 import { IconButton } from "~components/IconButton";
 import { ActionAddEdit } from "~components/ActionAddEdit";
 import { PlanDayButton } from "~pages/Plan/PlanDayButton";
 
 export const Plan: FC<any> = () => {
-  const setAlert = useSetRecoilState(alertAtom);
+  const setAlert = useAlertStore((s) => s.setAlert);
   const [today, setToday] = useState(true);
   const [modalVisible, setModalVisible] = useState<{ show: boolean; newAction: boolean }>({
     show: false,
     newAction: true,
   });
-  const setActions = useSetRecoilState(actionsAtom);
+  const setActions = useActionsStore((s) => s.setActions);
   const windowWidth = Dimensions.get("window").width;
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors, windowWidth);
 
   useEffect(() => {

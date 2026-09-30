@@ -4,8 +4,7 @@ import { Modal, StyleSheet, View, Text } from "react-native";
 
 import { Button } from "~components/Button";
 import { NumberInput } from "~components/NumberInput";
-import { useRecoilValue } from "recoil";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
 type PlanSetPriorityT = {
@@ -18,7 +17,7 @@ type PlanSetPriorityT = {
 
 export const PlanSetPriority: FC<PlanSetPriorityT> = ({ actionTitle, handleSetPriority, modalVisible, setModalVisible, handleCancel }) => {
   const [priorityValue, setPriorityValue] = useState(1);
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
 
   useEffect(() => {

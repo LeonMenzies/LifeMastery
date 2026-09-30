@@ -1,9 +1,8 @@
 import React, { FC } from "react";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
+import Icon from "@expo/vector-icons/SimpleLineIcons";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useRecoilValue } from "recoil";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
 type SortButtonT = {
@@ -21,7 +20,7 @@ export const ActionListSortButton: FC<SortButtonT> = ({
   setSelected,
   desc,
 }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors, selected, borders);
 
   const Carrot = ({}) => {

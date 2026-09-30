@@ -1,17 +1,17 @@
-import { FC, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { FC, JSX, useEffect } from "react";
 import { TouchableWithoutFeedback, Keyboard, StyleSheet, View, Dimensions, SafeAreaView } from "react-native";
 import Toast from "react-native-root-toast";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 import { NavigatorMenu } from "~components/navigator/NavigatorMenu";
+import { IconNameT } from "~components/IconButton";
 import { Plan } from "~pages/Plan/Plan";
 import { Home } from "~pages/Home/Home";
 import { ActionsList } from "~pages/ActionsList/ActionsList";
 import { Settings } from "~pages/Settings/Settings";
-import { alertAtom, defaultAlert } from "~recoil/alertAtom";
-import { navigatorAtom } from "~recoil/navigatorAtom";
+import { useAlertStore, defaultAlert } from "~store/alertStore";
+import { useNavigatorStore } from "~store/navigatorStore";
 
 type NavigatorT = {};
 
@@ -21,20 +21,21 @@ export type PageItems = {
 
 export type PageItem = {
   title: string;
-  icon: string;
+  icon: IconNameT;
   component: JSX.Element;
 };
 
 export const Navigator: FC<NavigatorT> = () => {
   const height = Dimensions.get("window").height;
 
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors, height);
-  const [alert, setAlert] = useRecoilState(alertAtom);
-  const navigator = useRecoilValue(navigatorAtom);
+  const alert = useAlertStore((s) => s.alert);
+  const setAlert = useAlertStore((s) => s.setAlert);
+  const navigator = useNavigatorStore((s) => s.navigator);
 
   useEffect(() => {
-    let timerId: NodeJS.Timeout;
+    let timerId: ReturnType<typeof setTimeout>;
     if (alert.message !== "") {
       timerId = setTimeout(() => setAlert(defaultAlert), 2000);
     }

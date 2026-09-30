@@ -2,8 +2,7 @@ import "react-native-get-random-values";
 import { FC } from "react";
 import { View, StyleSheet } from "react-native";
 
-import { useRecoilValue } from "recoil";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 import { ActionListSortButton } from "~pages/ActionsList/ActionListSortButton";
 import { ActionListCompleteButton } from "~pages/ActionsList/ActionListCompleteButton";
@@ -19,7 +18,7 @@ type ActionsListSortT = {
 };
 
 export const ActionsListSort: FC<ActionsListSortT> = ({ selected, showComplete, setShowComplete, setSelected }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
   const sortTypes = ["Date", "Time", "AOI"];
 

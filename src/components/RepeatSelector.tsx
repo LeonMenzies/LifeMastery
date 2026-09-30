@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Text, StyleSheet, View, TouchableHighlight } from "react-native";
-import { useRecoilValue } from "recoil";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 import { RepearSelectorButton } from "./RepearSelectorButton";
 
@@ -21,7 +20,7 @@ type RepeatSelectorT = {
 };
 
 export const RepeatSelector: FC<RepeatSelectorT> = ({ title, repeatDays, onChange }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
   const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 

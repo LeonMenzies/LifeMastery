@@ -1,31 +1,32 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState, FC } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import { HomeHeader } from "~pages/Home/HomeHeader";
-import { actionsAtom } from "~recoil/actionsAtom";
-import { alertAtom } from "~recoil/alertAtom";
+import { useActionsStore } from "~store/actionsStore";
+import { useAlertStore } from "~store/alertStore";
 import { getActions } from "~utils/ActionsHandler";
 import { getAreasOfImportance, setAreasOfImportanceOrder } from "~utils/AreasOfImportanceHandler";
 import { HomeActionSection } from "~pages/Home/HomeActionSection";
 import { PlanT, ThemeT, ActionItemT } from "~types/Types";
 import { getPlan } from "~utils/PlanHandler";
-import { planAtom } from "~recoil/planAtom";
-import { themeAtom } from "~recoil/themeAtom";
-import { settingsAtom } from "~recoil/settingsAtom";
+import { usePlanStore } from "~store/planStore";
+import { useThemeStore } from "~store/themeStore";
+import { useSettingsStore } from "~store/settingsStore";
 import { TODAY_PLAN } from "~utils/Constants";
 import { getTheme } from "~utils/SettingsHandler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export const Home: FC<any> = () => {
-  const setAlert = useSetRecoilState(alertAtom);
-  const [plan, setPlan] = useRecoilState<PlanT>(planAtom);
-  const [actions, setActions] = useRecoilState(actionsAtom);
+  const setAlert = useAlertStore((s) => s.setAlert);
+  const plan = usePlanStore((s) => s.plan);
+  const setPlan = usePlanStore((s) => s.setPlan);
+  const actions = useActionsStore((s) => s.actions);
+  const setActions = useActionsStore((s) => s.setActions);
   const [areasOfImportance, setAreasOfImportance] = useState([]);
   const [percent, setPercent] = useState(0);
-  const setTheme = useSetRecoilState(themeAtom);
-  const settings = useRecoilValue(settingsAtom);
-  const colors = useRecoilValue(themeAtom);
+  const setTheme = useThemeStore((s) => s.setTheme);
+  const settings = useSettingsStore((s) => s.settings);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
   const totalTime: number = actions.reduce((total: number, action: ActionItemT) => {
     let toAdd = 0;

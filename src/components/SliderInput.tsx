@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import Slider, { SliderValue } from "react-native-a11y-slider";
-import { useRecoilValue } from "recoil";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
 type SliderInputT = {
@@ -27,7 +26,7 @@ export const SliderInput: FC<SliderInputT> = ({
   showLabel,
   increment,
 }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
 
   const generateNumbers = (): number[] => {

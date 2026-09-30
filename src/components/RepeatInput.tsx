@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Text, StyleSheet, View, Switch } from "react-native";
-import { useRecoilValue } from "recoil";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
 type RepeatInputT = {
@@ -12,7 +11,7 @@ type RepeatInputT = {
 };
 
 export const RepeatInput: FC<RepeatInputT> = ({ title, value, onValueChange }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
 
   return (

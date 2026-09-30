@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useRecoilValue } from "recoil";
 import { Picker as InputPicker } from "@react-native-picker/picker";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
 type optionT = {
@@ -19,7 +18,7 @@ type PickerT = {
 };
 
 export const Picker: FC<PickerT> = ({ title, value, onChange, options }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
 
   return (

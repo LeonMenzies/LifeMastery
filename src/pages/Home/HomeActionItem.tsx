@@ -1,14 +1,13 @@
 import { Text, StyleSheet, View, Dimensions } from "react-native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FC } from "react";
 
-import { alertAtom } from "~recoil/alertAtom";
+import { useAlertStore } from "~store/alertStore";
 import { addAction, updateAction } from "~utils/ActionsHandler";
 import { CheckBoxInput } from "~components/CheckBoxInput";
 import { ActionItemT, ThemeT } from "~types/Types";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { convertTime } from "~utils/Helpers";
-import { planAtom } from "~recoil/planAtom";
+import { usePlanStore } from "~store/planStore";
 
 type HomeActionItemT = {
   action: ActionItemT;
@@ -17,11 +16,11 @@ type HomeActionItemT = {
 };
 
 export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions }) => {
-  const setAlert = useSetRecoilState(alertAtom);
+  const setAlert = useAlertStore((s) => s.setAlert);
   const windowWidth = Dimensions.get("window").width;
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors, windowWidth, action.isCompleted);
-  const plan = useRecoilValue(planAtom);
+  const plan = usePlanStore((s) => s.plan);
 
   const callback = () => {
     if (action.repeat) {

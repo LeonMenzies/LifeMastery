@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
-import { useRecoilValue } from "recoil";
 
 import { AreaOfImportanceItemT, ThemeT } from "~types/Types";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { CheckBoxInput } from "~components/CheckBoxInput";
 
 type AreasOfImportanceItemT = {
@@ -15,7 +14,7 @@ type AreasOfImportanceItemT = {
 };
 
 export const AreasOfImportanceItem: FC<AreasOfImportanceItemT> = ({ item, deleteItem, setDeleteItem, deleteItems, setDeleteItems }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(item.Color, colors, windowWidth);
 

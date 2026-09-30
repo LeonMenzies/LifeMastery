@@ -1,5 +1,5 @@
 app: LifeMastery
-stack: "React Native, Expo 52, TypeScript, Recoil, AsyncStorage (mobile app — no server)"
+stack: "React Native, Expo 57, TypeScript, Zustand, AsyncStorage (mobile app — no server)"
 test_cmd: skip
 max_test_retries: 2
 deploy_mode: skip

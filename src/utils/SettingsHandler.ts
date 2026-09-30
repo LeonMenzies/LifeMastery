@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { defaultSettings } from "~recoil/settingsAtom";
-import { darkTheme, lightTheme } from "~recoil/themeAtom";
+import { defaultSettings } from "~store/settingsStore";
+import { darkTheme, lightTheme } from "~store/themeStore";
 import { SettingsT } from "~types/Types";
 import { SETTINGS } from "~utils/Constants";
 

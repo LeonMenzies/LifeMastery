@@ -3,8 +3,7 @@ import { FC } from "react";
 import { Modal, StyleSheet, View } from "react-native";
 
 import { Button } from "~components/Button";
-import { useRecoilValue } from "recoil";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 import { TextInput } from "~components/TextInput";
 
@@ -23,7 +22,7 @@ export const PlanFocusModal: FC<PlanFocusModalT> = ({
   updateFocus,
   focusValue,
 }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
 
   return (

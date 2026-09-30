@@ -1,12 +1,11 @@
 import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FC, useState } from "react";
 
 import { updateAction } from "~utils/ActionsHandler";
-import { alertAtom } from "~recoil/alertAtom";
+import { useAlertStore } from "~store/alertStore";
 import { PlanSetPriority } from "~pages/Plan/PlanSetPriority";
 import { ThemeT, ActionItemT } from "~types/Types";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { convertTime } from "~utils/Helpers";
 
 type PlanActionsListItemT = {
@@ -19,10 +18,10 @@ type PlanActionsListItemT = {
 };
 
 export const PlanActionsListItem: FC<PlanActionsListItemT> = ({ item, setActions, addAction, removeAction, isInPlan, finalized }) => {
-  const setAlert = useSetRecoilState(alertAtom);
+  const setAlert = useAlertStore((s) => s.setAlert);
   const [modalVisible, setModalVisible] = useState(false);
   const windowWidth = Dimensions.get("window").width;
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors, windowWidth);
 
   const handleSetPriority = (val: number) => {

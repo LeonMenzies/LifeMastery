@@ -1,8 +1,7 @@
 import { TouchableOpacity, StyleSheet, GestureResponderEvent, Animated } from "react-native";
-import { useRecoilValue } from "recoil";
 import { FC, useRef, useEffect } from "react";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
 type CheckBoxInputT = {
@@ -13,7 +12,7 @@ type CheckBoxInputT = {
 };
 
 export const CheckBoxInput: FC<CheckBoxInputT> = ({ onPress, color, completed, disabled }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(color, completed, colors);
 
   const scaleValue = useRef(new Animated.Value(0.5)).current;

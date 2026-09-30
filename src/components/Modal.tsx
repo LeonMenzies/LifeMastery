@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { View, StyleSheet, TouchableOpacity, Animated, Easing, Dimensions } from "react-native";
-import { useRecoilValue } from "recoil";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 import { IconButton } from "~components/IconButton";
 
@@ -13,7 +12,7 @@ type ModalT = {
 };
 
 export const Modal: FC<ModalT> = ({ visible, onRequestClose, children }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const height = Dimensions.get("window").height;
   const width = Dimensions.get("window").width;
   const [modalHeight, setModalHeight] = useState(0);

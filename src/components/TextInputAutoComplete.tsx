@@ -1,10 +1,9 @@
 import { FC, useState } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { TextInput as Input } from "react-native";
-import { useRecoilValue } from "recoil";
-import { settingsAtom } from "~recoil/settingsAtom";
+import { useSettingsStore } from "~store/settingsStore";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
 type TextInputAutoCompleteT = {
@@ -19,11 +18,11 @@ type TextInputAutoCompleteT = {
 };
 
 export const TextInputAutoComplete: FC<TextInputAutoCompleteT> = ({ title, value, onChangeText, placeholder, maxLength, keyboardType, disabled, autoCompleteText }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
   const [visible, setVisible] = useState(false);
   const [autoComplete, setAutoComplete] = useState([]);
-  const settings = useRecoilValue(settingsAtom);
+  const settings = useSettingsStore((s) => s.settings);
 
   const onChange = (text: string) => {
     onChangeText(text);

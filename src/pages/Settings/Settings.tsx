@@ -1,16 +1,15 @@
 import { View, StyleSheet } from "react-native";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { FC, useEffect } from "react";
 
-import { darkTheme, lightTheme, themeAtom } from "~recoil/themeAtom";
+import { darkTheme, lightTheme, useThemeStore } from "~store/themeStore";
 import { clearActions } from "~utils/ActionsHandler";
-import { alertAtom } from "~recoil/alertAtom";
+import { useAlertStore } from "~store/alertStore";
 import { clearPlan } from "~utils/PlanHandler";
 import { SettingsT, ThemeT } from "~types/Types";
-import { planAtom } from "~recoil/planAtom";
-import { actionsAtom } from "~recoil/actionsAtom";
+import { usePlanStore } from "~store/planStore";
+import { useActionsStore } from "~store/actionsStore";
 import { SettingsSelectItem } from "./SettingsSelectItem";
-import { settingsAtom } from "~recoil/settingsAtom";
+import { useSettingsStore } from "~store/settingsStore";
 import { getSettings, saveSettings } from "~utils/SettingsHandler";
 import { SettingsButtonItem } from "~pages/Settings/SettingsButtonItem";
 import { SettingsSliderItem } from "./SettingsSliderItem";
@@ -19,13 +18,14 @@ import { Button } from "~components/Button";
 export const Settings: FC<any> = () => {
   const TODAY_PLAN = "today-plan";
   const TOMORROW_PLAN = "tomorrow-plan";
-  const setAlert = useSetRecoilState(alertAtom);
-  const setPlan = useSetRecoilState(planAtom);
-  const setActions = useSetRecoilState(actionsAtom);
-  const [settings, setSettings] = useRecoilState(settingsAtom);
-  const setTheme = useSetRecoilState(themeAtom);
+  const setAlert = useAlertStore((s) => s.setAlert);
+  const setPlan = usePlanStore((s) => s.setPlan);
+  const setActions = useActionsStore((s) => s.setActions);
+  const settings = useSettingsStore((s) => s.settings);
+  const setSettings = useSettingsStore((s) => s.setSettings);
+  const setTheme = useThemeStore((s) => s.setTheme);
 
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
 
   useEffect(() => {

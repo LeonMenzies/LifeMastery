@@ -1,35 +1,36 @@
 import { StyleSheet, View, Text, Dimensions, ScrollView } from "react-native";
 import { useEffect, useState, FC } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
-import { alertAtom } from "~recoil/alertAtom";
+import { useAlertStore } from "~store/alertStore";
 import { getPlan, savePlan, finalizePlan } from "~utils/PlanHandler";
 import { ThemeT, ActionItemT } from "~types/Types";
 import { PlanActionsListItem } from "~pages/Plan/PlanActionsListItem";
 import { Button } from "~components/Button";
-import { themeAtom } from "~recoil/themeAtom";
-import { planAtom } from "~recoil/planAtom";
-import { actionsAtom } from "~recoil/actionsAtom";
+import { useThemeStore } from "~store/themeStore";
+import { usePlanStore } from "~store/planStore";
+import { useActionsStore } from "~store/actionsStore";
 import { TOMORROW_PLAN } from "~utils/Constants";
 import { convertTime } from "~utils/Helpers";
-import { navigatorAtom } from "~recoil/navigatorAtom";
-import { settingsAtom } from "~recoil/settingsAtom";
+import { useNavigatorStore } from "~store/navigatorStore";
+import { useSettingsStore } from "~store/settingsStore";
 
 type PlanCardT = {
   day: string;
 };
 
 export const PlanCard: FC<PlanCardT> = ({ day }) => {
-  const setAlert = useSetRecoilState(alertAtom);
-  const [data, setData] = useRecoilState(planAtom);
-  const [actions, setActions] = useRecoilState(actionsAtom);
+  const setAlert = useAlertStore((s) => s.setAlert);
+  const data = usePlanStore((s) => s.plan);
+  const setData = usePlanStore((s) => s.setPlan);
+  const actions = useActionsStore((s) => s.actions);
+  const setActions = useActionsStore((s) => s.setActions);
 
-  const settings = useRecoilValue(settingsAtom);
-  const colors = useRecoilValue(themeAtom);
+  const settings = useSettingsStore((s) => s.settings);
+  const colors = useThemeStore((s) => s.theme);
   const width = Dimensions.get("window").width;
   const height = Dimensions.get("window").height;
   const styles = styling(colors, width, height);
-  const setNavigator = useSetRecoilState(navigatorAtom);
+  const setNavigator = useNavigatorStore((s) => s.setNavigator);
 
   useEffect(() => {
     getPlan(setAlert, setData, day);

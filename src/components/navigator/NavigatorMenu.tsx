@@ -1,8 +1,7 @@
 import { FC } from "react";
-import { useRecoilValue } from "recoil";
 import { StyleSheet, Dimensions, View } from "react-native";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 import { NavigatorMenuItem } from "~components/navigator/NavigatorMenuItem";
 import { PageItems, PageItem } from "~components/navigator/Navigator";
@@ -12,7 +11,7 @@ type NavigatorMenuT = {
 };
 
 export const NavigatorMenu: FC<NavigatorMenuT> = ({ pageMap }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
   const width = Dimensions.get("window").width / Object.keys(pageMap).length;
 

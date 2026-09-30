@@ -1,9 +1,8 @@
-import Icon from "react-native-vector-icons/SimpleLineIcons";
+import Icon from "@expo/vector-icons/SimpleLineIcons";
 import { FC, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
-import { useRecoilValue } from "recoil";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
 type optionT = {
@@ -27,7 +26,7 @@ export const Select: FC<SelectT> = ({
   placeholder = "Select an option...",
 }) => {
   const [visible, setVisible] = useState(false);
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
 
   const toggleDropdown = () => {

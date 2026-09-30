@@ -1,10 +1,9 @@
 import { View, StyleSheet, Text } from "react-native";
-import { useRecoilValue } from "recoil";
 import { FC } from "react";
 
 import { Button } from "~components/Button";
 import { ThemeT } from "~types/Types";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 
 type SettingsT = {
   title: string;
@@ -13,7 +12,7 @@ type SettingsT = {
 };
 
 export const SettingsButtonItem: FC<SettingsT> = ({ title, buttonTitle, callBack }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
 
   return (

@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
     "jsx": "react-jsx",
+    "strict": false,
     "paths": {
-      "~assets/*": ["assets/*"],
-      "~components/*": ["components/*"],
-      "~pages/*": ["pages/*"],
-      "~recoil/*": ["recoil/*"],
-      "~types/*": ["types/*"],
-      "~utils/*": ["utils/*"]
+      "~assets/*": ["./src/assets/*"],
+      "~components/*": ["./src/components/*"],
+      "~pages/*": ["./src/pages/*"],
+      "~store/*": ["./src/store/*"],
+      "~types/*": ["./src/types/*"],
+      "~utils/*": ["./src/utils/*"]
     },
   },
   "extends": "expo/tsconfig.base",

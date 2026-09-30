@@ -1,20 +1,19 @@
 import "react-native-get-random-values";
 import { useState, FC, useEffect, useRef } from "react";
 import { View, StyleSheet, Dimensions, Keyboard, Animated } from "react-native";
-import { useSetRecoilState } from "recoil";
 
 import { addAreaOfImportance } from "~utils/AreasOfImportanceHandler";
 import { TextInput } from "~components/TextInput";
-import { alertAtom } from "~recoil/alertAtom";
-import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
+import { useAlertStore } from "~store/alertStore";
+import { useAreasOfImportanceStore } from "~store/areasOfImportanceStore";
 import { Button } from "~components/Button";
 
 export const AreasOfImportanceAdd: FC<any> = () => {
   const [areaOfImportance, setAreaOfImportance] = useState("");
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(windowWidth);
-  const setAlert = useSetRecoilState(alertAtom);
-  const setData = useSetRecoilState(areasOfImportanceAtom);
+  const setAlert = useAlertStore((s) => s.setAlert);
+  const setData = useAreasOfImportanceStore((s) => s.setAreasOfImportance);
   const modalHeight = useRef(new Animated.Value(0)).current;
 
   const handleAddTodo = () => {

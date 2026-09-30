@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { create } from "zustand";
 import { ThemeT } from "~types/Types";
 
 export const lightTheme: ThemeT = {
@@ -33,7 +33,12 @@ export const darkTheme: ThemeT = {
   success: "#00ba00",
 };
 
-export const themeAtom = atom<ThemeT>({
-  key: "theme",
-  default: lightTheme,
-});
+type ThemeStoreT = {
+  theme: ThemeT;
+  setTheme: (theme: ThemeT) => void;
+};
+
+export const useThemeStore = create<ThemeStoreT>((set) => ({
+  theme: lightTheme,
+  setTheme: (theme) => set({ theme }),
+}));

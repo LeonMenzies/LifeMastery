@@ -4,8 +4,7 @@ import { FC } from "react";
 import { ActionItemT, ThemeT } from "~types/Types";
 import { HomeActionItem } from "~pages/Home/HomeActionItem";
 import { AreaOfImportanceItemT } from "~types/Types";
-import { useRecoilValue } from "recoil";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { convertTime } from "~utils/Helpers";
 
 type HomeActionSectionT = {
@@ -17,7 +16,7 @@ type HomeActionSectionT = {
 
 export const HomeActionSection: FC<HomeActionSectionT> = ({ aoi, data, setActions, actionKeys }) => {
   const windowWidth = Dimensions.get("window").width;
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(aoi.Color, windowWidth, colors);
   let actionSectionTotalTime = 0;
 

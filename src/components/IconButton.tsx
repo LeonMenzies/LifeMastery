@@ -1,20 +1,21 @@
-import { FC } from "react";
+import { ComponentProps, FC } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { useRecoilValue } from "recoil";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
+import Icon from "@expo/vector-icons/SimpleLineIcons";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
+export type IconNameT = ComponentProps<typeof Icon>["name"];
+
 type IconButtonT = {
-  icon: string;
+  icon: IconNameT;
   onPress: any;
   color: string;
   disabled?: boolean;
 };
 
 export const IconButton: FC<IconButtonT> = ({ icon, onPress, color, disabled = false }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(disabled, colors);
 
   return (

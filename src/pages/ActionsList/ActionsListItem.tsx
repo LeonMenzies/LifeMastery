@@ -1,10 +1,9 @@
 import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FC } from "react";
 
-import { createActionAtom } from "~recoil/createActionAtom";
+import { useCreateActionStore } from "~store/createActionStore";
 import { ThemeT, ActionItemT } from "~types/Types";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { convertTime } from "~utils/Helpers";
 import { CheckBoxInput } from "~components/CheckBoxInput";
 
@@ -22,8 +21,8 @@ export const ActionsListItem: FC<ActionsListItemT> = ({ item, setModalVisible, d
     if (deleteItem) setDeleteItems(deleteItems.includes(item.key) ? deleteItems.filter((val) => val !== item.key) : [...deleteItems, item.key]);
   }
 
-  const setAction = useSetRecoilState(createActionAtom);
-  const colors = useRecoilValue(themeAtom);
+  const setAction = useCreateActionStore((s) => s.setAction);
+  const colors = useThemeStore((s) => s.theme);
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(colors, windowWidth);
 

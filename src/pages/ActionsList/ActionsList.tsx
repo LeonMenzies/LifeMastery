@@ -1,14 +1,13 @@
 import "react-native-get-random-values";
 import React, { useEffect, FC, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { View, StyleSheet, Text, Dimensions, ScrollView } from "react-native";
 
 import { deleteActions, getActions } from "~utils/ActionsHandler";
-import { alertAtom } from "~recoil/alertAtom";
+import { useAlertStore } from "~store/alertStore";
 import { ActionsListItem } from "~pages/ActionsList/ActionsListItem";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ActionItemT, ThemeT } from "~types/Types";
-import { actionsAtom } from "~recoil/actionsAtom";
+import { useActionsStore } from "~store/actionsStore";
 import { ActionsListSort } from "./ActionsListSort";
 import { ActionAddEdit } from "~components/ActionAddEdit";
 import { IconButton } from "~components/IconButton";
@@ -16,8 +15,9 @@ import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
 import { Button } from "~components/Button";
 
 export const ActionsList: FC<any> = () => {
-  const setAlert = useSetRecoilState(alertAtom);
-  const [actions, setActions] = useRecoilState(actionsAtom);
+  const setAlert = useAlertStore((s) => s.setAlert);
+  const actions = useActionsStore((s) => s.actions);
+  const setActions = useActionsStore((s) => s.setActions);
   const [actionModal, setActionModal] = useState<{ show: boolean; newAction: boolean }>({
     show: false,
     newAction: true,
@@ -32,7 +32,7 @@ export const ActionsList: FC<any> = () => {
     desc: true,
   });
 
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors, windowWidth);
 
   useEffect(() => {

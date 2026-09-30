@@ -1,22 +1,23 @@
 import { FC } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
+import Icon from "@expo/vector-icons/SimpleLineIcons";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
-import { navigatorAtom } from "~recoil/navigatorAtom";
+import { IconNameT } from "~components/IconButton";
+import { useNavigatorStore } from "~store/navigatorStore";
 
 type NavigatorMenuItemT = {
   title: string;
-  icon: string;
+  icon: IconNameT;
   pageKey: string;
   width: number;
 };
 
 export const NavigatorMenuItem: FC<NavigatorMenuItemT> = ({ title, icon, pageKey, width }) => {
-  const [navigator, setNavigator] = useRecoilState(navigatorAtom);
-  const colors = useRecoilValue(themeAtom);
+  const navigator = useNavigatorStore((s) => s.navigator);
+  const setNavigator = useNavigatorStore((s) => s.setNavigator);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors, width);
 
   return (

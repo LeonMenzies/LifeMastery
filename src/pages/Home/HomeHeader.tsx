@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View, Text, Dimensions } from "react-native";
-import { useRecoilValue } from "recoil";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 import { HomeProgressBar } from "~pages/Home/HomeProgressBar";
 import { convertTime } from "~utils/Helpers";
@@ -12,7 +11,7 @@ type HomeHeaderT = {
 };
 
 export const HomeHeader: FC<HomeHeaderT> = ({ percent, totalTime }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const windowWidth = Dimensions.get("window").width;
   const styles = styling(colors, windowWidth);
   const date = new Date();

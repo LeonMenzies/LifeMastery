@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
-import { useRecoilValue } from "recoil";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
 type NumberInputT = {
@@ -12,7 +11,7 @@ type NumberInputT = {
 };
 
 export const NumberInput: FC<NumberInputT> = ({ onChange, value, maxValue }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
 
   return (

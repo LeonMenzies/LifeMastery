@@ -2,16 +2,11 @@
   "expo": {
     "name": "LifeMastery",
     "slug": "LifeMastery",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./src/assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.leonmenzies.LifeMastery"
@@ -20,11 +15,6 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "manifest": {
-        "application": {
-          "android:extractNativeLibs": "true"
-        }
       }
     },
     "web": {
@@ -33,18 +23,20 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/images/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "imageWidth": 200
+        }
+      ]
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "extra": {
       "eas": {
         "projectId": "c661cead-b01d-49a6-94ba-1e01d55965ae"
-      },
-      "router": {
-        "origin": false
       }
     },
     "updates": {

@@ -1,8 +1,7 @@
 import React, { FC } from "react";
 import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
-import { useRecoilValue } from "recoil";
 
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { ThemeT } from "~types/Types";
 
 type RepearSelectorButtonT = {
@@ -13,7 +12,7 @@ type RepearSelectorButtonT = {
 };
 
 export const RepearSelectorButton: FC<RepearSelectorButtonT> = ({ text, borders, selected, onPress }) => {
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors, selected, borders);
 
   return (

@@ -1,20 +1,19 @@
 import "react-native-get-random-values";
 import React, { useEffect, useState, FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 
 import { getAreasOfImportance } from "~utils/AreasOfImportanceHandler";
 import { addAction, updateAction } from "~utils/ActionsHandler";
-import { alertAtom } from "~recoil/alertAtom";
-import { actionsAtom } from "~recoil/actionsAtom";
-import { areasOfImportanceAtom } from "~recoil/areasOfImportanceAtom";
+import { useAlertStore } from "~store/alertStore";
+import { useActionsStore } from "~store/actionsStore";
+import { useAreasOfImportanceStore } from "~store/areasOfImportanceStore";
 import { Button } from "~components/Button";
 import { ThemeT, ActionItemT } from "~types/Types";
-import { themeAtom } from "~recoil/themeAtom";
+import { useThemeStore } from "~store/themeStore";
 import { TextInputAutoComplete } from "./TextInputAutoComplete";
 import { SliderInput } from "./SliderInput";
 import { Modal } from "./Modal";
-import { createActionAtom, emptyAction } from "~recoil/createActionAtom";
+import { useCreateActionStore, emptyAction } from "~store/createActionStore";
 import { Picker } from "./Picker";
 import { RepeatSelector } from "./RepeatSelector";
 import { RepeatInput } from "./RepeatInput";
@@ -28,14 +27,17 @@ type ActionAddEditT = {
 };
 
 export const ActionAddEdit: FC<ActionAddEditT> = ({ modalVisible, setModalVisible }) => {
-  const setAlert = useSetRecoilState(alertAtom);
-  const [actions, setActions] = useRecoilState(actionsAtom);
-  const [areasOfImportance, setAreasOfImportance] = useRecoilState(areasOfImportanceAtom);
-  const [actionItem, setActionItem] = useRecoilState<ActionItemT>(createActionAtom);
+  const setAlert = useAlertStore((s) => s.setAlert);
+  const actions = useActionsStore((s) => s.actions);
+  const setActions = useActionsStore((s) => s.setActions);
+  const areasOfImportance = useAreasOfImportanceStore((s) => s.areasOfImportance);
+  const setAreasOfImportance = useAreasOfImportanceStore((s) => s.setAreasOfImportance);
+  const actionItem = useCreateActionStore((s) => s.action);
+  const setActionItem = useCreateActionStore((s) => s.setAction);
   const [timeHours, setTimeHours] = useState(0);
   const [timeMinutes, setTimeMinutes] = useState(0);
 
-  const colors = useRecoilValue(themeAtom);
+  const colors = useThemeStore((s) => s.theme);
   const styles = styling(colors);
 
   useEffect(() => {
