@@ -1,0 +1,9 @@
+app: LifeMastery
+stack: "React Native, Expo 57, TypeScript, Zustand, AsyncStorage (mobile app — no server)"
+test_cmd: "npx jest --ci"
+max_test_retries: 2
+deploy_mode: skip
+require_plan_approval: false
+review_block_on: high
+auto_merge: true
+notify_url: ""

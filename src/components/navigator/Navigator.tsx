@@ -1,105 +1,141 @@
 import { FC, useEffect } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { TouchableWithoutFeedback, Keyboard, StyleSheet, View, Dimensions, SafeAreaView } from "react-native";
+import { AppState, Pressable, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import Toast from "react-native-root-toast";
+import { StatusBar } from "expo-status-bar";
 
-import { themeAtom } from "~recoil/themeAtom";
-import { ThemeT } from "~types/Types";
-import { NavigatorMenu } from "~components/navigator/NavigatorMenu";
-import { Plan } from "~pages/Plan/Plan";
+import { AppText } from "~components/AppText";
+import { IconNameT } from "~components/IconButton";
+import { ActionAddEdit } from "~components/ActionAddEdit";
 import { Home } from "~pages/Home/Home";
+import { Plan } from "~pages/Plan/Plan";
 import { ActionsList } from "~pages/ActionsList/ActionsList";
 import { Settings } from "~pages/Settings/Settings";
-import { alertAtom, defaultAlert } from "~recoil/alertAtom";
-import { navigatorAtom } from "~recoil/navigatorAtom";
+import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
+import { useAlertStore, defaultAlert } from "~store/alertStore";
+import { useDataStore } from "~store/dataStore";
+import { TabT, useUiStore } from "~store/uiStore";
+import { radius, space, useTheme } from "~theme/Theme";
+import { haptic } from "~utils/Haptics";
+import { useReminderSync } from "~utils/Notifications";
 
-type NavigatorT = {};
+const TABS: { key: TabT; title: string; icon: IconNameT; activeIcon: IconNameT; component: FC }[] = [
+  { key: "home", title: "Today", icon: "sunny-outline", activeIcon: "sunny", component: Home },
+  { key: "plan", title: "Plan", icon: "calendar-outline", activeIcon: "calendar", component: Plan },
+  { key: "actions", title: "Actions", icon: "list-outline", activeIcon: "list", component: ActionsList },
+  { key: "settings", title: "Settings", icon: "settings-outline", activeIcon: "settings", component: Settings },
+];
 
-export type PageItems = {
-  [key: string]: PageItem;
-};
+export const Navigator: FC = () => {
+  const colors = useTheme();
+  const insets = useSafeAreaInsets();
+  const tab = useUiStore((s) => s.tab);
+  const setTab = useUiStore((s) => s.setTab);
+  const alert = useAlertStore((s) => s.alert);
+  const setAlert = useAlertStore((s) => s.setAlert);
+  const rollover = useDataStore((s) => s.rollover);
 
-export type PageItem = {
-  title: string;
-  icon: string;
-  component: JSX.Element;
-};
-
-export const Navigator: FC<NavigatorT> = () => {
-  const height = Dimensions.get("window").height;
-
-  const colors = useRecoilValue(themeAtom);
-  const styles = styling(colors, height);
-  const [alert, setAlert] = useRecoilState(alertAtom);
-  const navigator = useRecoilValue(navigatorAtom);
+  useReminderSync();
 
   useEffect(() => {
-    let timerId: NodeJS.Timeout;
-    if (alert.message !== "") {
-      timerId = setTimeout(() => setAlert(defaultAlert), 2000);
-    }
-    return () => {
-      if (timerId) {
-        clearTimeout(timerId);
-      }
-    };
+    const sub = AppState.addEventListener("change", (state) => state === "active" && rollover());
+    return () => sub.remove();
+  }, []);
+
+  useEffect(() => {
+    if (alert.message === "") return;
+    const timerId = setTimeout(() => setAlert(defaultAlert), 3000);
+    return () => clearTimeout(timerId);
   }, [alert]);
 
   const alertColors = {
-    info: "#37a2ff",
-    error: "#db2f00",
-    success: "#1cbe00",
-    warning: "#ff8c00",
+    info: colors.text,
+    success: colors.success,
+    warning: colors.warning,
+    error: colors.danger,
   };
 
-  const getAlertColor = () => {
-    return alertColors[alert.type] || "#000";
-  };
-
-  const pageMap: PageItems = {
-    home: {
-      title: "Home",
-      icon: "home",
-      component: <Home />,
-    },
-    plan: {
-      title: "Plan",
-      icon: "note",
-      component: <Plan />,
-    },
-    actionsList: {
-      title: "Actions",
-      icon: "list",
-      component: <ActionsList />,
-    },
-    areasOfImportance: {
-      title: "Settings",
-      icon: "settings",
-      component: <Settings />,
-    },
-  };
+  const Page = TABS.find((t) => t.key === tab).component;
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <Toast visible={alert.message !== ""} position={Toast.positions.TOP} shadow={true} animation={true} hideOnPress={true} backgroundColor={getAlertColor()} duration={Toast.durations.LONG}>
-          {alert.message}
-        </Toast>
-        <View style={styles.component}>{pageMap[navigator].component}</View>
-        <NavigatorMenu pageMap={pageMap} />
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar style={colors.dark ? "light" : "dark"} />
+      <View style={styles.page}>
+        <Page />
       </View>
-    </TouchableWithoutFeedback>
+
+      <View accessibilityRole="tablist" style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, space.sm), backgroundColor: colors.surface, borderTopColor: colors.border }]}>
+        {TABS.map((t) => {
+          const active = t.key === tab;
+          return (
+            <Pressable
+              key={t.key}
+              accessibilityRole="tab"
+              accessibilityLabel={t.title}
+              accessibilityState={{ selected: active }}
+              style={styles.tab}
+              onPress={() => {
+                if (!active) haptic.tap();
+                setTab(t.key);
+              }}
+            >
+              <Ionicons name={active ? t.activeIcon : t.icon} size={24} color={active ? colors.accent : colors.textFaint} />
+              <AppText variant="caption" color={active ? colors.accent : colors.textMuted}>
+                {t.title}
+              </AppText>
+            </Pressable>
+          );
+        })}
+      </View>
+
+      <ActionAddEdit />
+      <AreasOfImportance />
+
+      <Toast
+        visible={alert.message !== ""}
+        position={insets.top + space.sm}
+        shadow={false}
+        animation
+        hideOnPress
+        opacity={1}
+        backgroundColor={alertColors[alert.type]}
+        textColor={colors.background}
+        containerStyle={styles.toast}
+        textStyle={styles.toastText}
+      >
+        {alert.message}
+      </Toast>
+    </View>
   );
 };
 
-const styling = (colors: ThemeT, height: number) =>
-  StyleSheet.create({
-    container: {
-      backgroundColor: colors.background,
-    },
-    component: {
-      height: height - 100,
-      backgroundColor: colors.background,
-      paddingTop: 50,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  page: {
+    flex: 1,
+  },
+  tabBar: {
+    flexDirection: "row",
+    borderTopWidth: StyleSheet.hairlineWidth,
+    paddingTop: space.sm,
+  },
+  tab: {
+    flex: 1,
+    alignItems: "center",
+    gap: 2,
+    minHeight: 44,
+  },
+  toast: {
+    borderRadius: radius.md,
+    paddingHorizontal: space.lg,
+    paddingVertical: space.md,
+    marginHorizontal: space.lg,
+  },
+  toastText: {
+    fontSize: 15,
+    fontWeight: "600",
+  },
+});

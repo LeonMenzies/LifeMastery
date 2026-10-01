@@ -1,45 +1,70 @@
 import { FC } from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { useRecoilValue } from "recoil";
+import { Pressable, StyleSheet, View, ViewStyle } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { themeAtom } from "~recoil/themeAtom";
-import { ThemeT } from "~types/Types";
+import { AppText } from "~components/AppText";
+import { IconNameT } from "~components/IconButton";
+import { radius, space, useTheme } from "~theme/Theme";
 
 type ButtonT = {
   title: string;
-  onPress: any;
+  onPress: () => void;
+  variant?: "filled" | "tinted" | "plain" | "destructive";
+  icon?: IconNameT;
   disabled?: boolean;
+  small?: boolean;
+  style?: ViewStyle;
+  accessibilityHint?: string;
 };
 
-export const Button: FC<ButtonT> = ({ title, onPress, disabled = false }) => {
-  const colors = useRecoilValue(themeAtom);
-  const styles = styling(disabled, colors);
+export const Button: FC<ButtonT> = ({ title, onPress, variant = "filled", icon, disabled = false, small = false, style, accessibilityHint }) => {
+  const colors = useTheme();
+  const palette = {
+    filled: { bg: colors.accent, fg: colors.onAccent },
+    tinted: { bg: colors.accentSoft, fg: colors.accent },
+    plain: { bg: "transparent", fg: colors.accent },
+    destructive: { bg: colors.dangerSoft, fg: colors.danger },
+  }[variant];
 
   return (
-    <TouchableOpacity
-      style={styles.button}
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ disabled }}
+      accessibilityHint={accessibilityHint}
       onPress={disabled ? undefined : onPress}
-      activeOpacity={disabled ? 1 : 0.4}
+      style={({ pressed }) => [
+        styles.button,
+        small && styles.small,
+        { backgroundColor: disabled && variant !== "plain" ? colors.fill : palette.bg, opacity: pressed ? 0.7 : 1 },
+        style,
+      ]}
     >
-      <Text style={styles.title}>{title}</Text>
-    </TouchableOpacity>
+      <View style={styles.content}>
+        {icon && <Ionicons name={icon} size={small ? 16 : 18} color={disabled ? colors.textFaint : palette.fg} />}
+        <AppText variant={small ? "callout" : "headline"} weight="600" color={disabled ? colors.textFaint : palette.fg}>
+          {title}
+        </AppText>
+      </View>
+    </Pressable>
   );
 };
 
-const styling = (disabled: boolean, colors: ThemeT) =>
-  StyleSheet.create({
-    button: {
-      padding: 10,
-      margin: 7,
-      zIndex: 2,
-      minWidth: 100,
-      alignItems: "center",
-      borderRadius: 14,
-      borderWidth: 2,
-      borderColor: disabled ? colors.grey : colors.primary,
-    },
-    title: {
-      fontSize: 15,
-      color: disabled ? colors.grey : colors.textPrimary,
-    },
-  });
+const styles = StyleSheet.create({
+  button: {
+    minHeight: 50,
+    paddingHorizontal: space.xl,
+    borderRadius: radius.md,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  small: {
+    minHeight: 36,
+    paddingHorizontal: space.md,
+    borderRadius: radius.sm,
+  },
+  content: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.sm,
+  },
+});

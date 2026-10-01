@@ -1,38 +1,45 @@
-import { FC } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { useRecoilValue } from "recoil";
-import Icon from "react-native-vector-icons/SimpleLineIcons";
+import { ComponentProps, FC } from "react";
+import { Pressable, StyleSheet } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { themeAtom } from "~recoil/themeAtom";
-import { ThemeT } from "~types/Types";
+import { radius, useTheme } from "~theme/Theme";
+
+export type IconNameT = ComponentProps<typeof Ionicons>["name"];
 
 type IconButtonT = {
-  icon: string;
-  onPress: any;
-  color: string;
+  icon: IconNameT;
+  label: string;
+  onPress: () => void;
+  color?: string;
+  filled?: boolean;
   disabled?: boolean;
+  size?: number;
 };
 
-export const IconButton: FC<IconButtonT> = ({ icon, onPress, color, disabled = false }) => {
-  const colors = useRecoilValue(themeAtom);
-  const styles = styling(disabled, colors);
+export const IconButton: FC<IconButtonT> = ({ icon, label, onPress, color, filled = false, disabled = false, size = 22 }) => {
+  const colors = useTheme();
+  const iconColor = disabled ? colors.textFaint : filled ? colors.onAccent : color || colors.accent;
 
   return (
-    <TouchableOpacity
-      style={styles.button}
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled }}
+      hitSlop={6}
       onPress={disabled ? undefined : onPress}
-      activeOpacity={disabled ? 1 : 0.4}
+      style={({ pressed }) => [styles.button, { backgroundColor: filled ? colors.accent : colors.fill, opacity: pressed ? 0.6 : 1 }]}
     >
-      <Icon name={icon} size={20} color={disabled ? colors.lightGrey : color} />
-    </TouchableOpacity>
+      <Ionicons name={icon} size={size} color={iconColor} />
+    </Pressable>
   );
 };
 
-const styling = (disabled: boolean, colors: ThemeT) =>
-  StyleSheet.create({
-    button: {
-      borderRadius: 50,
-      padding: 10,
-      zIndex: 2,
-    },
-  });
+const styles = StyleSheet.create({
+  button: {
+    width: 40,
+    height: 40,
+    borderRadius: radius.pill,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
