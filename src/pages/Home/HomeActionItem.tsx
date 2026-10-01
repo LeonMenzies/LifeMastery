@@ -1,82 +1,82 @@
-import { Text, StyleSheet, View, Dimensions } from "react-native";
 import { FC } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { useAlertStore } from "~store/alertStore";
-import { addAction, updateAction } from "~utils/ActionsHandler";
+import { AppText } from "~components/AppText";
 import { CheckBoxInput } from "~components/CheckBoxInput";
-import { ActionItemT, ThemeT } from "~types/Types";
-import { useThemeStore } from "~store/themeStore";
-import { convertTime } from "~utils/Helpers";
-import { usePlanStore } from "~store/planStore";
+import { useDataStore } from "~store/dataStore";
+import { space, useTheme } from "~theme/Theme";
+import { ActionT } from "~types/Types";
+import { formatDuration } from "~utils/Helpers";
+import { haptic } from "~utils/Haptics";
 
 type HomeActionItemT = {
-  action: ActionItemT;
+  action: ActionT;
   color: string;
-  setActions: any;
+  priority: number;
+  done: boolean;
 };
 
-export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, setActions }) => {
-  const setAlert = useAlertStore((s) => s.setAlert);
-  const windowWidth = Dimensions.get("window").width;
-  const colors = useThemeStore((s) => s.theme);
-  const styles = styling(colors, windowWidth, action.isCompleted);
-  const plan = usePlanStore((s) => s.plan);
+export const HomeActionItem: FC<HomeActionItemT> = ({ action, color, priority, done }) => {
+  const colors = useTheme();
+  const toggleComplete = useDataStore((s) => s.toggleComplete);
 
-  const callback = () => {
-    if (action.repeat) {
-      addAction(setAlert, null, action.action, action.timeEstimate, action.areaOfImportance, action.repeat, false);
-    }
+  const toggle = () => {
+    done ? haptic.light() : haptic.success();
+    toggleComplete(action.id);
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.actionContainer}>
-        <CheckBoxInput
-          onPress={() => {
-            if (action.repeat && action.isCompleted) {
-              return;
-            }
-
-            updateAction(setAlert, setActions, { ...action, isCompleted: !action.isCompleted }, callback);
-          }}
-          completed={action.isCompleted}
-          color={color}
-          disabled={plan.complete}
-        />
-        <Text style={styles.actionText}>{action.action}</Text>
+    <Pressable accessible={false} onPress={toggle} style={({ pressed }) => [styles.row, { opacity: pressed ? 0.7 : 1 }]}>
+      <CheckBoxInput checked={done} color={color} onPress={toggle} label={action.title} />
+      <View style={styles.text}>
+        <AppText variant="body" tone={done ? "faint" : "default"} style={done && styles.done}>
+          {action.title}
+        </AppText>
+        <View style={styles.meta}>
+          <AppText variant="footnote" tone="muted">
+            {formatDuration(action.minutes)}
+          </AppText>
+          {action.repeat && <Ionicons name="repeat" size={13} color={colors.textFaint} accessibilityLabel="Repeats" />}
+        </View>
       </View>
-      <View style={styles.infoContainer}>
-        <Text style={styles.infoText}>{action.priority}</Text>
-        <Text style={styles.infoText}>{convertTime(action.timeEstimate)}</Text>
-      </View>
-    </View>
+      {priority > 0 && (
+        <View style={[styles.priority, { backgroundColor: colors.fill }]} accessibilityLabel={`Priority ${priority}`}>
+          <AppText variant="caption" weight="700" tone="muted">
+            {priority}
+          </AppText>
+        </View>
+      )}
+    </Pressable>
   );
 };
 
-const styling = (colors: ThemeT, windowWidth: number, complete: boolean) =>
-  StyleSheet.create({
-    container: {
-      padding: 2,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      width: windowWidth - 50,
-    },
-    actionText: {
-      fontSize: 17,
-      color: complete ? colors.grey : colors.textPrimary,
-    },
-    actionContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    infoContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      width: 70,
-    },
-    infoText: {
-      color: colors.textPrimary,
-    },
-  });
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.md,
+    paddingVertical: space.sm + 2,
+    minHeight: 52,
+  },
+  text: {
+    flex: 1,
+  },
+  done: {
+    textDecorationLine: "line-through",
+  },
+  meta: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.xs,
+    marginTop: 1,
+  },
+  priority: {
+    minWidth: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 6,
+  },
+});

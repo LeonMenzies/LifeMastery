@@ -1,120 +1,127 @@
-import { TouchableOpacity, Text, View, StyleSheet, Dimensions } from "react-native";
 import { FC } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { useCreateActionStore } from "~store/createActionStore";
-import { ThemeT, ActionItemT } from "~types/Types";
-import { useThemeStore } from "~store/themeStore";
-import { convertTime } from "~utils/Helpers";
+import { AppText } from "~components/AppText";
 import { CheckBoxInput } from "~components/CheckBoxInput";
+import { radius, space, useTheme } from "~theme/Theme";
+import { ActionT } from "~types/Types";
+import { formatShortDate } from "~utils/Dates";
+import { describeRepeat, formatDuration } from "~utils/Helpers";
 
 type ActionsListItemT = {
-  item: ActionItemT;
-  setModalVisible: any;
-  deleteItem: boolean;
-  setDeleteItem: Function;
-  deleteItems: string[];
-  setDeleteItems: Function;
+  item: ActionT;
+  areaName: string;
+  areaColor: string;
+  inTodayPlan: boolean;
+  selecting: boolean;
+  selected: boolean;
+  onPress: () => void;
+  onLongPress: () => void;
 };
 
-export const ActionsListItem: FC<ActionsListItemT> = ({ item, setModalVisible, deleteItem, setDeleteItem, deleteItems, setDeleteItems }) => {
-  function toggleItemInArray() {
-    if (deleteItem) setDeleteItems(deleteItems.includes(item.key) ? deleteItems.filter((val) => val !== item.key) : [...deleteItems, item.key]);
-  }
-
-  const setAction = useCreateActionStore((s) => s.setAction);
-  const colors = useThemeStore((s) => s.theme);
-  const windowWidth = Dimensions.get("window").width;
-  const styles = styling(colors, windowWidth);
+export const ActionsListItem: FC<ActionsListItemT> = ({ item, areaName, areaColor, inTodayPlan, selecting, selected, onPress, onLongPress }) => {
+  const colors = useTheme();
+  const completed = !!item.completedOn;
 
   return (
-    <TouchableOpacity
-      onLongPress={() => {
-        setDeleteItem(true);
-        setDeleteItems([item.key]);
-      }}
-      onPress={() => {
-        if (!deleteItem && !item.isCompleted) {
-          setModalVisible({
-            show: true,
-            newAction: false,
-          });
-          setAction(item);
-        }
-      }}
-      activeOpacity={deleteItem || item.isCompleted ? 1 : 0.2}
+    <Pressable
+      accessibilityRole="button"
+      accessibilityHint={selecting ? "Toggles selection" : "Opens the action to edit"}
+      accessibilityState={{ selected }}
+      onPress={onPress}
+      onLongPress={onLongPress}
+      delayLongPress={350}
+      style={({ pressed }) => [styles.row, { backgroundColor: selected ? colors.dangerSoft : colors.surface, borderColor: colors.border, opacity: pressed ? 0.7 : 1 }]}
     >
-      <View style={styles.container}>
-        <View style={styles.actionHeading}>
-          <View style={styles.actionTitleContainer}>
-            {item.isCompleted && <View style={styles.inPlan} />}
-            {item.repeat && <View style={styles.isRepeat} />}
-
-            <Text style={styles.actionTitle}>{item.action}</Text>
-          </View>
-          {deleteItem ? (
-            <CheckBoxInput onPress={toggleItemInArray} completed={deleteItems.includes(item.key)} color={colors.error} disabled={false} />
-          ) : (
-            <Text style={styles.actionTitle}>{convertTime(item.timeEstimate)}</Text>
-          )}
+      {selecting && <CheckBoxInput checked={selected} color={colors.danger} onPress={onPress} label={`Select ${item.title}`} size={24} />}
+      <View style={styles.text}>
+        <View style={styles.titleRow}>
+          {completed && <Ionicons name="checkmark-circle" size={16} color={colors.success} accessibilityLabel="Completed" />}
+          <AppText variant="body" weight="500" tone={completed ? "muted" : "default"} style={styles.flex} numberOfLines={2}>
+            {item.title}
+          </AppText>
+          <AppText variant="callout" tone="muted" style={styles.tabular}>
+            {formatDuration(item.minutes)}
+          </AppText>
         </View>
-
-        {!deleteItem && (
-          <View style={styles.actionHeading}>
-            <View style={styles.actionSubTitleContainer}>
-              <Text style={styles.actionDate}>{item.areaOfImportance}</Text>
+        <View style={styles.meta}>
+          <View style={[styles.dot, { backgroundColor: areaColor }]} />
+          <AppText variant="footnote" tone="muted" numberOfLines={1}>
+            {areaName}
+          </AppText>
+          {item.repeat && (
+            <View style={styles.inline}>
+              <Ionicons name="repeat" size={13} color={colors.textMuted} />
+              <AppText variant="footnote" tone="muted">
+                {describeRepeat(item)}
+              </AppText>
             </View>
-            <Text style={styles.actionDate}>{item.dateAdded}</Text>
-          </View>
-        )}
+          )}
+          {inTodayPlan && (
+            <View style={[styles.pill, { backgroundColor: colors.accentSoft }]}>
+              <AppText variant="caption" tone="accent">
+                Today
+              </AppText>
+            </View>
+          )}
+          <AppText variant="footnote" tone="faint" style={styles.date}>
+            {completed ? `Done ${formatShortDate(item.completedOn)}` : formatShortDate(item.createdAt)}
+          </AppText>
+        </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
-const styling = (colors: ThemeT, windowWidth: number) =>
-  StyleSheet.create({
-    container: {
-      padding: 10,
-      width: windowWidth - 50,
-    },
-    actionHeading: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-    },
-    actionTitle: {
-      fontSize: 17,
-      color: colors.textPrimary,
-    },
-    actionTitleContainer: {
-      flexDirection: "row",
-      gap: 4,
-    },
-    actionSubTitleContainer: {
-      flexDirection: "row",
-    },
-    actionDate: {
-      fontSize: 13,
-      color: colors.grey,
-    },
-    isRepeat: {
-      backgroundColor: colors.accent,
-      width: 3,
-    },
-    underlayText: {
-      color: colors.white,
-      fontSize: 22,
-      fontWeight: "bold",
-    },
-    underlayRight: {
-      flex: 1,
-      width: 50,
-      backgroundColor: "tomato",
-      alignSelf: "flex-end",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    inPlan: {
-      width: 3,
-      backgroundColor: colors.success,
-    },
-  });
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.md,
+    paddingHorizontal: space.lg,
+    paddingVertical: space.md,
+    borderRadius: radius.md,
+    borderWidth: StyleSheet.hairlineWidth,
+    marginBottom: space.sm,
+  },
+  flex: {
+    flex: 1,
+  },
+  text: {
+    flex: 1,
+    gap: 4,
+  },
+  titleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: space.sm,
+  },
+  tabular: {
+    fontVariant: ["tabular-nums"],
+  },
+  meta: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: 6,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  inline: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
+  },
+  pill: {
+    paddingHorizontal: 6,
+    paddingVertical: 1,
+    borderRadius: radius.pill,
+  },
+  date: {
+    marginLeft: "auto",
+  },
+});

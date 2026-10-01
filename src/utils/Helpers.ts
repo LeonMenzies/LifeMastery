@@ -1,26 +1,33 @@
-import { AreaOfImportanceItemT, PlanT } from "~types/Types";
-import { COLORS, TOMORROW_PLAN } from "~utils/Constants";
+import { ActionT, AreaT } from "~types/Types";
+import { AREA_COLORS } from "~utils/Constants";
+import { weekdayOf } from "~utils/Dates";
 
-export const getAOIColor = (areaOfImportance: AreaOfImportanceItemT[]) => {
-  const usedColors = areaOfImportance.map((item) => item.Color);
-  return COLORS.find((color) => !usedColors.includes(color));
+export const formatDuration = (minutes: number): string => {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  if (h === 0) return `${m}m`;
+  if (m === 0) return `${h}h`;
+  return `${h}h ${m}m`;
 };
 
-export const getDay = (date: Date) => {
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-  return days[date.getDay()];
+export const nextAreaColor = (areas: AreaT[]) => AREA_COLORS.find((color) => !areas.some((a) => a.color === color)) || AREA_COLORS[0];
+
+export const isDueOn = (action: ActionT, iso: string) => action.repeat && (action.repeatDays.length === 0 || action.repeatDays.includes(weekdayOf(iso)));
+
+const WEEKDAY_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+export const describeRepeat = (action: Pick<ActionT, "repeat" | "repeatDays">) => {
+  if (!action.repeat) return "";
+  const days = [...action.repeatDays].sort();
+  if (days.length === 0 || days.length === 7) return "Every day";
+  if (days.join() === "1,2,3,4,5") return "Weekdays";
+  if (days.join() === "0,6") return "Weekends";
+  return days.map((d) => WEEKDAY_SHORT[d]).join(", ");
 };
 
-export const convertTime = (decimalMinutes: number): string => {
-  const hours = Math.floor(decimalMinutes / 60);
-  const minutes = decimalMinutes % 60;
-  return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
-};
-
-export const setPlanDateStringify = (plan: PlanT, day: string): string => {
-  const today = new Date();
-  if (day === TOMORROW_PLAN) {
-    today.setDate(today.getDate() + 1);
-  }
-  return JSON.stringify({ ...plan, date: today.toLocaleDateString() });
+// Reorder the visible subset of ids while every hidden id keeps its slot.
+export const reorderSubset = (allIds: string[], newVisibleOrder: string[]) => {
+  const visible = new Set(newVisibleOrder);
+  const queue = [...newVisibleOrder];
+  return allIds.map((id) => (visible.has(id) ? queue.shift() : id));
 };

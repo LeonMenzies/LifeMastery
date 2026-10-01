@@ -2,6 +2,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "strict": false,
+    "types": ["jest"],
     "paths": {
       "~assets/*": [
         "./src/assets/*"
@@ -14,6 +15,9 @@
       ],
       "~store/*": [
         "./src/store/*"
+      ],
+      "~theme/*": [
+        "./src/theme/*"
       ],
       "~types/*": [
         "./src/types/*"

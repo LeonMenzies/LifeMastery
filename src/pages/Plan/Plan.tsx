@@ -1,76 +1,45 @@
-import { Dimensions, StyleSheet, View } from "react-native";
-import { useEffect, useState, FC } from "react";
+import { FC } from "react";
+import { StyleSheet, View } from "react-native";
 
-import { useAlertStore } from "~store/alertStore";
-import { ThemeT } from "~types/Types";
-import { getActions } from "~utils/ActionsHandler";
-import { PlanCard } from "~pages/Plan/PlanCard";
-import { useThemeStore } from "~store/themeStore";
-import { useActionsStore } from "~store/actionsStore";
-import { TODAY_PLAN, TOMORROW_PLAN } from "~utils/Constants";
 import { IconButton } from "~components/IconButton";
-import { ActionAddEdit } from "~components/ActionAddEdit";
-import { PlanDayButton } from "~pages/Plan/PlanDayButton";
+import { Screen, ScreenHeader } from "~components/Screen";
+import { SegmentedControl } from "~components/SegmentedControl";
+import { PlanCard } from "~pages/Plan/PlanCard";
+import { useDataStore } from "~store/dataStore";
+import { useUiStore } from "~store/uiStore";
+import { space } from "~theme/Theme";
+import { PlanDayT } from "~types/Types";
+import { formatShortDate } from "~utils/Dates";
 
-export const Plan: FC<any> = () => {
-  const setAlert = useAlertStore((s) => s.setAlert);
-  const [today, setToday] = useState(true);
-  const [modalVisible, setModalVisible] = useState<{ show: boolean; newAction: boolean }>({
-    show: false,
-    newAction: true,
-  });
-  const setActions = useActionsStore((s) => s.setActions);
-  const windowWidth = Dimensions.get("window").width;
-  const colors = useThemeStore((s) => s.theme);
-  const styles = styling(colors, windowWidth);
-
-  useEffect(() => {
-    getActions(setAlert, setActions);
-  }, []);
+export const Plan: FC = () => {
+  const day = useUiStore((s) => s.planDay);
+  const setDay = useUiStore((s) => s.setPlanDay);
+  const openActionSheet = useUiStore((s) => s.openActionSheet);
+  const today = useDataStore((s) => s.today);
+  const tomorrow = useDataStore((s) => s.tomorrow);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.addContainer}>
-        <IconButton
-          icon={"plus"}
-          color={colors.accent}
-          onPress={() =>
-            setModalVisible({
-              show: true,
-              newAction: true,
-            })
-          }
+    <Screen>
+      <ScreenHeader title="Plan" right={<IconButton icon="add" label="New action" filled onPress={() => openActionSheet()} />} />
+      <View style={styles.segment}>
+        <SegmentedControl<PlanDayT>
+          label="Day to plan"
+          value={day}
+          onChange={setDay}
+          options={[
+            { value: "today", label: "Today", sublabel: formatShortDate(today.date) },
+            { value: "tomorrow", label: "Tomorrow", sublabel: formatShortDate(tomorrow.date) },
+          ]}
         />
       </View>
-      <View style={styles.buttonContainer}>
-        <PlanDayButton title={"Today"} onPress={() => setToday(true)} selected={today} />
-        <PlanDayButton title={"Tomorrow"} onPress={() => setToday(false)} selected={!today} />
-      </View>
-      <View style={styles.currentDayContainer}>{today ? <PlanCard day={TODAY_PLAN} /> : <PlanCard day={TOMORROW_PLAN} />}</View>
-      <ActionAddEdit modalVisible={modalVisible} setModalVisible={setModalVisible} />
-    </View>
+      <PlanCard key={day} day={day} />
+    </Screen>
   );
 };
 
-const styling = (colors: ThemeT, windowWidth: number) =>
-  StyleSheet.create({
-    container: {
-      alignItems: "center",
-      height: "100%",
-    },
-    addContainer: {
-      paddingLeft: 10,
-      width: "100%",
-    },
-    currentDayContainer: {
-      flex: 1,
-    },
-    buttonContainer: {
-      borderRadius: 5,
-      borderColor: colors.primary,
-      borderWidth: 2,
-      flexDirection: "row",
-      marginVertical: 5,
-      width: windowWidth - 50,
-    },
-  });
+const styles = StyleSheet.create({
+  segment: {
+    paddingHorizontal: space.lg,
+    paddingBottom: space.md,
+  },
+});

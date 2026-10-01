@@ -1,7 +1,16 @@
 # LifeMastery — Makeover Plan
 
-Status: **proposal, not started** (written 2026-09-30, against v1.1.0 build 3 on SDK 57 / Zustand).
-Open decisions are at the bottom. They must be answered before phase 1 starts.
+Status: **implemented on branch `makeover` (v1.2.0), 2026-10-01. Not yet built or shipped.**
+
+What was decided:
+- Keep the original flows: 4 tabs (Home is now labelled "Today"), pick actions with a 1–9 priority, Finalize today's plan, tick off on Today. The redesign is visual and explanatory, not a new flow.
+- Problem 3 (going over Max Plan Time wipes the plan) is **intentional** and kept. The Plan screen now shows a time budget bar and warns before you finalize.
+- Kept "Areas of importance", the Finalize lock and the 1–9 priorities (priority now lives on the plan, chosen from a 1–9 grid). No react-navigation: the custom tab bar was kept, now safe-area aware.
+- Tomorrow's plan saves automatically and becomes today's plan at midnight, ready to finalize. It can't be finalized ahead of time, same as before.
+- All four phases were done in one go, with no mockup first.
+- The area palette is now a validated 8-colour set (max 8 areas, previously 9). Migrated v1 colours map slot for slot.
+
+The original proposal follows, kept for reference.
 
 The core idea is good: plan each day against the areas of your life that matter, within a time budget. The execution is a 2023 prototype with real bugs. The biggest gap is that **finished days are overwritten and never kept**, so an app about balancing your life can't show you your balance.
 
