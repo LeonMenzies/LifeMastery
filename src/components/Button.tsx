@@ -20,7 +20,7 @@ type ButtonT = {
 export const Button: FC<ButtonT> = ({ title, onPress, variant = "filled", icon, disabled = false, small = false, style, accessibilityHint }) => {
   const colors = useTheme();
   const palette = {
-    filled: { bg: colors.accent, fg: colors.onAccent },
+    filled: { bg: colors.brand, fg: colors.onBrand },
     tinted: { bg: colors.accentSoft, fg: colors.accent },
     plain: { bg: "transparent", fg: colors.accent },
     destructive: { bg: colors.dangerSoft, fg: colors.danger },

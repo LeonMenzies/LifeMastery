@@ -86,6 +86,11 @@ export type ThemeT = {
   accent: string;
   accentSoft: string;
   onAccent: string;
+  brand: string;
+  brandSoft: string;
+  onBrand: string;
+  hero: string;
+  onHero: string;
   success: string;
   successSoft: string;
   warning: string;

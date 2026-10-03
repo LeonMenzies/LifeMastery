@@ -12,10 +12,11 @@ type ProgressRingT = {
   size?: number;
   stroke?: number;
   color?: string;
+  trackColor?: string;
   children?: ReactNode;
 };
 
-export const ProgressRing: FC<ProgressRingT> = ({ percent, size = 112, stroke = 10, color, children }) => {
+export const ProgressRing: FC<ProgressRingT> = ({ percent, size = 112, stroke = 10, color, trackColor, children }) => {
   const colors = useTheme();
   const r = (size - stroke) / 2;
   const circumference = 2 * Math.PI * r;
@@ -30,7 +31,7 @@ export const ProgressRing: FC<ProgressRingT> = ({ percent, size = 112, stroke = 
   return (
     <View style={{ width: size, height: size }} accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: 100, now: Math.round(percent) }}>
       <Svg width={size} height={size}>
-        <Circle cx={size / 2} cy={size / 2} r={r} stroke={colors.fill} strokeWidth={stroke} fill="none" />
+        <Circle cx={size / 2} cy={size / 2} r={r} stroke={trackColor || colors.fill} strokeWidth={stroke} fill="none" />
         <AnimatedCircle
           cx={size / 2}
           cy={size / 2}

@@ -98,7 +98,7 @@ export const PlanCard: FC<PlanCardT> = ({ day }) => {
           </AppText>
         </View>
         <View style={[styles.track, { backgroundColor: colors.fill }]} accessibilityRole="progressbar" accessibilityValue={{ min: 0, max, now: Math.min(total, max) }}>
-          <View style={[styles.trackFill, { width: `${Math.min(100, (total / max) * 100)}%`, backgroundColor: over ? colors.danger : colors.accent }]} />
+          <View style={[styles.trackFill, { width: `${Math.min(100, (total / max) * 100)}%`, backgroundColor: over ? colors.danger : colors.brand }]} />
         </View>
         {over && (
           <View style={styles.overRow}>
@@ -229,9 +229,9 @@ const PrioritySheet: FC<PrioritySheetT> = ({ action, current, onClose, onPick, o
               accessibilityLabel={`Priority ${p}`}
               accessibilityState={{ selected: on }}
               onPress={() => onPick(p)}
-              style={({ pressed }) => [styles.priority, { backgroundColor: on ? colors.accent : colors.fill, opacity: pressed ? 0.6 : 1 }]}
+              style={({ pressed }) => [styles.priority, { backgroundColor: on ? colors.brand : colors.fill, opacity: pressed ? 0.6 : 1 }]}
             >
-              <AppText variant="title" color={on ? colors.onAccent : colors.text}>
+              <AppText variant="title" color={on ? colors.onBrand : colors.text}>
                 {p}
               </AppText>
             </Pressable>

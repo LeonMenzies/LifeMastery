@@ -25,6 +25,9 @@ src/
 ```
 Import aliases (`~components`, `~pages`, `~store`, `~theme`, `~types`, `~utils`, `~assets`) are defined in both `babel.config.js` and `tsconfig.json` — keep them in sync.
 
+## Brand
+The app is for Lenny's dad: **blue `#0327C7` and yellow `#FFC10C` are his brand** (`BRAND_BLUE` / `BRAND_YELLOW` in `theme/Theme.ts`). Yellow = main buttons, progress, active tab; blue = links/icons and the Today hero card. Keep them in any redesign. App icon art must stay centred (ring centre at 512,512 of 1024).
+
 ## Data model notes
 - Dates are local ISO days (`YYYY-MM-DD`, `utils/Dates.ts`). Never store `toLocaleDateString()`.
 - Areas have stable ids; actions reference `areaId` (null = "No area"). Area colours come from the validated `AREA_COLORS` order (max 8); render them through `useAreaColor()` so dark mode gets its own step.

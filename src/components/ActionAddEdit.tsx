@@ -287,9 +287,9 @@ export const ActionAddEdit: FC = () => {
                   accessibilityLabel={name}
                   accessibilityState={{ checked: on }}
                   onPress={() => toggleDay(day)}
-                  style={[styles.day, { backgroundColor: on ? colors.accent : colors.fill }]}
+                  style={[styles.day, { backgroundColor: on ? colors.brand : colors.fill }]}
                 >
-                  <AppText variant="callout" weight="600" color={on ? colors.onAccent : colors.textMuted}>
+                  <AppText variant="callout" weight="600" color={on ? colors.onBrand : colors.textMuted}>
                     {label}
                   </AppText>
                 </Pressable>

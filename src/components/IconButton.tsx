@@ -18,7 +18,7 @@ type IconButtonT = {
 
 export const IconButton: FC<IconButtonT> = ({ icon, label, onPress, color, filled = false, disabled = false, size = 22 }) => {
   const colors = useTheme();
-  const iconColor = disabled ? colors.textFaint : filled ? colors.onAccent : color || colors.accent;
+  const iconColor = disabled ? colors.textFaint : filled ? colors.onBrand : color || colors.accent;
 
   return (
     <Pressable
@@ -27,7 +27,7 @@ export const IconButton: FC<IconButtonT> = ({ icon, label, onPress, color, fille
       accessibilityState={{ disabled }}
       hitSlop={6}
       onPress={disabled ? undefined : onPress}
-      style={({ pressed }) => [styles.button, { backgroundColor: filled ? colors.accent : colors.fill, opacity: pressed ? 0.6 : 1 }]}
+      style={({ pressed }) => [styles.button, { backgroundColor: filled ? colors.brand : colors.fill, opacity: pressed ? 0.6 : 1 }]}
     >
       <Ionicons name={icon} size={size} color={iconColor} />
     </Pressable>

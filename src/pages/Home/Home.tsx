@@ -96,39 +96,42 @@ export const Home: FC = () => {
   );
 };
 
+// Hero card in the brand blue with a yellow ring, like the app icon
 const ProgressCard: FC<{ percent: number; progress: ReturnType<typeof planProgress>; progressBy: string; focus: string; complete: boolean }> = ({ percent, progress, progressBy, focus, complete }) => {
   const colors = useTheme();
-  const ringColor = complete ? colors.success : colors.accent;
+  const soft = "rgba(255, 255, 255, 0.75)";
 
   return (
-    <Card style={styles.progressCard}>
+    <Card style={[styles.progressCard, { backgroundColor: colors.hero, borderColor: colors.hero }]}>
       <View style={styles.progressRow}>
-        <ProgressRing percent={percent} color={ringColor}>
+        <ProgressRing percent={percent} color={colors.brand} trackColor="rgba(255, 255, 255, 0.18)">
           {complete ? (
-            <Ionicons name="trophy" size={34} color={colors.success} accessibilityLabel="Day complete" />
+            <Ionicons name="trophy" size={34} color={colors.brand} accessibilityLabel="Day complete" />
           ) : (
-            <AppText variant="title" style={styles.tabular}>
+            <AppText variant="title" color={colors.onHero} style={styles.tabular}>
               {Math.round(percent)}%
             </AppText>
           )}
         </ProgressRing>
         <View style={styles.flex}>
-          <AppText variant="headline">{complete ? "Day complete" : percent > 0 ? "Keep going" : "Let's get started"}</AppText>
-          <AppText variant="callout" tone="muted" style={styles.progressLine}>
+          <AppText variant="headline" color={colors.onHero}>
+            {complete ? "Day complete" : percent > 0 ? "Keep going" : "Let's get started"}
+          </AppText>
+          <AppText variant="callout" color={soft} style={styles.progressLine}>
             {progress.doneCount} of {progress.totalCount} actions done
           </AppText>
-          <AppText variant="callout" tone="muted">
+          <AppText variant="callout" color={soft}>
             {formatDuration(progress.doneMinutes)} of {formatDuration(progress.totalMinutes)}
           </AppText>
-          <AppText variant="caption" tone="faint" style={styles.progressLine}>
+          <AppText variant="caption" color="rgba(255, 255, 255, 0.6)" style={styles.progressLine}>
             Progress counts by {progressBy === "time" ? "time" : "tasks"}
           </AppText>
         </View>
       </View>
       {focus ? (
-        <View style={[styles.focus, { backgroundColor: colors.accentSoft }]}>
-          <Ionicons name="flag" size={16} color={colors.accent} />
-          <AppText variant="callout" weight="600" color={colors.accent} style={styles.flex}>
+        <View style={[styles.focus, { backgroundColor: "rgba(255, 255, 255, 0.14)" }]}>
+          <Ionicons name="flag" size={16} color={colors.brand} />
+          <AppText variant="callout" weight="600" color={colors.onHero} style={styles.flex}>
             {focus}
           </AppText>
         </View>
@@ -197,8 +200,8 @@ const Welcome: FC = () => {
       <View style={styles.steps}>
         {["Choose your areas of importance", "Add actions with a time estimate", "Plan your day and finalize it"].map((step, i) => (
           <View key={step} style={styles.step}>
-            <View style={[styles.stepNumber, { backgroundColor: i === 0 ? colors.accent : colors.fill }]}>
-              <AppText variant="caption" weight="700" color={i === 0 ? colors.onAccent : colors.textMuted}>
+            <View style={[styles.stepNumber, { backgroundColor: i === 0 ? colors.brand : colors.fill }]}>
+              <AppText variant="caption" weight="700" color={i === 0 ? colors.onBrand : colors.textMuted}>
                 {i + 1}
               </AppText>
             </View>

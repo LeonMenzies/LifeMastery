@@ -4,6 +4,10 @@ import { useSettingsStore } from "~store/settingsStore";
 import { ThemeT } from "~types/Types";
 import { AREA_COLORS_DARK } from "~utils/Constants";
 
+// Brand colours (from the app icon): blue for identity and links, yellow for the main actions and progress
+export const BRAND_BLUE = "#0327C7";
+export const BRAND_YELLOW = "#FFC10C";
+
 export const lightTheme: ThemeT = {
   dark: false,
   background: "#F3F4F8",
@@ -14,9 +18,14 @@ export const lightTheme: ThemeT = {
   text: "#12141C",
   textMuted: "#5E6475",
   textFaint: "#9BA0AE",
-  accent: "#2743E8",
-  accentSoft: "#E6EAFF",
+  accent: "#0327C7",
+  accentSoft: "#E3E8FF",
   onAccent: "#FFFFFF",
+  brand: BRAND_YELLOW,
+  brandSoft: "#FFF3CC",
+  onBrand: "#1F1600",
+  hero: BRAND_BLUE,
+  onHero: "#FFFFFF",
   success: "#15803D",
   successSoft: "#DCF5E4",
   warning: "#B45309",
@@ -39,6 +48,11 @@ export const darkTheme: ThemeT = {
   accent: "#7D8FFF",
   accentSoft: "#232A52",
   onAccent: "#0C0E14",
+  brand: BRAND_YELLOW,
+  brandSoft: "#3A2E06",
+  onBrand: "#1F1600",
+  hero: BRAND_BLUE,
+  onHero: "#FFFFFF",
   success: "#4ADE80",
   successSoft: "#14301F",
   warning: "#FBBF24",
