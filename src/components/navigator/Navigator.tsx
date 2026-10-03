@@ -16,7 +16,7 @@ import { AreasOfImportance } from "~pages/AreasOfImportance/AreasOfImportance";
 import { useAlertStore, defaultAlert } from "~store/alertStore";
 import { useDataStore } from "~store/dataStore";
 import { TabT, useUiStore } from "~store/uiStore";
-import { radius, space, useTheme } from "~theme/Theme";
+import { BRAND_BLUE, radius, space, useTheme } from "~theme/Theme";
 import { haptic } from "~utils/Haptics";
 import { useReminderSync } from "~utils/Notifications";
 
@@ -80,7 +80,9 @@ export const Navigator: FC = () => {
                 setTab(t.key);
               }}
             >
-              <Ionicons name={active ? t.activeIcon : t.icon} size={24} color={active ? colors.accent : colors.textFaint} />
+              <View style={[styles.tabIcon, active && { backgroundColor: colors.brand }]}>
+                <Ionicons name={active ? t.activeIcon : t.icon} size={22} color={active ? BRAND_BLUE : colors.textFaint} />
+              </View>
               <AppText variant="caption" color={active ? colors.accent : colors.textMuted}>
                 {t.title}
               </AppText>
@@ -121,6 +123,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderTopWidth: StyleSheet.hairlineWidth,
     paddingTop: space.sm,
+  },
+  tabIcon: {
+    width: 56,
+    height: 30,
+    borderRadius: radius.pill,
+    alignItems: "center",
+    justifyContent: "center",
   },
   tab: {
     flex: 1,
